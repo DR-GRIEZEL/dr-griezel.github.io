@@ -1,0 +1,7 @@
+<nav>
+  <ul>
+    {% for r in site.data.routes %}
+      <li><a href="{{ r.href }}">{{ r.label }}</li>
+    {% endfor %}
+  </ul>
+</nav>
