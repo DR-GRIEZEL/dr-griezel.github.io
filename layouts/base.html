@@ -1,0 +1,18 @@
+<html lang="nl">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ page.title | default: "TITEL" }}</title>
+    <link rel="stylesheet" href="/assets/css/test.css">
+  </head>
+  <body>
+    {% include header.html %}
+    {% include nav.html %}
+    <main class="container">
+      {{ content }}
+    </main>
+    <footer>
+      {% include footer.html %}
+    </footer>
+  </body>
+</html>
