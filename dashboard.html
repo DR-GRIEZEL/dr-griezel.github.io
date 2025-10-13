@@ -1,6 +1,50 @@
 ---
-layout: "base"
+layout: base
 title: "Dashboard"
+permalink: /dashboard/
+css:
+  - /assets/css/dashboard.css
+js:
+  - /assets/js/pomodoro.js
+  - /assets/js/hero.js
+module_js: true
 ---
 
-<p>js toevoegen...</p>
+<section id="hero class"card" aria-labelledby="hero-title">
+  <header><h2 id="hero-title">Welkom</h2></header>
+  <p class="fancy-clock" id="clock" aria-live="polite">--:--:--</p>
+</section>
+
+<section id="weather" class="card" aria-labelledby="wx-title">
+  <header><h2 id="wx-title">Weer</h2></header>
+  <div class="wxbox" role="group" aria-describedby="wx-meta">
+    <div class="wxline">
+      <strong class="wx-temp" id="wx-temp">--°</strong>
+      <span class="wx-desc id="wx-desc">—</span>
+    </div>
+    <small id="wx-meta">
+      <span id="wx-location">—</span>span> ·
+      <time id="wx-updated" datetime="">—:—</time>
+    </small>
+  </div>
+</section>
+
+<section id="pomodoro" class="card" aria-labelledby="pomo-title">
+  <header><h2 id="pomo-title">Pomodoro</h2></header>
+
+  <div class="pomo-widget" role="group" aria-describedby="pomo-title">
+    <div class="pomo-timer focus" id="pomo-time" aria-live="polite">25:00</div>
+    <div class="pomo-sub" id="pomo-state">Focus</div>
+
+    <div class="pomo-progress" aria-hidden="true">
+      <div class="pomo-progress-bar" id="pomo-bar" style="width:0%"></div>
+    </div>
+
+    <div class="pomobar">
+      <button class="pomo-btn" type="button" data-action="start" id="pomo-start">Start</button>
+      <button class="pomo-btn" type="button" data-action="pause" id="pomo-pause">Pauze</button>
+      <button class="pomo-btn" type="button" data-action="break" id="pomo-break">Pauze (5m)</button>
+      <button class="pomo-btn" type="button" data-action="reset" id="pomo-reset">Reset</button>
+    </div>
+  </div>
+</section>
