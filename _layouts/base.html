@@ -23,7 +23,7 @@
       {% include footer.html %}
     </footer>
     
-    {% if page.js $}
+    {% if page.js %}
       {% for src in page.js %}
         <script src="{{ src }}"{% if page.module_js %} type="module"{% else %} defer{% endif %}></script>
       {% endfor %}
