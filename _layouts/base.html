@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ page.title | default: "TITEL" }}</title>
+    
     {% if page.css %}
       {% for href in page.css %}
         <link rel="stylesheet" href="{{ href }}">
@@ -23,9 +24,7 @@
   </body>
   {% if page.js $}
     {% for src in page.js %}
-      <script src="{{ src " absolute_url }}"
-        {% if page.module_js %}type="module"{% else %}defer{% endif %}></script>
-      </script>
+      <script src="{{ src " absolute_url }}"{% if page.module_js %} type="module"{% else %} defer{% endif %}></script>
     {% endfor %}
   {% endif %}
 </html>
