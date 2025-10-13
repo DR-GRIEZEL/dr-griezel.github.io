@@ -24,7 +24,7 @@
   {% if page.js $}
     {% for src in page.js %}
       <script src="{{ src " absolute_url }}"
-        {% if page.module_js %}type="module"{% endif %}
+        {% if page.module_js %}type="module"{% else %}defer{% endif %}></script>
       </script>
     {% endfor %}
   {% endif %}
