@@ -1,10 +1,32 @@
-name: CodeQL
+name: CodeQL (JavaScript)
 
 on:
   push:
     branches: [ "main" ]
+    paths:
+      - "**/*.js"
+      - "**/*.mjs"
+      - "**/*.cjs"
+      - "**/*.ts"
+      - "**/*.tsx"
+      - "**/*.html"
+      - "**/*.css"
+      - "**/*.json"
+      - ".github/workflows/codeql.yml"
+      - ".github/codeql/**"
   pull_request:
     branches: [ "main" ]
+    paths:
+      - "**/*.js"
+      - "**/*.mjs"
+      - "**/*.cjs"
+      - "**/*.ts"
+      - "**/*.tsx"
+      - "**/*.html"
+      - "**/*.css"
+      - "**/*.json"
+      - ".github/workflows/codeql.yml"
+      - ".github/codeql/**"
   schedule:
     - cron: "30 1 * * 1"
   workflow_dispatch:
@@ -20,7 +42,7 @@ jobs:
     timeout-minutes: 30
 
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
 
       - name: Initialize CodeQL
@@ -30,7 +52,7 @@ jobs:
           queries: security-extended
           build-mode: none
 
-      - name: Perform CodeQL Analysis
+      - name: Analyze
         uses: github/codeql-action/analyze@v3
         with:
           category: "/language:javascript"
