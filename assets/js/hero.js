@@ -14,27 +14,27 @@ for (const k of ["clock", "weather"]) {
   }
 }
 
-// === layout containers ===
-const wrap = dv.el("div", "", { cls: "dv-dashboard" });
+const clock = document.getElementById("clock");
+const wxTemp = document.getElementById("wx-temp");
+const wxDesc = document.getElementById("wx-desc");
+const wxLocation = document.getElementById("wx-location");
+const wxUpdated = document.getElementById("wx-updated");
 
-// === Klok ===
-
-const clock = dv.el("div", "", { cls: "fancy-clock" }, wrap);
-function tick(){ 
-  clock.textContent = new Date().toLocaleString("nl-BE",{timeZone:tz, hour12:false}); 
-}
-tick();
-window.__dvTimers.clock = setInterval(() => {
-  if (!clock?.isConnected || (clock.checkVisibility && !clock.checkVisibility())) { clearInterval(window.__dvTimers.clock); return; }
+if (clock) {
+  function tick(){ 
+    clock.textContent = new Date().toLocaleTimeString("nl-BE", { timeZone: tz, hour12:false }); 
+  }
   tick();
-}, clockRefreshMs);
+  window.__dvTimers.clock = setInterval(() => {
+    if (!clock?.isConnected || (clock.checkVisibility && !clock.checkVisibility())) { clearInterval(window.__dvTimers.clock); return; }
+    tick();
+  }, clockRefreshMs);
+}
 
 // === Weer ===
 
 // const box = dv.el("div","Weer laden...");
 // box.className = "wxbox";
-const wx = dv.el("div", "Weer laden...", { cls: "wxbox" }, wrap);
-
 const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,apparent_temperature,precipitation,weather_code,wind_speed_10m&hourly=temperature_2m,precipitation_probability&timezone=Europe%2FBrussels`;
 // const res = await fetch(url);
 // if (!res.ok) { dv.paragraph("Weer: fout bij ophalen."); return; }
@@ -52,13 +52,22 @@ async function draw(){
     const res = await fetch(url); 
 	if(!res.ok) throw new Error(res.status);
     const data = await res.json(), c=data.current;
-    wx.innerHTML = `${wmap[c.weather_code] ?? "Weer"} 🌡️ ${c.temperature_2m}°C (${c.apparent_temperature}°C) 💨 ${c.wind_speed_10m} km/u ☔ ${c.precipitation} mm`;
+    if (wxTemp) wxTemp.textContent = `${c.temperature_2m}°`;
+    if (wxDesc) wxDesc.textContent = wmap[c.weather_code] ?? "Weer";
+    if (wxLocation) wxLocation.textContent = "Opbrakel";
+    if (wxUpdated) {
+      const now = new Date();
+      wxUpdated.dateTime = now.toISOString();
+      wxUpdated.textContent = now.toLocaleTimeString("nl-BE", { timeZone: tz, hour12:false, hour: "2-digit", minute: "2-digit" });
+    }
   } catch(e) {
-    wx.textContent="Weer: fout bij ophalen."; 
+    if (wxDesc) wxDesc.textContent = "Weer: fout bij ophalen.";
   }
 }
-await draw();
-window.__dvTimers.weather = setInterval(() => {
-  if (!wx?.isConnected || (wx.checkVisibility && !wx.checkVisibility())) { clearInterval(window.__dvTimers.weather); return; }
-  draw();
-}, weatherRefreshMs);
+if (wxTemp || wxDesc || wxLocation || wxUpdated) {
+  await draw();
+  window.__dvTimers.weather = setInterval(() => {
+    if (!document.body.contains(wxTemp ?? wxDesc ?? wxLocation ?? wxUpdated)){ clearInterval(window.__dvTimers.weather); return; }
+    draw();
+  }, weatherRefreshMs);
+}
