@@ -7,11 +7,12 @@ on:
       - "requirements*.txt"
       - "pyproject.toml"
   push:
-    branches: [ main ]
+    branches: [ "main" ]
     paths:
       - "**/*.py"
       - "requirements*.txt"
       - "pyproject.toml"
+  workflow_dispatch:
 
 jobs:
   test:
