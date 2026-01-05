@@ -77,7 +77,7 @@ jobs:
               "title": $title,
               "description": $desc,
               "url": $commit,
-              "color": 3066993,
+              "color": 3447003,
               "author": { "name": ($actor + " (" + $user_commits + ")"), "url": $profile, "icon_url": $avatar }
             }],
             "components": (
