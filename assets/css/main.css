@@ -13,6 +13,7 @@
   --radius: 16px;
   --shadow: 0 6px 20px rgba(0,0,0,.06);
   --maxw: 1000px;
+  --sidebar-w: 240px;
 }
 
 @media (prefers-color-scheme: dark){
@@ -35,53 +36,104 @@ html, body {
 }
 
 /* ====== Layout helpers ====== */
+.layout{
+  display: flex;
+  min-height: 100vh;
+}
 .container{
   max-width: var(--maxw);
   margin-inline: auto;
   padding: 24px;
 }
+.content{
+  flex: 1;
+  min-width: 0;
+}
+.nav-toggle{
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
 
 /* ====== Header / Nav ====== */
-header{
-  position: sticky; top: 0;
-  backdrop-filter: blur(10px);
-  background: color-mix(in oklab, var(--bg) 75%, transparent);
+.page-banner{
+  position: relative;
+  text-align: center;
+  background: url("/assets/img/banner.svg") center/cover no-repeat;
   border-bottom: 1px solid color-mix(in oklab, var(--muted) 15%, transparent);
-  z-index: 10;
+  padding: 28px 16px;
 }
-header .bar{
+.page-title{
+  margin: 0;
+  letter-spacing: 0.3px;
+  font-size: clamp(1.6rem, 1rem + 3vw, 3rem);
+  color: color-mix(in oklab, var(--text) 92%, white);
+  text-transform: uppercase;
+  text-shadow:
+    0 2px 0 color-mix(in oklab, var(--primary) 25%, black),
+    0 6px 8px rgba(0,0,0,.35),
+    0 12px 24px rgba(0,0,0,.2);
+}
+h2 { margin: 0; font-size: 1.25rem; color: var(--muted); }
+
+.sidebar{
+  width: var(--sidebar-w);
+  background: color-mix(in oklab, var(--bg) 88%, black);
+  border-right: 1px solid color-mix(in oklab, var(--muted) 15%, transparent);
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.sidebar-header{
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
 }
-
-h1, h2 { margin: 0; letter-spacing: .2px; }
-h1 { font-size: clamp(1.25rem, 1rem + 2vw, 2rem); }
-h2 { font-size: 1.25rem; color: var(--muted); }
-
-nav ul{
-  list-style: none;
-  display: flex;
-  gap: 14px;
-  padding: 0; margin: 0;
-}
-nav a{
-  display: inline-block;
-  padding: 8px 12px;
+.sidebar-brand{
+  font-weight: 700;
   text-decoration: none;
   color: var(--text);
-  border-radius: 999px;
+}
+.sidebar-nav ul{
+  list-style: none;
+  display: grid;
+  gap: 10px;
+  padding: 0;
+  margin: 0;
+}
+.sidebar-nav a{
+  display: block;
+  padding: 10px 12px;
+  text-decoration: none;
+  color: var(--text);
+  border-radius: 12px;
   border: 1px solid transparent;
   transition: transform .12s ease, background-color .12s ease, border-color .12s ease;
 }
-nav a:hover{
+.sidebar-nav a:hover{
   background: color-mix(in oklab, var(--primary) 14%, transparent);
   border-color: color-mix(in oklab, var(--primary) 35%, transparent);
 }
-nav a:focus-visible{
+.sidebar-nav a:focus-visible{
   outline: none;
   box-shadow: 0 0 0 4px var(--ring);
+}
+.sidebar-footer{
+  margin-top: auto;
+}
+.nav-toggle-btn{
+  display: none;
+  cursor: pointer;
+  border: 1px solid color-mix(in oklab, var(--primary) 40%, transparent);
+  border-radius: 10px;
+  padding: 6px 10px;
+  background: color-mix(in oklab, var(--primary) 12%, transparent);
+}
+.nav-toggle-btn--header{
+  position: absolute;
+  left: 16px;
+  top: 16px;
 }
 
 /* ====== Main grid + cards ====== */
@@ -117,6 +169,25 @@ footer{
   text-align: center;
 }
 
+/* ====== Forms ====== */
+.login-form{
+  display: grid;
+  gap: 16px;
+  margin-top: 16px;
+}
+.form-field{
+  display: grid;
+  gap: 6px;
+  font-weight: 600;
+}
+.form-field input{
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid color-mix(in oklab, var(--muted) 30%, transparent);
+  background: var(--card);
+  color: var(--text);
+}
+
 /* ====== Buttons (optioneel) ====== */
 .button{
   display:inline-flex; align-items:center; justify-content:center;
@@ -134,4 +205,31 @@ footer{
 :focus-visible{ outline: none; box-shadow: 0 0 0 4px var(--ring); border-radius: 8px; }
 @media (prefers-reduced-motion: reduce){
   *{ transition: none !important; scroll-behavior: auto !important; }
+}
+
+@media (max-width: 860px){
+  .layout{
+    flex-direction: column;
+  }
+  .sidebar{
+    position: fixed;
+    inset: 0 auto 0 0;
+    transform: translateX(-100%);
+    transition: transform .2s ease;
+    z-index: 20;
+  }
+  .nav-toggle:checked ~ .sidebar{
+    transform: translateX(0);
+  }
+  .nav-toggle:checked ~ .content{
+    filter: blur(1px);
+  }
+  .nav-toggle-btn{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .page-banner{
+    padding-left: 56px;
+  }
 }

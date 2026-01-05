@@ -14,14 +14,28 @@
     
   </head>
   <body>
-    {% include header.html %}
-    {% include nav.html %}
-    <main class="container">
-      {{ content }}
-    </main>
-    <footer>
-      {% include footer.html %}
-    </footer>
+    <div class="layout">
+      <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-label="Toggle navigation">
+      <aside class="sidebar" aria-label="Primary">
+        <div class="sidebar-header">
+          <a class="sidebar-brand" href="/">Griezel</a>
+          <label for="nav-toggle" class="nav-toggle-btn" aria-hidden="true">☰</label>
+        </div>
+        {% include nav.html %}
+        <div class="sidebar-footer">
+          <a class="button login-button" href="/login/">Login</a>
+        </div>
+      </aside>
+      <div class="content">
+        {% include header.html %}
+        <main class="container">
+          {{ content }}
+        </main>
+        <footer>
+          {% include footer.html %}
+        </footer>
+      </div>
+    </div>
     
     {% if page.js %}
       {% for src in page.js %}
