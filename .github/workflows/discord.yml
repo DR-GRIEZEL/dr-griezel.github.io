@@ -1,0 +1,135 @@
+name: Discord notify
+
+on:
+  push:
+    branches: [ "main", "dev" ]
+#   pull_request:
+#     types: [opened, reopened, synchronize, ready_for_review, closed]
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Notify Discord (embed)
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        run: |
+          set -euo pipefail
+          set -x
+          trap 'echo "::error::Failed at line $LINENO: $BASH_COMMAND"' ERR
+
+          REPO="${GITHUB_REPOSITORY}"
+          ACTOR="${GITHUB_ACTOR}"
+          AVATAR="$(jq -r '.sender.avatar_url // ""' "$GITHUB_EVENT_PATH")"
+          EVENT="${GITHUB_EVENT_NAME}"
+          EVENT_UPPER="$(printf "%s" "$EVENT" | tr '[:lower:]' '[:upper:]')"
+
+          PROFILE_URL="https://github.com/${ACTOR}"
+          COMMIT_URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/${GITHUB_SHA}"
+          RUN_URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+          PR_URL="$(jq -r '.pull_request.html_url // ""' "$GITHUB_EVENT_PATH")"
+          COMPARE_URL="$(jq -r '.compare // ""' "$GITHUB_EVENT_PATH")"
+
+          if [ "$EVENT" = "push" ]; then
+            BRANCH="$(jq -r '.ref // ""' "$GITHUB_EVENT_PATH" | sed 's#refs/heads/##')"
+            COMMITS="$(jq -r '.commits | length // 0' "$GITHUB_EVENT_PATH")"
+            HEAD_MSG="$(jq -r '.head_commit.message // ""' "$GITHUB_EVENT_PATH" | head -c 500)"
+          elif [ "$EVENT" = "pull_request" ]; then
+            BRANCH="$(jq -r '.pull_request.head.ref // ""' "$GITHUB_EVENT_PATH")"
+            COMMITS="$(jq -r '.pull_request.commits // 0' "$GITHUB_EVENT_PATH")"
+            HEAD_MSG="$(jq -r '.pull_request.title // ""' "$GITHUB_EVENT_PATH" | head -c 500)"
+          else
+            BRANCH="$(jq -r '.ref // ""' "$GITHUB_EVENT_PATH" | sed 's#refs/heads/##')"
+            COMMITS="0"
+            HEAD_MSG="Workflow run"
+          fi
+
+          TOTAL_COMMITS="$(git rev-list --count HEAD)"
+          USER_COMMITS="$(git log --all --author="$ACTOR" --pretty=oneline | wc -l | awk '{print $1}')"
+          USER_COMMITS="${USER_COMMITS:-0}"
+          BRANCH_UPPER="$(printf "%s" "$BRANCH" | tr '[:lower:]' '[:upper:]')"
+
+          url="$RUN_URL"
+          if [ -n "$COMPARE_URL" ] && [ "$COMPARE_URL" != "null" ]; then
+            url="$COMPARE_URL"
+          fi
+          if [ -n "$PR_URL" ] && [ "$PR_URL" != "null" ]; then
+            url="$PR_URL"
+          fi
+
+          if [ "$COMMITS" -eq 1 ]; then
+            title="✅ [${EVENT_UPPER}]: ${BRANCH_UPPER} (${TOTAL_COMMITS})"
+          else
+            title="✅ [${EVENT_UPPER} (${COMMITS})]: ${BRANCH_UPPER} (${TOTAL_COMMITS})"
+          fi
+
+          # Gebruik escaped backticks zodat bash geen command substitution probeert
+          desc="\`$HEAD_MSG\`"
+
+          jq_program="$(cat <<'EOF'
+          def hasurl($u): ($u != null and $u != "" and $u != "null");
+
+          {
+            "embeds": [{
+              "title": $title,
+              "description": $desc,
+              "url": $commit,
+              "color": 3447003,
+              "author": { "name": ($actor + " (" + $user_commits + ")"), "url": $profile, "icon_url": $avatar }
+            }],
+            "components": (
+              if hasurl($best) then
+                [ { "type": 1, "components": [
+                    { "type": 2, "style": 5, "label": "Open", "url": $best }
+                  ] } ]
+              else
+                []
+              end
+            )
+          }
+          EOF
+          )"
+
+          payload=$(jq -n \
+            --arg title   "$title" \
+            --arg desc    "$desc" \
+            --arg commits "$COMMITS" \
+            --arg actor   "$ACTOR" \
+            --arg user_commits "$USER_COMMITS" \
+            --arg profile "$PROFILE_URL" \
+            --arg avatar  "$AVATAR" \
+            --arg commit  "$COMMIT_URL" \
+            --arg best    "$url" \
+            "$jq_program"
+          )
+
+          echo "::group::Discord payload"
+          echo "$payload" | jq .
+          echo "::endgroup::"
+          # Hard fail if invalid JSON
+          echo "$payload" | jq -e . >/dev/null
+
+          if [ -z "${DISCORD_WEBHOOK:-}" ]; then
+            echo "❌ DISCORD_WEBHOOK niet gevonden. Controleer repo secrets." >&2
+            exit 1
+          fi
+
+          resp="$(mktemp)"
+          code="$(
+            curl -sS -o "$resp" -w '%{http_code}' \
+              -H "Content-Type: application/json" \
+              -d "$payload" \
+              "$DISCORD_WEBHOOK?wait=true&with_components=true"
+          )"
+
+          echo "HTTP $code"
+          echo "::group::Discord response body"
+          cat "$resp"
+          echo "::endgroup::"
+
+          if [ "$code" -lt 200 ] || [ "$code" -ge 300 ]; then
+            exit 1
+          fi
