@@ -3,8 +3,8 @@ name: Discord notify
 on:
   push:
     branches: [ "main", "dev" ]
-  pull_request:
-    types: [opened, reopened, synchronize, ready_for_review, closed]
+#   pull_request:
+#     types: [opened, reopened, synchronize, ready_for_review, closed]
 
 jobs:
   notify:
