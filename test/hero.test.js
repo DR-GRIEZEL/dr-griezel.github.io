@@ -45,4 +45,27 @@ describe("hero widget", () => {
 
     stop.stop();
   });
+
+  it("stops active timers on cleanup", async () => {
+    const fetchMock = vi.fn(async () => ({
+      ok: true,
+      json: async () => ({ current: { temperature_2m: 10, weather_code: 0 } }),
+    }));
+    const clearMock = vi.fn();
+    const intervalMock = vi.fn((cb) => {
+      cb();
+      return 123;
+    });
+
+    const { initHero } = await import("../assets/js/hero.js");
+    const control = initHero({
+      fetchFn: fetchMock,
+      setIntervalFn: intervalMock,
+      clearIntervalFn: clearMock,
+      nowFn: () => fixedNow,
+    });
+
+    control.stop();
+    expect(clearMock).toHaveBeenCalled();
+  });
 });

@@ -35,4 +35,29 @@ describe("pomodoro widget", () => {
 
     pomo.stop();
   });
+
+  it("resets and enters break mode", async () => {
+    const storage = new Map();
+    const storageMock = {
+      getItem: (key) => storage.get(key) ?? null,
+      setItem: (key, value) => storage.set(key, value),
+    };
+    const { initPomodoro } = await import("../assets/js/pomodoro.js");
+    const pomo = initPomodoro({
+      storage: storageMock,
+      enableChime: false,
+    });
+
+    document.getElementById("pomo-break").click();
+    await vi.waitFor(() => {
+      expect(document.getElementById("pomo-state").textContent).toContain("pauze");
+    });
+
+    document.getElementById("pomo-reset").click();
+    await vi.waitFor(() => {
+      expect(document.getElementById("pomo-time").textContent).toBe("00:00");
+    });
+
+    pomo.stop();
+  });
 });

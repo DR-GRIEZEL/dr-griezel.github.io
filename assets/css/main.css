@@ -62,6 +62,10 @@ html, body {
   background: url("/assets/img/banner.svg") center/cover no-repeat;
   border-bottom: 1px solid color-mix(in oklab, var(--muted) 15%, transparent);
   padding: 28px 16px;
+  min-height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .page-title{
   margin: 0;
@@ -84,6 +88,9 @@ h2 { margin: 0; font-size: 1.25rem; color: var(--muted); }
   display: flex;
   flex-direction: column;
   gap: 20px;
+  position: sticky;
+  top: 0;
+  height: 100vh;
 }
 .sidebar-header{
   display: flex;
@@ -93,7 +100,16 @@ h2 { margin: 0; font-size: 1.25rem; color: var(--muted); }
 .sidebar-brand{
   font-weight: 700;
   text-decoration: none;
-  color: var(--text);
+  color: transparent;
+  font-size: 1.1rem;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  background: linear-gradient(135deg, #ffffff, color-mix(in oklab, var(--primary) 70%, white));
+  -webkit-background-clip: text;
+  background-clip: text;
+  text-shadow:
+    0 2px 0 rgba(0,0,0,.35),
+    0 6px 14px rgba(0,0,0,.3);
 }
 .sidebar-nav ul{
   list-style: none;
@@ -111,6 +127,10 @@ h2 { margin: 0; font-size: 1.25rem; color: var(--muted); }
   border: 1px solid transparent;
   transition: transform .12s ease, background-color .12s ease, border-color .12s ease;
 }
+.sidebar-nav .nav-label{
+  display: inline-block;
+  transition: opacity .12s ease, transform .12s ease;
+}
 .sidebar-nav a:hover{
   background: color-mix(in oklab, var(--primary) 14%, transparent);
   border-color: color-mix(in oklab, var(--primary) 35%, transparent);
@@ -122,6 +142,21 @@ h2 { margin: 0; font-size: 1.25rem; color: var(--muted); }
 .sidebar-footer{
   margin-top: auto;
 }
+.login-button{
+  width: 100%;
+  justify-content: center;
+}
+.login-button--footer{
+  width: auto;
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, color-mix(in oklab, var(--primary) 80%, white), color-mix(in oklab, #0ea5e9 75%, white));
+  color: #fff;
+  box-shadow: 0 10px 20px rgba(15,23,42,.2);
+}
+.login-button--footer:hover{
+  filter: brightness(1.05);
+}
 .nav-toggle-btn{
   display: none;
   cursor: pointer;
@@ -129,6 +164,33 @@ h2 { margin: 0; font-size: 1.25rem; color: var(--muted); }
   border-radius: 10px;
   padding: 6px 10px;
   background: color-mix(in oklab, var(--primary) 12%, transparent);
+}
+.nav-toggle-btn--sidebar{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform .2s ease;
+}
+.nav-toggle:checked ~ .sidebar .nav-toggle-btn--sidebar{
+  transform: rotate(180deg);
+}
+.nav-toggle:checked ~ .sidebar{
+  width: 76px;
+}
+.nav-toggle:checked ~ .sidebar .sidebar-brand{
+  font-size: 0.9rem;
+}
+.nav-toggle:checked ~ .sidebar .sidebar-nav .nav-label,
+.nav-toggle:checked ~ .sidebar .sidebar-footer{
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-6px);
+}
+.nav-toggle:checked ~ .sidebar .sidebar-header{
+  justify-content: center;
+}
+.nav-toggle:checked ~ .sidebar .sidebar-header .sidebar-brand{
+  display: none;
 }
 .nav-toggle-btn--header{
   position: absolute;
@@ -167,6 +229,13 @@ footer{
   padding: 20px;
   color: var(--muted);
   text-align: center;
+}
+.footer-content{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
 }
 
 /* ====== Forms ====== */
@@ -217,9 +286,12 @@ footer{
     transform: translateX(-100%);
     transition: transform .2s ease;
     z-index: 20;
+    height: 100%;
+    width: var(--sidebar-w);
   }
   .nav-toggle:checked ~ .sidebar{
     transform: translateX(0);
+    width: var(--sidebar-w);
   }
   .nav-toggle:checked ~ .content{
     filter: blur(1px);
