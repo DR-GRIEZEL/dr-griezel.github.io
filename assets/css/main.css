@@ -225,11 +225,11 @@ main{
 }
 .grid{
   display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 20px;
 }
 .card{
-  grid-column: span 12;
+  grid-column: auto;
   background: var(--card);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
@@ -238,11 +238,6 @@ main{
   transition: transform .12s ease, box-shadow .12s ease;
 }
 .card:hover{ transform: translateY(-2px); }
-
-/* 2 kolommen op ≥ 720px */
-@media (min-width: 720px){
-  .card{ grid-column: span 6; }
-}
 
 /* ====== Footer ====== */
 footer{
