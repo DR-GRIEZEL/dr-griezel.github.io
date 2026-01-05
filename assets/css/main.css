@@ -224,12 +224,13 @@ main{
   padding-block: 28px 40px;
 }
 .grid{
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
   gap: 20px;
 }
 .card{
-  grid-column: auto;
+  flex: 1 1 var(--card-width, 260px);
+  min-width: min(100%, var(--card-width, 260px));
   background: var(--card);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
