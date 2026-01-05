@@ -5,29 +5,33 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ page.title | default: "TITEL" }}</title>
-    
+
     {% if page.css %}
       {% for href in page.css %}
         <link rel="stylesheet" href="{{ href }}">
       {% endfor %}
     {% endif %}
-    
   </head>
   <body>
-    {% include header.html %}
-    {% include nav.html %}
-    <main class="container">
-      {{ content }}
-    </main>
-    <footer>
-      {% include footer.html %}
-    </footer>
-    
+    <div class="layout">
+      {% include nav.html %}
+      <div class="page">
+        {% include header.html %}
+        <main class="container">
+          {{ content }}
+        </main>
+        <footer>
+          {% include footer.html %}
+        </footer>
+      </div>
+    </div>
+
+    <script src="/assets/js/site.js" defer></script>
+
     {% if page.js %}
       {% for src in page.js %}
         <script src="{{ src }}"{% if page.module_js %} type="module"{% else %} defer{% endif %}></script>
       {% endfor %}
     {% endif %}
-    
   </body>
 </html>

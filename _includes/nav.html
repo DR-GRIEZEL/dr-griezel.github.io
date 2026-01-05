@@ -1,7 +1,22 @@
-<nav>
-  <ul>
-    {% for r in site.data.routes %}
-      <li><a href="{{ r.href }}">{{ r.label }}</a></li>
-    {% endfor %}
-  </ul>
-</nav>
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-top">
+    <button class="sidebar-toggle" type="button" aria-label="Toggle sidebar" aria-expanded="true">
+      <span class="sidebar-arrow" aria-hidden="true"></span>
+    </button>
+    <span class="sidebar-title">Menu</span>
+  </div>
+  <nav class="sidebar-nav" aria-label="Primary">
+    <ul>
+      {% for r in site.data.routes %}
+        <li>
+          <a href="{{ r.href }}">
+            <span class="nav-label">{{ r.label }}</span>
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  </nav>
+  <div class="sidebar-footer">
+    <a class="login-button" href="/login.html">Login</a>
+  </div>
+</aside>
