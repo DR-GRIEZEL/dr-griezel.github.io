@@ -5,7 +5,7 @@ export default defineConfig({
     include: ["test/**/*.test.js"],
     coverage: {
       reporter: ["text", "json", "html"],
-      include: ["test/**/*.js"],
+      include: ["assets/js/widgets.js", "assets/js/pomodoro-core.js", "test/**/*.js"],
       exclude: ["test/**/*.test.js"]
     }
   }

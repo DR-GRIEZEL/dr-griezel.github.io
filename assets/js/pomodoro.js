@@ -1,150 +1,149 @@
-const timerEl = document.getElementById("pomo-time");
-const subEl = document.getElementById("pomo-state");
-const barIn = document.getElementById("pomo-bar");
-const bStart = document.getElementById("pomo-start");
-const bPause = document.getElementById("pomo-pause");
-const bBreak = document.getElementById("pomo-break");
-const bReset = document.getElementById("pomo-reset");
+import { capFor, defaultConfig, formatDuration } from "./pomodoro-core.js";
 
-if (!timerEl || !subEl || !barIn || !bStart || !bPause || !bBreak || !bReset) {
-  throw new Error("Pomodoro widget: missing DOM elements.");
-}
-
-/***** CONFIG *****/
-const CFG = { focus: 25 * 60, break: 5 * 60, off: 0, cycles: 4 };
-const KEY = `pomo::${location.pathname}`;
 const AUTO_START_BREAK = true;
 const AUTO_START_FOCUS = false;
 
-/***** STATE *****/
-const todayStr = new Date().toISOString().slice(0, 10);
-let state = null;
-try {
-  state = JSON.parse(localStorage.getItem(KEY));
-} catch (_) {
-  state = null;
-}
-if (!state) state = { mode: "off", remaining: 0, running: false, cycle: 1, lastDay: todayStr };
+const initPomodoroWidget = (widget, index) => {
+  const timerEl = widget.querySelector("[data-pomo-time]");
+  const subEl = widget.querySelector("[data-pomo-state]");
+  const barIn = widget.querySelector("[data-pomo-bar]");
+  const bStart = widget.querySelector("[data-pomo-start]");
+  const bPause = widget.querySelector("[data-pomo-pause]");
+  const bBreak = widget.querySelector("[data-pomo-break]");
+  const bReset = widget.querySelector("[data-pomo-reset]");
 
-function midnightResetIfNeeded() {
-  const nowStr = new Date().toISOString().slice(0, 10);
-  if (state.lastDay !== nowStr) {
-    state.lastDay = nowStr;
-    state.cycle = 1;
-    state.mode = "off";
-    state.running = false;
-    state.remaining = 0;
+  if (!timerEl || !subEl || !barIn || !bStart || !bPause || !bBreak || !bReset) {
+    return;
   }
-}
-midnightResetIfNeeded();
 
-/***** LOGICA *****/
-let iv = null;
-function ensureInterval() {
-  if (!iv) {
-    iv = setInterval(() => {
-      if (!document.body.contains(timerEl)) {
-        clearInterval(iv);
-        iv = null;
-        return;
-      }
-      tick();
-    }, 1000);
+  const widgetId = widget.dataset.pomoId ?? `widget-${index}`;
+  const key = `pomo::${location.pathname}::${widgetId}`;
+  const config = { ...defaultConfig };
+
+  const todayStr = new Date().toISOString().slice(0, 10);
+  let state = null;
+  try {
+    state = JSON.parse(localStorage.getItem(key));
+  } catch (_) {
+    state = null;
   }
-}
+  if (!state) state = { mode: "off", remaining: 0, running: false, cycle: 1, lastDay: todayStr };
 
-function fmt(sec) {
-  const s = Math.max(0, Math.floor(sec));
-  const m = String(Math.floor(s / 60)).padStart(2, "0");
-  const r = String(s % 60).padStart(2, "0");
-  return `${m}:${r}`;
-}
-function capFor(mode) {
-  return mode === "break" ? CFG.break : CFG.focus;
-}
-function save() {
-  localStorage.setItem(KEY, JSON.stringify(state));
-}
-
-function render() {
+  const midnightResetIfNeeded = () => {
+    const nowStr = new Date().toISOString().slice(0, 10);
+    if (state.lastDay !== nowStr) {
+      state.lastDay = nowStr;
+      state.cycle = 1;
+      state.mode = "off";
+      state.running = false;
+      state.remaining = 0;
+    }
+  };
   midnightResetIfNeeded();
 
-  timerEl.textContent = fmt(state.remaining);
-  let label = "uit";
-  if (state.mode === "break") label = "pauze";
-  else if (state.mode === "focus") label = `cyclus ${state.cycle}/${CFG.cycles}`;
-  subEl.textContent = `${label} ${state.running ? "• actief" : "• gepauzeerd"}`;
+  let intervalId = null;
+  const ensureInterval = () => {
+    if (!intervalId) {
+      intervalId = setInterval(() => {
+        if (!widget.isConnected) {
+          clearInterval(intervalId);
+          intervalId = null;
+          return;
+        }
+        tick();
+      }, 1000);
+    }
+  };
 
-  const cap = capFor(state.mode);
-  barIn.style.width = cap > 0 ? `${100 * (1 - state.remaining / cap)}%` : "0%";
+  const save = () => {
+    localStorage.setItem(key, JSON.stringify(state));
+  };
 
-  bStart.disabled = state.running || (state.mode !== "off" && state.remaining === 0);
-  bPause.disabled = !state.running;
-}
+  const render = () => {
+    midnightResetIfNeeded();
 
-function tick() {
-  if (!state.running) return;
-  state.remaining -= 1;
+    timerEl.textContent = formatDuration(state.remaining);
+    let label = "uit";
+    if (state.mode === "break") label = "pauze";
+    else if (state.mode === "focus") label = `cyclus ${state.cycle}/${config.cycles}`;
+    subEl.textContent = `${label} ${state.running ? "• actief" : "• gepauzeerd"}`;
 
-  if (state.remaining <= 0) {
+    const cap = capFor(state.mode, config);
+    barIn.style.width = cap > 0 ? `${100 * (1 - state.remaining / cap)}%` : "0%";
+
+    bStart.disabled = state.running || (state.mode !== "off" && state.remaining === 0);
+    bPause.disabled = !state.running;
+  };
+
+  const tick = () => {
+    if (!state.running) return;
+    state.remaining -= 1;
+
+    if (state.remaining <= 0) {
+      state.remaining = 0;
+      state.running = false;
+
+      if (state.mode === "focus") {
+        state.mode = "break";
+        state.remaining = config.break;
+        state.running = !!AUTO_START_BREAK;
+        chime("🎉 Focus klaar!", `Start (${Math.round(config.break / 60)} min. pauze...)`);
+      } else if (state.mode === "break") {
+        if (state.cycle < config.cycles) state.cycle += 1;
+        state.mode = "off";
+        state.remaining = 0;
+        state.running = !!AUTO_START_FOCUS;
+        chime("⏰ Pauze voltooid!", `Cyclus ${state.cycle}/${config.cycles}`);
+      }
+    }
+    render();
+    save();
+  };
+
+  const start = () => {
+    if (state.mode === "off") {
+      state.mode = "focus";
+      state.remaining = config.focus;
+    }
+    if (state.running || state.remaining === 0) return;
+    state.running = true;
+    render();
+    save();
+    ensureInterval();
+  };
+
+  const pause = () => {
+    state.running = false;
+    render();
+    save();
+  };
+
+  const startBreak = () => {
+    state.mode = "break";
+    state.remaining = config.break;
+    state.running = true;
+    render();
+    save();
+    ensureInterval();
+  };
+
+  const reset = () => {
+    state.mode = "off";
     state.remaining = 0;
     state.running = false;
+    render();
+    save();
+  };
 
-    if (state.mode === "focus") {
-      state.mode = "break";
-      state.remaining = CFG.break;
-      state.running = !!AUTO_START_BREAK;
-      chime("🎉 Focus klaar!", `Start (${Math.round(CFG.break / 60)} min. pauze...)`);
-    } else if (state.mode === "break") {
-      if (state.cycle < CFG.cycles) state.cycle += 1;
-      state.mode = "off";
-      state.remaining = 0;
-      state.running = !!AUTO_START_FOCUS;
-      chime("⏰ Pauze voltooid!", `Cyclus ${state.cycle}/${CFG.cycles}`);
-    }
-  }
-  render();
-  save();
-}
+  bStart.addEventListener("click", start);
+  bPause.addEventListener("click", pause);
+  bBreak.addEventListener("click", startBreak);
+  bReset.addEventListener("click", reset);
 
-function start() {
-  if (state.mode === "off") {
-    state.mode = "focus";
-    state.remaining = CFG.focus;
-  }
-  if (state.running || state.remaining === 0) return;
-  state.running = true;
   render();
-  save();
-  ensureInterval();
-}
-function pause() {
-  state.running = false;
-  render();
-  save();
-}
-function startBreak() {
-  state.mode = "break";
-  state.remaining = CFG.break;
-  state.running = true;
-  render();
-  save();
-  ensureInterval();
-}
-function reset() {
-  state.mode = "off";
-  state.remaining = 0;
-  state.running = false;
-  render();
-  save();
-}
+};
 
-bStart.addEventListener("click", start);
-bPause.addEventListener("click", pause);
-bBreak.addEventListener("click", startBreak);
-bReset.addEventListener("click", reset);
-
-function chime(title = "Timer", body = "") {
+const chime = (title = "Timer", body = "") => {
   try {
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
     const o = ctx.createOscillator();
@@ -166,6 +165,17 @@ function chime(title = "Timer", body = "") {
   } else if ("Notification" in window && Notification.permission !== "denied") {
     Notification.requestPermission();
   }
-}
+};
 
-render();
+const initPomodoroWidgets = () => {
+  const widgets = document.querySelectorAll("[data-widget='pomodoro']");
+  widgets.forEach((widget, index) => {
+    initPomodoroWidget(widget, index);
+  });
+};
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initPomodoroWidgets);
+} else {
+  initPomodoroWidgets();
+}

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="360" viewBox="0 0 600 360">
+  <rect width="600" height="360" fill="#07160f"/>
+  <circle cx="300" cy="180" r="110" fill="#0b2416" stroke="#38ff98" stroke-width="6"/>
+  <line x1="300" y1="180" x2="300" y2="110" stroke="#38ff98" stroke-width="6" stroke-linecap="round"/>
+  <line x1="300" y1="180" x2="360" y2="200" stroke="#facc15" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="300" cy="180" r="6" fill="#38ff98"/>
+  <text x="60" y="310" fill="#d7ffe1" font-family="'Press Start 2P', monospace" font-size="18">KLOK</text>
+</svg>

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="360" viewBox="0 0 600 360">
+  <rect width="600" height="360" fill="#07160f"/>
+  <circle cx="150" cy="140" r="60" fill="#38ff98" opacity="0.9"/>
+  <ellipse cx="340" cy="190" rx="120" ry="60" fill="#0c2b1b"/>
+  <ellipse cx="260" cy="200" rx="140" ry="70" fill="#0f3b23"/>
+  <text x="60" y="310" fill="#d7ffe1" font-family="'Press Start 2P', monospace" font-size="18">WEER</text>
+</svg>
