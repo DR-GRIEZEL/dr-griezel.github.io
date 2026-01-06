@@ -1,6 +1,15 @@
 node_modules/
 coverage/
 
+# Editor (KEEP ON)
+#.vscode/
+
+# Backups
+*.bak
+
+# Sync artifacts
+*sync-conflict-*
+
 # Jekyll
 _site/
 .sass-cache/
@@ -15,17 +24,12 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-# OS/editor
-.DS_Store
-Thumbs.db
-*.swp
-.idea/
-.vscode/
-
-# Environment
+# Environment (BETTER SAFE THEN SORRY)
 .env
 .env.*.local
 
 # Build output
 dist/
 build/
+
+# OS
