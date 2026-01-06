@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-labelledby="title desc">
+  <title id="title">Mountain dawn</title>
+  <desc id="desc">Sunrise behind layered mountains.</desc>
+  <rect width="800" height="500" fill="#111827"/>
+  <circle cx="640" cy="120" r="70" fill="#f97316" opacity="0.9"/>
+  <path d="M0 360 L200 180 L360 340 L480 220 L640 360 L800 240 L800 500 L0 500 Z" fill="#1f2937"/>
+  <path d="M0 420 L160 260 L320 400 L480 280 L640 420 L800 300 L800 500 L0 500 Z" fill="#0f172a"/>
+  <path d="M0 450 L200 320 L400 440 L600 320 L800 440 L800 500 L0 500 Z" fill="#0b132b"/>
+</svg>
