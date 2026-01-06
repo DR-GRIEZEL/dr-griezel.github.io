@@ -11,7 +11,7 @@ js:
 module_js: true
 ---
 
-<section class="card" aria-labelledby="wx-title" data-widget="weather" data-widget-lat="50.792161" data-widget-lon="3.746323" data-widget-location="Opbrakel">
+<section class="card" aria-labelledby="wx-title" data-widget="weather">
   <header><h2 id="wx-title">Weer</h2></header>
   <div class="wxbox" role="group" aria-describedby="wx-meta">
     <div class="wxline">

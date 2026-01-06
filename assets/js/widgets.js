@@ -2,7 +2,7 @@ const defaultTimeZone = "Europe/Brussels";
 const weatherRefreshMs = 5 * 60 * 1000;
 const clockRefreshMs = 1000;
 const defaultCoords = { lat: 50.792161, lon: 3.746323 };
-const defaultLocation = "Opbrakel";
+const defaultLocation = "Locatie onbekend";
 
 const weatherCodeMap = {
   0: "☀️ Helder",
@@ -100,6 +100,28 @@ const setRotation = (el, deg) => {
   el.style.setProperty("--rotation", `${deg}deg`);
 };
 
+const getBrowserCoords = () =>
+  new Promise((resolve, reject) => {
+    if (typeof navigator === "undefined" || !navigator.geolocation) {
+      reject(new Error("Geolocation unsupported"));
+      return;
+    }
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        resolve({
+          lat: position.coords.latitude,
+          lon: position.coords.longitude
+        });
+      },
+      (error) => reject(error),
+      {
+        enableHighAccuracy: false,
+        maximumAge: 10 * 60 * 1000,
+        timeout: 8000
+      }
+    );
+  });
+
 const updateClockWidget = (widget, timeZone) => {
   const timeEls = widget.querySelectorAll("[data-clock-time]");
   const hourHand = widget.querySelector("[data-clock-hour]");
@@ -137,9 +159,9 @@ const updateClockWidget = (widget, timeZone) => {
 };
 
 const initWeatherWidget = (widget) => {
-  const lat = Number(widget.dataset.widgetLat ?? defaultCoords.lat);
-  const lon = Number(widget.dataset.widgetLon ?? defaultCoords.lon);
-  const location = widget.dataset.widgetLocation ?? defaultLocation;
+  const manualLat = Number(widget.dataset.widgetLat);
+  const manualLon = Number(widget.dataset.widgetLon);
+  const manualLocation = widget.dataset.widgetLocation ?? defaultLocation;
   const timeZone = widget.dataset.widgetTz ?? defaultTimeZone;
   const refreshMs = Number(widget.dataset.widgetRefresh ?? weatherRefreshMs);
 
@@ -154,15 +176,25 @@ const initWeatherWidget = (widget) => {
   const precipProbEl = widget.querySelector("[data-wx-precip-prob]");
   const humidityEl = widget.querySelector("[data-wx-humidity]");
 
-  const url = new URL("https://api.open-meteo.com/v1/forecast");
-  url.searchParams.set("latitude", String(lat));
-  url.searchParams.set("longitude", String(lon));
-  url.searchParams.set(
-    "current",
-    "temperature_2m,apparent_temperature,precipitation,weather_code,wind_speed_10m,wind_direction_10m,relative_humidity_2m"
-  );
-  url.searchParams.set("hourly", "precipitation_probability");
-  url.searchParams.set("timezone", timeZone);
+  const manualCoords = Number.isFinite(manualLat) && Number.isFinite(manualLon)
+    ? { lat: manualLat, lon: manualLon }
+    : null;
+  let coords = manualCoords ?? defaultCoords;
+  let locationName = manualLocation;
+
+  const buildUrl = (latValue, lonValue) => {
+    const url = new URL("https://api.open-meteo.com/v1/forecast");
+    url.searchParams.set("latitude", String(latValue));
+    url.searchParams.set("longitude", String(lonValue));
+    url.searchParams.set(
+      "current",
+      "temperature_2m,apparent_temperature,precipitation,weather_code,wind_speed_10m,wind_direction_10m,relative_humidity_2m"
+    );
+    url.searchParams.set("hourly", "precipitation_probability");
+    url.searchParams.set("timezone", timeZone);
+    return url;
+  };
+  let url = buildUrl(coords.lat, coords.lon);
 
   const update = async () => {
     try {
@@ -175,7 +207,7 @@ const initWeatherWidget = (widget) => {
         tempEl.textContent = summary.temperature == null ? "--°" : `${numberFormat.format(summary.temperature)}°`;
       }
       if (descEl) descEl.textContent = summary.description;
-      if (locationEl) locationEl.textContent = location;
+      if (locationEl) locationEl.textContent = locationName;
       if (apparentEl) {
         apparentEl.textContent = summary.apparentTemperature == null ? "—" : `${numberFormat.format(summary.apparentTemperature)}°`;
       }
@@ -204,18 +236,40 @@ const initWeatherWidget = (widget) => {
     }
   };
 
-  update();
   const existingTimer = weatherTimers.get(widget);
   if (existingTimer) clearInterval(existingTimer);
-  const timer = setInterval(() => {
-    if (!widget.isConnected) {
-      clearInterval(timer);
-      weatherTimers.delete(widget);
-      return;
-    }
+  const startUpdates = () => {
     update();
-  }, refreshMs);
-  weatherTimers.set(widget, timer);
+    const timer = setInterval(() => {
+      if (!widget.isConnected) {
+        clearInterval(timer);
+        weatherTimers.delete(widget);
+        return;
+      }
+      update();
+    }, refreshMs);
+    weatherTimers.set(widget, timer);
+  };
+
+  const resolveCoords = async () => {
+    try {
+      const browserCoords = await getBrowserCoords();
+      coords = browserCoords;
+      locationName = "Huidige locatie";
+      url = buildUrl(coords.lat, coords.lon);
+    } catch (error) {
+      if (manualCoords) {
+        coords = manualCoords;
+        locationName = manualLocation;
+      } else {
+        coords = defaultCoords;
+        locationName = defaultLocation;
+      }
+      url = buildUrl(coords.lat, coords.lon);
+    }
+  };
+
+  resolveCoords().then(startUpdates);
 };
 
 const initWidgets = () => {
