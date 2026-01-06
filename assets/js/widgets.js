@@ -1,8 +1,8 @@
 const defaultTimeZone = "Europe/Brussels";
 const weatherRefreshMs = 5 * 60 * 1000;
 const clockRefreshMs = 1000;
-const defaultCoords = { lat: 50.792161, lon: 3.746323 };
-const defaultLocation = "Locatie onbekend";
+const defaultCoords = { lat: 50.8503, lon: 4.3517 };
+const defaultLocation = "Brussel";
 
 const weatherCodeMap = {
   0: "☀️ Helder",
@@ -121,6 +121,28 @@ const getBrowserCoords = () =>
       }
     );
   });
+
+const buildReverseGeocodeUrl = (lat, lon) => {
+  const url = new URL("https://geocoding-api.open-meteo.com/v1/reverse");
+  url.searchParams.set("latitude", String(lat));
+  url.searchParams.set("longitude", String(lon));
+  url.searchParams.set("language", "nl");
+  url.searchParams.set("count", "1");
+  return url;
+};
+
+const getLocationName = async (lat, lon) => {
+  const res = await fetch(buildReverseGeocodeUrl(lat, lon));
+  if (!res.ok) {
+    throw new Error(`Reverse geocode failed: ${res.status}`);
+  }
+  const data = await res.json();
+  const result = data?.results?.[0];
+  if (!result?.name) {
+    throw new Error("No reverse geocode results");
+  }
+  return result.name;
+};
 
 const updateClockWidget = (widget, timeZone) => {
   const timeEls = widget.querySelectorAll("[data-clock-time]");
@@ -252,19 +274,25 @@ const initWeatherWidget = (widget) => {
   };
 
   const resolveCoords = async () => {
+    if (manualCoords) {
+      coords = manualCoords;
+      locationName = manualLocation;
+      url = buildUrl(coords.lat, coords.lon);
+      return;
+    }
+
     try {
       const browserCoords = await getBrowserCoords();
       coords = browserCoords;
-      locationName = "Huidige locatie";
       url = buildUrl(coords.lat, coords.lon);
-    } catch (error) {
-      if (manualCoords) {
-        coords = manualCoords;
-        locationName = manualLocation;
-      } else {
-        coords = defaultCoords;
+      try {
+        locationName = await getLocationName(coords.lat, coords.lon);
+      } catch (error) {
         locationName = defaultLocation;
       }
+    } catch (error) {
+      coords = defaultCoords;
+      locationName = defaultLocation;
       url = buildUrl(coords.lat, coords.lon);
     }
   };
@@ -301,5 +329,6 @@ export {
   formatTimeParts,
   formatShortTime,
   getHourlyIndex,
-  getWeatherSummary
+  getWeatherSummary,
+  getLocationName
 };

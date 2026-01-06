@@ -4,7 +4,7 @@ title: "City Night"
 subtitle: "Lichtjes in de skyline"
 css:
   - /assets/css/main.css
-image: "/images/blog/city-night.svg"
+image: "/assets/images/blog/city-night.svg"
 date: 2024-01-12
 ---
 

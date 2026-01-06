@@ -2,7 +2,7 @@
 layout: base
 title: "Clock Widget"
 summary: "Analoge klok met digitale tijdsweergave."
-image: "/images/widgets/clock.svg"
+image: "/assets/images/widgets/clock.svg"
 css:
   - /assets/css/main.css
   - /assets/css/dash.css
