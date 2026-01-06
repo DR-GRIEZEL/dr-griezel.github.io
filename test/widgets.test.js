@@ -1,13 +1,22 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
   formatShortTime,
   formatTimeParts,
   getHourlyIndex,
+  getLocationName,
   getWeatherSummary,
   weatherCodeMap
 } from "../assets/js/widgets.js";
 
 describe("widget helpers", () => {
+  beforeEach(() => {
+    vi.unstubAllGlobals();
+  });
+
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
   it("formats time parts in a stable timezone", () => {
     const date = new Date("2024-01-01T12:34:56Z");
     const parts = formatTimeParts(date, "UTC");
@@ -51,5 +60,27 @@ describe("widget helpers", () => {
     expect(summary.apparentTemperature).toBe(6.9);
     expect(summary.precipitationProbability).toBe(45);
     expect(summary.description).toBe(weatherCodeMap[2]);
+  });
+
+  it("resolves a location name from reverse geocoding", async () => {
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({ results: [{ name: "Brussel" }] })
+    });
+    vi.stubGlobal("fetch", fetchMock);
+
+    await expect(getLocationName(50.85, 4.35)).resolves.toBe("Brussel");
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    expect(String(fetchMock.mock.calls[0][0])).toContain("latitude=50.85");
+  });
+
+  it("throws when reverse geocoding returns no results", async () => {
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({ results: [] })
+    });
+    vi.stubGlobal("fetch", fetchMock);
+
+    await expect(getLocationName(1, 2)).rejects.toThrow("No reverse geocode results");
   });
 });

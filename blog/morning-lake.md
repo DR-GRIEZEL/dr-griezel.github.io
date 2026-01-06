@@ -4,7 +4,7 @@ title: "Morning Lake"
 subtitle: "Stilte boven het water"
 css:
   - /assets/css/main.css
-image: "/images/blog/morning-lake.svg"
+image: "/assets/images/blog/morning-lake.svg"
 date: 2024-01-05
 ---
 

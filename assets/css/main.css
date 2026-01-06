@@ -222,7 +222,7 @@ body.sidebar-collapsed .sidebar-arrow{
   position: relative;
 }
 .hero-banner{
-  background-image: url("/images/banner.svg");
+  background-image: url("/assets/images/banner.svg");
   background-size: cover;
   background-position: center;
   border-bottom: 1px solid var(--border-strong);

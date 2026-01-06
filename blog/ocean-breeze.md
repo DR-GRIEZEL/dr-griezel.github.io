@@ -4,7 +4,7 @@ title: "Ocean Breeze"
 subtitle: "Golven en pastelkleuren"
 css:
   - /assets/css/main.css
-image: "/images/blog/ocean-breeze.svg"
+image: "/assets/images/blog/ocean-breeze.svg"
 date: 2024-01-26
 ---
 
