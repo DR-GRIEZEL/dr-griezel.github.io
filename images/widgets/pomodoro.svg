@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="360" viewBox="0 0 600 360">
+  <rect width="600" height="360" fill="#07160f"/>
+  <rect x="120" y="90" width="360" height="200" rx="24" fill="#0b2416" stroke="#38ff98" stroke-width="4"/>
+  <rect x="160" y="140" width="280" height="30" rx="12" fill="#103a23"/>
+  <rect x="160" y="200" width="220" height="18" rx="9" fill="#38ff98"/>
+  <text x="60" y="310" fill="#d7ffe1" font-family="'Press Start 2P', monospace" font-size="18">POMO</text>
+</svg>

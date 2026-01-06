@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&family=Share+Tech+Mono&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
 
 /* ====== Baseline & theming ====== */
 *,
@@ -41,7 +41,7 @@ html, body {
   margin: 0;
   background: radial-gradient(900px 520px at 20% -10%, color-mix(in oklab, var(--primary) 25%, transparent) 0%, transparent 55%), var(--bg);
   color: var(--text);
-  font: 16px/1.6 "Share Tech Mono", "IBM Plex Mono", "Fira Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font: 16px/1.8 "Press Start 2P", "Share Tech Mono", "IBM Plex Mono", "Fira Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   text-shadow: 0 0 8px color-mix(in oklab, var(--primary) 35%, transparent);
 }
 
@@ -240,7 +240,7 @@ body.sidebar-collapsed .sidebar-arrow{
   font-size: clamp(2rem, 1.2rem + 3vw, 3.5rem);
   letter-spacing: 1px;
   color: var(--text);
-  font-family: "Rajdhani", "Share Tech Mono", sans-serif;
+  font-family: "Press Start 2P", "Share Tech Mono", sans-serif;
   text-shadow:
     0 0 12px color-mix(in oklab, var(--primary) 55%, transparent),
     0 0 28px color-mix(in oklab, var(--primary) 35%, transparent);
