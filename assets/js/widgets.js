@@ -285,10 +285,11 @@ const initWeatherWidget = (widget) => {
       const browserCoords = await getBrowserCoords();
       coords = browserCoords;
       url = buildUrl(coords.lat, coords.lon);
+      locationName = "Huidige locatie";
       try {
         locationName = await getLocationName(coords.lat, coords.lon);
       } catch (error) {
-        locationName = defaultLocation;
+        locationName = "Huidige locatie";
       }
     } catch (error) {
       coords = defaultCoords;
