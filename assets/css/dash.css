@@ -12,6 +12,14 @@
   justify-items: center;
   gap: 0.75rem;
 }
+.card[data-widget="clock"]{
+  display: flex;
+  flex-direction: column;
+}
+.card[data-widget="clock"] .clock-view{
+  flex: 1;
+  align-content: center;
+}
 
 .clock-face{
   width: clamp(140px, 26vw, 200px);
@@ -147,7 +155,6 @@
 .pomo-widget{
   background: var(--background-primary);
   display: grid; gap: .6rem;
-  border: 1px solid var(--background-modifier-border);
   border-radius: .8rem; padding: .8rem;
 }
 
