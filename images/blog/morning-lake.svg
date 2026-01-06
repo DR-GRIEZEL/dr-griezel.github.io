@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-labelledby="title desc">
+  <title id="title">Morning lake</title>
+  <desc id="desc">Sunrise over a calm lake with soft gradients.</desc>
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="60%" stop-color="#6366f1"/>
+      <stop offset="100%" stop-color="#f59e0b"/>
+    </linearGradient>
+    <linearGradient id="water" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#0ea5e9"/>
+      <stop offset="100%" stop-color="#1e3a8a"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="350" fill="url(#sky)"/>
+  <rect y="350" width="800" height="150" fill="url(#water)"/>
+  <circle cx="140" cy="130" r="70" fill="#fde68a" opacity="0.9"/>
+  <path d="M0 330 C150 280 250 310 400 280 C520 260 640 300 800 270 L800 350 L0 350 Z" fill="#1e293b" opacity="0.85"/>
+  <path d="M0 360 C180 390 300 400 800 370 L800 500 L0 500 Z" fill="#0b132b" opacity="0.9"/>
+</svg>

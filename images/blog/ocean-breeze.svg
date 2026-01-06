@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-labelledby="title desc">
+  <title id="title">Ocean breeze</title>
+  <desc id="desc">Waves and a pastel sky with seabirds.</desc>
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#60a5fa"/>
+      <stop offset="100%" stop-color="#fce7f3"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="300" fill="url(#sky)"/>
+  <rect y="300" width="800" height="200" fill="#0284c7"/>
+  <path d="M0 330 C120 310 240 350 360 330 C480 310 600 350 800 330 L800 380 L0 380 Z" fill="#0ea5e9"/>
+  <path d="M0 380 C160 360 320 400 480 380 C640 360 720 390 800 380 L800 430 L0 430 Z" fill="#0369a1"/>
+  <g fill="none" stroke="#1e293b" stroke-width="4" opacity="0.6">
+    <path d="M520 130 C540 120 560 120 580 130"/>
+    <path d="M590 140 C610 130 630 130 650 140"/>
+  </g>
+</svg>

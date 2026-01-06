@@ -239,6 +239,21 @@ main{
   transition: transform .12s ease, box-shadow .12s ease;
 }
 .card:hover{ transform: translateY(-2px); }
+.card-image{
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: calc(var(--radius) - 6px);
+  margin-bottom: 12px;
+  display: block;
+}
+.card-link{
+  color: inherit;
+  text-decoration: none;
+}
+.card-link:hover{
+  text-decoration: underline;
+}
 
 /* ====== Footer ====== */
 footer{
