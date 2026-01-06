@@ -15,14 +15,47 @@ for (const k of ["clock", "weather"]) {
 }
 
 const clock = document.getElementById("clock");
+const clockTime = document.getElementById("clock-time");
+const clockHour = document.getElementById("clock-hour");
+const clockMinute = document.getElementById("clock-minute");
+const clockSecond = document.getElementById("clock-second");
 const wxTemp = document.getElementById("wx-temp");
 const wxDesc = document.getElementById("wx-desc");
 const wxLocation = document.getElementById("wx-location");
 const wxUpdated = document.getElementById("wx-updated");
 
 if (clock) {
+  const timeFormatter = new Intl.DateTimeFormat("nl-BE", {
+    timeZone: tz,
+    hour12: false,
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit"
+  });
+  const getParts = (date) => {
+    const parts = timeFormatter.formatToParts(date);
+    const map = Object.fromEntries(parts.filter((p) => p.type !== "literal").map((p) => [p.type, p.value]));
+    return {
+      hour: Number(map.hour),
+      minute: Number(map.minute),
+      second: Number(map.second)
+    };
+  };
+  const setRotation = (el, deg) => {
+    if (!el) return;
+    el.style.setProperty("--rotation", `${deg}deg`);
+  };
   function tick(){ 
-    clock.textContent = new Date().toLocaleTimeString("nl-BE", { timeZone: tz, hour12:false }); 
+    const now = new Date();
+    const { hour, minute, second } = getParts(now);
+    const timeString = timeFormatter.format(now);
+    if (clockTime) clockTime.textContent = timeString;
+    const hourDeg = ((hour % 12) + minute / 60) * 30;
+    const minuteDeg = (minute + second / 60) * 6;
+    const secondDeg = second * 6;
+    setRotation(clockHour, hourDeg);
+    setRotation(clockMinute, minuteDeg);
+    setRotation(clockSecond, secondDeg);
   }
   tick();
   window.__dvTimers.clock = setInterval(() => {

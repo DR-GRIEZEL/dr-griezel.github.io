@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest run --coverage"
   },
   "repository": {
     "type": "git",
@@ -12,16 +12,18 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/DR-GRIEZEL/dr-griezel.github.io/issues"
   },
   "homepage": "https://github.com/DR-GRIEZEL/dr-griezel.github.io#readme",
   "devDependencies": {
+    "@vitest/coverage-v8": "^2.1.9",
     "@eslint/js": "^9.39.2",
     "eslint": "^9.39.2",
     "eslint-config-prettier": "^10.1.8",
     "globals": "^16.5.0",
-    "prettier": "^3.7.4"
+    "prettier": "^3.7.4",
+    "vitest": "^2.1.9"
   }
 }
