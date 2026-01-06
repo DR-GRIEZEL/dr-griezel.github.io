@@ -3,14 +3,13 @@
 ## Purpose
 Keep the site stable and easy to change without breaking the framework.
 
-## Safe-edit rules (non-coders welcome)
+## Safe-edit rules
 1. **Edit content, not structure.**
    - ✅ Safe: change text, images, links, colors in `assets/css/` and `assets/images/`.
    - ✅ Safe: add new pages in `html/nav/`.
    - ⚠️ Be careful: files in `_layouts/`, `_includes/`, and `_config.yml`.
 2. **One change at a time.** Make a small change, test, then move on.
 3. **Never delete files unless you are sure they are unused.**
-4. **Prefer copying an existing page or widget** and editing the copy.
 5. **Keep JavaScript modular.** Put new JS in `assets/js/` and import it from a page.
 
 ## Testing and coverage (required)
