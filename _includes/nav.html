@@ -8,17 +8,19 @@
   <nav class="sidebar-nav" aria-label="Primary">
     <ul>
       {% assign icon_colors = "#38ff98,#ff8d6b,#7a9bff,#ff7ad9,#6ee7f0,#ffd76b" | split: "," %}
-      {% for r in site.data.routes %}
+      {% assign nav_pages = site.pages | where_exp: "page", "page.dir == '/html/nav/'" | sort: "nav_order" %}
+      {% for page in nav_pages %}
         {% assign color_index = forloop.index0 | modulo: icon_colors.size %}
         {% assign icon_color = icon_colors[color_index] %}
+        {% assign nav_label = page.nav_label | default: page.title | default: page.name %}
         <li>
-          <a href="{{ r.href }}">
+          <a href="{{ page.url | relative_url }}">
             <span class="nav-icon" style="--icon-color: {{ icon_color }};">
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M3 6.5C3 5.12 4.12 4 5.5 4h4.7c.6 0 1.17.25 1.58.68l1.28 1.32H18.5C19.88 6 21 7.12 21 8.5v9c0 1.38-1.12 2.5-2.5 2.5h-13C4.12 20 3 18.88 3 17.5v-11Z"/>
               </svg>
             </span>
-            <span class="nav-label">{{ r.label }}</span>
+            <span class="nav-label">{{ nav_label }}</span>
           </a>
         </li>
       {% endfor %}
