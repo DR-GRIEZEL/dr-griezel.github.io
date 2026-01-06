@@ -1,6 +1,12 @@
 /* MISC */
 
 /* Klok */
+.card[data-widget]{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 .fancy-clock {
   display: grid;
   justify-items: center;
@@ -11,10 +17,6 @@
   display: grid;
   justify-items: center;
   gap: 0.75rem;
-}
-.card[data-widget="clock"]{
-  display: flex;
-  flex-direction: column;
 }
 .card[data-widget="clock"] .clock-view{
   flex: 1;

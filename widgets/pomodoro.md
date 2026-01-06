@@ -11,10 +11,8 @@ js:
 module_js: true
 ---
 
-<section class="card" aria-labelledby="pomo-title" data-widget="pomodoro" data-pomo-id="main">
-  <header><h2 id="pomo-title">Pomodoro</h2></header>
-
-  <div class="pomo-widget" role="group" aria-describedby="pomo-title">
+<section class="card" aria-label="Pomodoro" data-widget="pomodoro" data-pomo-id="main">
+  <div class="pomo-widget" role="group" aria-label="Pomodoro timer">
     <div class="pomo-timer focus" data-pomo-time aria-live="polite">25:00</div>
     <div class="pomo-sub" data-pomo-state>Focus</div>
 
