@@ -37,6 +37,12 @@ describe("widget helpers", () => {
     expect(getHourlyIndex(times, date, "UTC")).toBe(1);
   });
 
+  it("returns -1 when hourly index is missing", () => {
+    const times = ["2024-01-01T08:00", "2024-01-01T09:00"];
+    const date = new Date("2024-01-01T12:34:00Z");
+    expect(getHourlyIndex(times, date, "UTC")).toBe(-1);
+  });
+
   it("builds a weather summary", () => {
     const data = {
       current: {
@@ -60,6 +66,24 @@ describe("widget helpers", () => {
     expect(summary.apparentTemperature).toBe(6.9);
     expect(summary.precipitationProbability).toBe(45);
     expect(summary.description).toBe(weatherCodeMap[2]);
+  });
+
+  it("handles missing hourly data in weather summary", () => {
+    const data = {
+      current: {
+        temperature_2m: 12.1,
+        apparent_temperature: 10.4,
+        precipitation: 0,
+        weather_code: 1,
+        wind_speed_10m: 5.2,
+        wind_direction_10m: 220,
+        relative_humidity_2m: 60
+      }
+    };
+    const summary = getWeatherSummary(data, "UTC", new Date("2024-01-01T12:10:00Z"));
+
+    expect(summary.precipitationProbability).toBeUndefined();
+    expect(summary.description).toBe(weatherCodeMap[1]);
   });
 
   it("resolves a location name from reverse geocoding", async () => {

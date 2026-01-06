@@ -169,6 +169,20 @@ body::before{
   border: 1px solid transparent;
   transition: transform .12s ease, background-color .12s ease, border-color .12s ease;
 }
+.nav-icon{
+  width: 18px;
+  height: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--icon-color, var(--primary));
+  flex-shrink: 0;
+}
+.nav-icon svg{
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+}
 .sidebar-nav a:hover{
   background: color-mix(in oklab, var(--primary) 18%, transparent);
   border-color: var(--border-strong);
@@ -197,6 +211,20 @@ body::before{
   position: relative;
   overflow: hidden;
   transition: transform .15s ease, box-shadow .15s ease;
+}
+.login-icon{
+  width: 18px;
+  height: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #04140a;
+  flex-shrink: 0;
+}
+.login-icon svg{
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
 }
 .login-button::after{
   content: "";
@@ -227,8 +255,27 @@ body.sidebar-collapsed .nav-label{
   height: 0;
   overflow: hidden;
 }
+body.sidebar-collapsed .login-label{
+  opacity: 0;
+  pointer-events: none;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+body.sidebar-collapsed .login-button{
+  justify-content: center;
+  padding: 12px 10px;
+}
 body.sidebar-collapsed .sidebar-arrow{
   transform: rotate(135deg);
+}
+
+.section-divider{
+  border: 0;
+  height: 1px;
+  margin: 24px 0;
+  background: linear-gradient(90deg, transparent, var(--border-strong), transparent);
+  box-shadow: var(--glow);
 }
 
 @media (max-width: 900px){

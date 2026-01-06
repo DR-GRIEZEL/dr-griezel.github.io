@@ -17,6 +17,8 @@ module_js: true
   {% endfor %}
 </div>
 
+<hr class="section-divider" aria-hidden="true">
+
 <div class="grid">
   {% assign blog_pages = site.pages | where: "dir", "/blog/" | sort: "date" | reverse %}
   {% for page in blog_pages %}
