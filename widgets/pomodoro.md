@@ -1,8 +1,8 @@
 ---
 layout: base
-title: "Pomodoro Widget"
-summary: "Focus-timer met pauzes, status en voortgangsbalk."
-image: "/assets/images/widgets/pomodoro.svg"
+title: 'Pomodoro Widget'
+summary: 'Focus-timer met pauzes, status en voortgangsbalk.'
+image: '/assets/images/widgets/pomodoro.svg'
 css:
   - /assets/css/main.css
   - /assets/css/dash.css
@@ -21,10 +21,11 @@ module_js: true
     </div>
 
     <div class="pomobar">
-      <button class="pomo-btn" type="button" data-pomo-start>Start</button>
-      <button class="pomo-btn" type="button" data-pomo-pause>Pauze</button>
-      <button class="pomo-btn" type="button" data-pomo-break>Pauze (5m)</button>
-      <button class="pomo-btn" type="button" data-pomo-reset>Reset</button>
+      <button class="pomo-btn" type="button" data-pomo-start aria-label="Start">▶️</button>
+      <button class="pomo-btn" type="button" data-pomo-pause aria-label="Pause">⏸️</button>
+      <button class="pomo-btn" type="button" data-pomo-break aria-label="Short break (5 minutes)">☕</button>
+      <button class="pomo-btn" type="button" data-pomo-reset aria-label="Reset">🔄</button>
     </div>
+
   </div>
 </section>

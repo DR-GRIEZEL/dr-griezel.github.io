@@ -8,8 +8,8 @@
   <nav class="sidebar-nav" aria-label="Primary">
     <ul>
       {% assign icon_colors = "#38ff98,#ff8d6b,#7a9bff,#ff7ad9,#6ee7f0,#ffd76b" | split: "," %} {%
-      assign nav_pages = site.pages | where_exp: "nav_page", "nav_page.dir == '/html/nav/'" | sort:
-      "nav_order" %} {% for nav_page in nav_pages %} {% assign color_index = forloop.index0 |
+      assign nav_pages = site.pages | where_exp: "nav_page", "nav_page.path contains 'html/nav/'" |
+      sort: "nav_order" %} {% for nav_page in nav_pages %} {% assign color_index = forloop.index0 |
       modulo: icon_colors.size %} {% assign icon_color = icon_colors[color_index] %} {% assign
       nav_label = nav_page.nav_label | default: nav_page.title | default: nav_page.name %}
       <li>
