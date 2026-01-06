@@ -136,29 +136,6 @@ const updateClockWidget = (widget, timeZone) => {
   clockTimers.set(widget, timer);
 };
 
-const setClockView = (widget, mode) => {
-  const views = widget.querySelectorAll("[data-clock-view]");
-  views.forEach((view) => {
-    view.hidden = view.dataset.clockView !== mode;
-  });
-  const toggles = widget.querySelectorAll("[data-clock-toggle]");
-  toggles.forEach((toggle) => {
-    toggle.setAttribute("aria-pressed", toggle.dataset.clockToggle === mode ? "true" : "false");
-  });
-};
-
-const initClockToggle = (widget) => {
-  const toggles = widget.querySelectorAll("[data-clock-toggle]");
-  if (!toggles.length) return;
-  const defaultMode = widget.dataset.clockMode ?? toggles[0]?.dataset.clockToggle ?? "analog";
-  setClockView(widget, defaultMode);
-  toggles.forEach((toggle) => {
-    toggle.addEventListener("click", () => {
-      setClockView(widget, toggle.dataset.clockToggle);
-    });
-  });
-};
-
 const initWeatherWidget = (widget) => {
   const lat = Number(widget.dataset.widgetLat ?? defaultCoords.lat);
   const lon = Number(widget.dataset.widgetLon ?? defaultCoords.lon);
@@ -244,7 +221,6 @@ const initWeatherWidget = (widget) => {
 const initWidgets = () => {
   document.querySelectorAll("[data-widget='clock']").forEach((widget) => {
     const timeZone = widget.dataset.widgetTz ?? defaultTimeZone;
-    initClockToggle(widget);
     updateClockWidget(widget, timeZone);
   });
 
