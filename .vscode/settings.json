@@ -1,0 +1,9 @@
+{
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "eslint.useFlatConfig": true,
+  "eslint.validate": ["javascript"],
+  "files.eol": "\n",
+  "vitest.enable": true,
+  "vitest.commandLine": "npm test"
+}
