@@ -11,8 +11,7 @@ js:
 module_js: true
 ---
 
-<section class="card" aria-labelledby="clock-title" data-widget="clock">
-  <header><h2 id="clock-title">Klok</h2></header>
+<section class="card" aria-label="Klok" data-widget="clock">
   <div class="clock-view" data-clock-view="analog">
     <div class="fancy-clock" aria-label="Current time analog clock">
       <div class="clock-face" role="img" aria-hidden="true">

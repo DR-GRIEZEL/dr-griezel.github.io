@@ -1,8 +1,21 @@
 ---
 layout: base
+permalink: /
 css:
   - /assets/css/main.css
+  - /assets/css/dash.css
+js:
+  - /assets/js/widgets.js
+  - /assets/js/pomodoro.js
+module_js: true
 ---
+
+<div class="grid">
+  {% assign widget_pages = site.pages | where: "dir", "/widgets/" | sort: "title" %}
+  {% for page in widget_pages %}
+    {{ page.content }}
+  {% endfor %}
+</div>
 
 <div class="grid">
   {% assign blog_pages = site.pages | where: "dir", "/blog/" | sort: "date" | reverse %}
