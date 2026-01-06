@@ -1,6 +1,5 @@
 ---
 layout: base
-title: "Dashboard"
 permalink: /dashboard/
 css:
   - /assets/css/main.css
@@ -14,7 +13,15 @@ module_js: true
 <div class="grid">
   <section id="hero" class="card" aria-labelledby="hero-title">
     <header><h2 id="hero-title">Welkom</h2></header>
-    <p class="fancy-clock" id="clock" aria-live="polite">--:--:--</p>
+    <div class="fancy-clock" id="clock" aria-label="Current time analog clock">
+      <div class="clock-face" role="img" aria-hidden="true">
+        <div class="clock-hand hour" id="clock-hour"></div>
+        <div class="clock-hand minute" id="clock-minute"></div>
+        <div class="clock-hand second" id="clock-second"></div>
+        <div class="clock-center"></div>
+      </div>
+      <p class="clock-time" id="clock-time" aria-live="polite">--:--:--</p>
+    </div>
   </section>
 
   <section id="weather" class="card" aria-labelledby="wx-title">
