@@ -16,21 +16,3 @@ module_js: true
     {{ page.content }}
   {% endfor %}
 </div>
-
-<hr class="section-divider" aria-hidden="true">
-
-<div class="grid">
-  {% assign blog_pages = site.pages | where: "dir", "/blog/" | sort: "date" | reverse %}
-  {% for page in blog_pages %}
-    <section class="card">
-      <a href="{{ page.url | relative_url }}">
-        <img class="card-image" src="{{ page.image | relative_url }}" alt="{{ page.title }}">
-      </a>
-      <h2><a class="card-link" href="{{ page.url | relative_url }}">{{ page.title }}</a></h2>
-      {% if page.subtitle %}
-        <p class="card-subtitle">{{ page.subtitle }}</p>
-      {% endif %}
-      <p>{{ page.excerpt | strip_html | truncatewords: 26 }}</p>
-    </section>
-  {% endfor %}
-</div>
