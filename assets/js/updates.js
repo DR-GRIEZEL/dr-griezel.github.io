@@ -2,12 +2,12 @@ const owner = "DR-GRIEZEL";
 const repo = "dr-griezel.github.io";
 const url = `https://api.github.com/repos/${owner}/${repo}/commits?per_page=20`;
 
-const statusEl = document.getElementById("updates-status");
-const listEl = document.getElementById("updates-list");
+const statusEl = typeof document === "undefined" ? null : document.getElementById("updates-status");
+const listEl = typeof document === "undefined" ? null : document.getElementById("updates-list");
 
-const setStatus = (message) => {
-  if (statusEl) {
-    statusEl.textContent = message;
+const setStatus = (message, target = statusEl) => {
+  if (target) {
+    target.textContent = message;
   }
 };
 
@@ -22,9 +22,25 @@ const formatDate = (iso) => {
   }).format(date);
 };
 
-const renderCommits = (commits) => {
-  if (!listEl) return;
-  listEl.innerHTML = "";
+const getCommitTitle = (commit) => {
+  return commit?.commit?.message?.split("\n")[0] || "Untitled commit";
+};
+
+const getCommitMetaText = (commit) => {
+  const author = commit?.commit?.author?.name || commit?.author?.login || "Unknown author";
+  const date = formatDate(commit?.commit?.author?.date);
+  const sha = commit?.sha ? commit.sha.slice(0, 7) : "";
+  const segments = [author];
+
+  if (date) segments.push(date);
+  if (sha) segments.push(sha);
+
+  return segments.join(" · ");
+};
+
+const renderCommits = (commits, target = listEl) => {
+  if (!target) return;
+  target.innerHTML = "";
 
   commits.forEach((commit) => {
     const item = document.createElement("li");
@@ -34,19 +50,14 @@ const renderCommits = (commits) => {
     link.href = commit.html_url;
     link.target = "_blank";
     link.rel = "noopener noreferrer";
-    link.textContent = commit.commit?.message?.split("\n")[0] || "Untitled commit";
+    link.textContent = getCommitTitle(commit);
 
     const meta = document.createElement("div");
     meta.className = "updates-meta";
-
-    const author = commit.commit?.author?.name || commit.author?.login || "Unknown author";
-    const date = formatDate(commit.commit?.author?.date);
-    const sha = commit.sha ? commit.sha.slice(0, 7) : "";
-
-    meta.textContent = `${author} · ${date}${sha ? ` · ${sha}` : ""}`;
+    meta.textContent = getCommitMetaText(commit);
 
     item.append(link, meta);
-    listEl.appendChild(item);
+    target.appendChild(item);
   });
 };
 
@@ -77,3 +88,5 @@ const loadCommits = async () => {
 if (statusEl && listEl) {
   loadCommits();
 }
+
+export { formatDate, getCommitMetaText, getCommitTitle };
