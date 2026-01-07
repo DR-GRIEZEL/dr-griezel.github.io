@@ -331,5 +331,11 @@ export {
   formatShortTime,
   getHourlyIndex,
   getWeatherSummary,
-  getLocationName
+  getLocationName,
+  setRotation,
+  getBrowserCoords,
+  buildReverseGeocodeUrl,
+  updateClockWidget,
+  initWeatherWidget,
+  initWidgets
 };
