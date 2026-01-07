@@ -84,6 +84,23 @@ Run unit tests with coverage:
 npm test
 ```
 
+## After setup
+### Add a blog post
+1. Create a new Markdown file in `blog/` (for example: `blog/my-new-post.md`).
+2. Add front matter with the required fields:
+   ```yaml
+   ---
+   layout: blog
+   title: "Post title"
+   subtitle: "Post subtitle"
+   css:
+     - /assets/css/main.css
+   image: "/assets/images/blog/your-image.svg"
+   date: 2024-01-12
+   ---
+   ```
+3. Add the post content below the front matter.
+
 ## TODO
 - Integrate Google OAuth login and map to Firebase auth.
 - Add service worker caching for offline widget data.
