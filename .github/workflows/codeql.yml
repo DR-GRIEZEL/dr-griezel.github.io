@@ -2,38 +2,43 @@ name: CodeQL (JavaScript)
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ['main']
     paths:
-      - "**/*.js"
-      - "**/*.mjs"
-      - "**/*.cjs"
-      - "**/*.ts"
-      - "**/*.tsx"
-      - "**/*.html"
-      - "**/*.css"
-      - "**/*.json"
-      - ".github/workflows/codeql.yml"
-      - ".github/codeql/**"
+      - '**/*.js'
+      - '**/*.mjs'
+      - '**/*.cjs'
+      - '**/*.ts'
+      - '**/*.tsx'
+      - '**/*.html'
+      - '**/*.css'
+      - '**/*.json'
+      - '.github/workflows/codeql.yml'
+      - '.github/codeql/**'
   pull_request:
-    branches: [ "main" ]
+    branches: ['main']
     paths:
-      - "**/*.js"
-      - "**/*.mjs"
-      - "**/*.cjs"
-      - "**/*.ts"
-      - "**/*.tsx"
-      - "**/*.html"
-      - "**/*.css"
-      - "**/*.json"
-      - ".github/workflows/codeql.yml"
-      - ".github/codeql/**"
+      - '**/*.js'
+      - '**/*.mjs'
+      - '**/*.cjs'
+      - '**/*.ts'
+      - '**/*.tsx'
+      - '**/*.html'
+      - '**/*.css'
+      - '**/*.json'
+      - '.github/workflows/codeql.yml'
+      - '.github/codeql/**'
   schedule:
-    - cron: "30 1 * * 1"
+    - cron: '30 1 * * 1'
   workflow_dispatch:
+
+concurrency:
+  group: codeql-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 permissions:
   contents: read
   security-events: write
+  actions: read
 
 jobs:
   analyze:
@@ -49,10 +54,10 @@ jobs:
         uses: github/codeql-action/init@v3
         with:
           languages: javascript
-          queries: security-extended
+          queries: security-extended,security-and-quality
           build-mode: none
 
       - name: Analyze
         uses: github/codeql-action/analyze@v3
         with:
-          category: "/language:javascript"
+          category: '/language:javascript'

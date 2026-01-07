@@ -1,6 +1,6 @@
 # dr-griezel.github.io
 
-CRT-styled personal dashboard website built with Jekyll layouts and vanilla HTML/CSS/JS.
+#### Personal dashboard built with Jekyll layouts and vanilla HTML/CSS/JS.
 
 ## Framework overview
 - **Jekyll (static site generator)**: Markdown/HTML pages are compiled with layouts and includes.
@@ -66,6 +66,17 @@ CRT-styled personal dashboard website built with Jekyll layouts and vanilla HTML
    jekyll build
    ```
 2. Upload the `_site/` directory to any static host (Nginx, Apache, S3, etc.).
+
+### Option C: Python static server (quick preview)
+1. Build the site:
+   ```sh
+   jekyll build
+   ```
+2. Serve the output locally:
+   ```sh
+   python -m http.server 8000 --directory _site
+   ```
+3. Visit `http://localhost:8000`.
 
 ## Tests
 Run unit tests with coverage:

@@ -1,2 +1,35 @@
 node_modules/
 coverage/
+
+# Editor (KEEP ON)
+#.vscode/
+
+# Backups
+*.bak
+
+# Sync artifacts
+*sync-conflict-*
+
+# Jekyll
+_site/
+.sass-cache/
+.jekyll-cache/
+.jekyll-metadata
+.bundle/
+vendor/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Environment (BETTER SAFE THEN SORRY)
+.env
+.env.*.local
+
+# Build output
+dist/
+build/
+
+# OS

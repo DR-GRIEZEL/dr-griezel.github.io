@@ -6,14 +6,13 @@ export default [
   js.configs.recommended,
 
   {
-    files: ["**/*.js"],
+    files: ["assets/js/**/*.js"],
     languageOptions: {
       sourceType: "module",
       globals: { ...globals.browser }
     },
     rules: {
       "no-unused-vars": ["warn", { argsIgnorePattern: "^_" }]
-      "no-undef": "error"
     }
   },
 
