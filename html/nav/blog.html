@@ -10,7 +10,7 @@ module_js: true
 ---
 
 <div class="grid">
-  {% assign blog_pages = site.pages | where: "dir", "/blog/" | sort: "date" | reverse %}
+  {% assign blog_pages = site.pages | where: "dir", "/blog/" | where: "layout", "blog" | sort: "date" | reverse %}
   {% for page in blog_pages %}
     <section class="card">
       <a href="{{ page.url | relative_url }}">
