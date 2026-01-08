@@ -5,10 +5,37 @@ css:
   - /assets/css/main.css
 ---
 
-<section class="card">
-  <h2>Welkom terug</h2>
-  <p>Deze login is een placeholder. Koppel hier later een echte authenticatie-flow.</p>
-  <div style="margin-top: 18px;">
-    <a class="login-button" href="#" aria-disabled="true">Start login</a>
-  </div>
-</section>
+<script type="module">
+  import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js';
+  import {
+    getAuth,
+    GoogleAuthProvider,
+    signInWithPopup,
+    signInWithRedirect,
+    getRedirectResult,
+  } from 'https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js';
+  import { createGoogleAuthHandlers } from '/assets/js/login-auth.js';
+
+  const firebaseConfig = {
+    apiKey: '...',
+    authDomain: '...',
+    projectId: '...',
+    // ...
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  const { loginGooglePopup, loginGoogleRedirect, handleRedirectResult } = createGoogleAuthHandlers({
+    auth,
+    GoogleAuthProvider,
+    signInWithPopup,
+    signInWithRedirect,
+    getRedirectResult,
+  });
+
+  void loginGooglePopup;
+  void loginGoogleRedirect;
+
+  handleRedirectResult();
+</script>
