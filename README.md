@@ -50,7 +50,7 @@
 └── README.md
 ```
 
-## Self-hosting tutorial
+## Self-hosting
 
 ### Option A: Jekyll (local build)
 
@@ -110,10 +110,11 @@ npm test
    ---
    ```
 3. Add the post content below the front matter.
+4. Make sure all images are inside `assets/images/blog`.
 
 ## TODO
 
-- Integrate Google OAuth login and map to Firebase auth.
+- On-site blog creator with login protection
+- Fix Firebase auth (github and google).
 - Add service worker caching for offline widget data.
 - Add RSS/Atom feed for blog posts.
-- Expand widget test coverage (weather/error cases).
