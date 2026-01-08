@@ -2,7 +2,7 @@
 
 #### Dashboard built with Jekyll layouts and vanilla HTML/CSS/JS.
 
-## Framework overview
+## 📌 Framework overview
 
 - **Jekyll (static site generator)**: Markdown/HTML pages are compiled with layouts and includes.
 - **Layouts**: `_layouts/base.html` composes the page chrome (sidebar, header, footer, main content).
@@ -27,7 +27,7 @@
   - `html/nav/updates.html` loads `assets/js/updates.js` as a module.
   - `updates.js` fetches GitHub commits and renders them into the updates list.
 
-## Directory structure
+## 📁 Directory structure
 
 ```
 .
@@ -50,7 +50,7 @@
 └── README.md
 ```
 
-## Firebase login setup
+## 1. Firebase login setup
 
 The footer login buttons use Firebase Authentication to sign in with Google or GitHub. To run the flow locally you need to swap in your own Firebase project values:
 
@@ -59,7 +59,7 @@ The footer login buttons use Firebase Authentication to sign in with Google or G
 3. If you register a new Google OAuth client, update the `googleClientId` constant in `assets/js/login/login-buttons.js` so the Firebase providers use the correct client ID.
 4. Keep your Firebase security rules and GitHub client secret locked down—these frontend keys are public by design, so proper server-side rules are what prevent abuse.
 
-## Self-hosting tutorial
+## 2. Self-hosting tutorial
 
 ### Option A: Jekyll (local build)
 
@@ -114,7 +114,7 @@ Run the unit tests (Vitest is configured to emit coverage):
 npm test
 ```
 
-## After setup
+## 3. After setup (TODO: make annotations consistent)
 
 ### Add new pages
 
@@ -172,7 +172,7 @@ module_js: true
 3. Add post content below front matter.
 4. Images should be in `assets/images/blog`.
 
-## TODO
+## ✅ TODO
 
 - On-site blog creator with login protection
   - upon file editor creation, force tag selection to make sure files are always categorised.
