@@ -118,3 +118,4 @@ npm test
 - Fix Firebase auth (github and google).
 - Add service worker caching for offline widget data.
 - Add RSS/Atom feed for blog posts.
+- Add tags frontend-matter to blog-posts, along with filter menu displaying all available tags (max. 10).
