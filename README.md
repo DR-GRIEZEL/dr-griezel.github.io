@@ -178,7 +178,14 @@ module_js: true
   - upon file editor creation, force tag selection to make sure files are always categorised.
   - Filter tags based directory: `blog/{tag}/` -> add filter menu displaying all available tags.
   - seperate cover images from blog images; `{tag}/images/covers/`
+  - put website metadata images inside /assets/img/
 
-- Harden Firebase security rules and add login flow tests.
-- Add service worker caching for offline widget data.
-- Add RSS/Atom feed for blog posts.
+- Easy of use for non-coders:
+  - put ALL code inside a `/src` folder.
+  - create `/config` folder -> check if _config.yml can read from root + put configurable images inside `config/images/`
+  - keep only /blog/ and /test/ folder inside root (besides /src)
+
+- General fixes & features:
+  - Harden Firebase security rules and add login flow tests.
+  - Add service worker caching for offline widget data.
+  - Add RSS/Atom feed for blog posts.
