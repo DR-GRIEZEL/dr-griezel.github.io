@@ -50,6 +50,15 @@
 └── README.md
 ```
 
+## Firebase login setup
+
+The footer login buttons use Firebase Authentication to sign in with Google or GitHub. To run the flow locally you need to swap in your own Firebase project values:
+
+1. Create or reuse a Firebase project, register a Web app, and paste the config object into `assets/js/login/firebase-config.js`. The module exports `firebaseConfig` and a readiness check (`isFirebaseConfigReady`); the login script displays a warning if the config is still missing or contains the `'...'` placeholders.
+2. Enable the Google and GitHub sign-in providers and add your local (`http://localhost:4000`) and hosted (`https://dr-griezel.github.io/`) domains to the authorized list. Make sure the OAuth redirect URIs match the domains where you expect the buttons to run.
+3. If you register a new Google OAuth client, update the `googleClientId` constant in `assets/js/login/login-buttons.js` so the Firebase providers use the correct client ID.
+4. Keep your Firebase security rules and GitHub client secret locked down—these frontend keys are public by design, so proper server-side rules are what prevent abuse.
+
 ## Self-hosting tutorial
 
 ### Option A: Jekyll (local build)
@@ -84,9 +93,22 @@
    ```
 3. Visit `http://localhost:8000`.
 
-## Tests
+## Local tooling
 
-Run unit tests with coverage:
+Install the Node dependencies that back the tests and linting:
+
+```sh
+npm install
+```
+
+Before committing, keep the formatting and linting tools happy:
+
+```sh
+npm run format
+npm run lint
+```
+
+Run the unit tests (Vitest is configured to emit coverage):
 
 ```sh
 npm test
@@ -113,7 +135,7 @@ npm test
 
 ## TODO
 
-- Integrate Google OAuth login and map to Firebase auth.
+- Harden Firebase security rules and add login flow tests.
 - Add service worker caching for offline widget data.
 - Add RSS/Atom feed for blog posts.
 - Expand widget test coverage (weather/error cases).

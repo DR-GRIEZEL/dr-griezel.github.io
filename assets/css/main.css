@@ -224,16 +224,6 @@ body::before {
   outline: none;
   box-shadow: 0 0 0 4px var(--ring);
 }
-.auth-buttons {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  display: grid;
-  gap: 8px;
-  z-index: 20;
-  align-items: center;
-  justify-items: end;
-}
 .auth-buttons__group {
   display: inline-flex;
   gap: 6px;
@@ -273,11 +263,23 @@ body::before {
   transform: translateY(-1px);
   box-shadow: 0 10px 22px rgba(0, 0, 0, 0.25);
 }
+.footer-auth {
+  width: min(100%, 360px);
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
 .auth-status {
   font-size: 0.75rem;
   color: var(--muted);
-  text-align: right;
+  text-align: center;
   min-height: 1em;
+  display: block;
+  width: 100%;
+  max-width: 360px;
+  margin: 0;
 }
 .auth-status[data-tone='success'] {
   color: #5dffb8;
@@ -432,7 +434,6 @@ main {
   gap: 12px;
 }
 
-<<<<<<< HEAD
 /* ====== Login page ====== */
 .login-shell {
   display: grid;
@@ -553,14 +554,23 @@ main {
   }
 }
 
-=======
->>>>>>> codex/fix-login-methods-and-add-buttons-8fb7em
 /* ====== Footer ====== */
 footer {
   border-top: 1px solid var(--border-strong);
   padding: 20px;
   color: var(--muted);
   text-align: center;
+}
+
+footer .container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+footer p {
+  margin: 0;
 }
 
 /* ====== Buttons (optioneel) ====== */
