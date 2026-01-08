@@ -2,40 +2,42 @@
 layout: base
 permalink: /login.html
 css:
+  - https://cdn.jsdelivr.net/npm/@firebase-oss/ui-styles/dist/dist.min.css
   - /assets/css/main.css
+js:
+  - /assets/js/login-page.js
+module_js: true
 ---
 
-<script type="module">
-  import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js';
-  import {
-    getAuth,
-    GoogleAuthProvider,
-    signInWithPopup,
-    signInWithRedirect,
-    getRedirectResult,
-  } from 'https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js';
-  import { createGoogleAuthHandlers } from '/assets/js/login-auth.js';
+<section class="login-shell">
+  <div class="login-card">
+    <header class="login-card__header">
+      <p class="login-eyebrow">Welkom terug</p>
+      <h1>Log in om verder te gaan</h1>
+      <p class="login-lede">
+        Gebruik de standaard popup-flow voor de snelste login. Werkt de popup niet? Gebruik dan
+        redirect.
+      </p>
+    </header>
 
-  const firebaseConfig = {
-    apiKey: '...',
-    authDomain: '...',
-    projectId: '...',
-    // ...
-  };
+    <div class="login-actions">
+      <button class="login-action login-action--primary" type="button" data-login-popup>
+        Login met Google (popup)
+      </button>
+      <button class="login-action login-action--ghost" type="button" data-login-redirect>
+        Login met Google (redirect)
+      </button>
+    </div>
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
+    <p class="login-status" role="status" aria-live="polite" data-login-status></p>
+  </div>
 
-  const { loginGooglePopup, loginGoogleRedirect, handleRedirectResult } = createGoogleAuthHandlers({
-    auth,
-    GoogleAuthProvider,
-    signInWithPopup,
-    signInWithRedirect,
-    getRedirectResult,
-  });
-
-  void loginGooglePopup;
-  void loginGoogleRedirect;
-
-  handleRedirectResult();
-</script>
+  <aside class="login-panel">
+    <h2>Wat je kan verwachten</h2>
+    <ul>
+      <li>Popup is de aanbevolen flow zolang popups niet geblokkeerd worden.</li>
+      <li>Redirect is robuuster voor strengere browsers of in-app omgevingen.</li>
+      <li>We bewaren je login om je toegang te geven tot de rest van de site.</li>
+    </ul>
+  </aside>
+</section>
