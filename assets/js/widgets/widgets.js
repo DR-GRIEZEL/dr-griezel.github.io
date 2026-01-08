@@ -1,78 +1,82 @@
-const defaultTimeZone = "Europe/Brussels";
+const defaultTimeZone = 'Europe/Brussels';
 const weatherRefreshMs = 5 * 60 * 1000;
 const clockRefreshMs = 1000;
 const defaultCoords = { lat: 50.8503, lon: 4.3517 };
-const defaultLocation = "Brussel";
+const defaultLocation = 'Brussel';
 
 const weatherCodeMap = {
-  0: "☀️ Helder",
-  1: "🌤️ Overwegend helder",
-  2: "⛅ Deels bewolkt",
-  3: "☁️ Bewolkt",
-  45: "🌫️ Mist",
-  48: "🌫️ Mist",
-  51: "🌦️ Motregen (licht)",
-  53: "🌧️ Motregen",
-  55: "🌧️ Motregen (zwaar)",
-  61: "🌦️ Regen (licht)",
-  63: "🌧️ Regen",
-  65: "🌧️ Regen (zwaar)",
-  71: "🌨️ Sneeuw (licht)",
-  73: "🌨️ Sneeuw",
-  75: "❄️ Sneeuw (zwaar)",
-  80: "🌦️ Buien (licht)",
-  81: "🌧️ Buien",
-  82: "⛈️ Buien (zwaar)",
-  95: "⛈️ Onweer",
-  96: "⛈️ Onweer (hagel)",
-  99: "⛈️ Onweer (zware hagel)"
+  0: '☀️ Helder',
+  1: '🌤️ Overwegend helder',
+  2: '⛅ Deels bewolkt',
+  3: '☁️ Bewolkt',
+  45: '🌫️ Mist',
+  48: '🌫️ Mist',
+  51: '🌦️ Motregen (licht)',
+  53: '🌧️ Motregen',
+  55: '🌧️ Motregen (zwaar)',
+  61: '🌦️ Regen (licht)',
+  63: '🌧️ Regen',
+  65: '🌧️ Regen (zwaar)',
+  71: '🌨️ Sneeuw (licht)',
+  73: '🌨️ Sneeuw',
+  75: '❄️ Sneeuw (zwaar)',
+  80: '🌦️ Buien (licht)',
+  81: '🌧️ Buien',
+  82: '⛈️ Buien (zwaar)',
+  95: '⛈️ Onweer',
+  96: '⛈️ Onweer (hagel)',
+  99: '⛈️ Onweer (zware hagel)',
 };
 
 const clockTimers = new WeakMap();
 const weatherTimers = new WeakMap();
 
-const numberFormat = new Intl.NumberFormat("nl-BE", { maximumFractionDigits: 0 });
+const numberFormat = new Intl.NumberFormat('nl-BE', { maximumFractionDigits: 0 });
 
 const formatTimeParts = (date, timeZone) => {
-  const formatter = new Intl.DateTimeFormat("nl-BE", {
+  const formatter = new Intl.DateTimeFormat('nl-BE', {
     timeZone,
     hour12: false,
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit"
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
   });
   const parts = formatter.formatToParts(date);
-  const map = Object.fromEntries(parts.filter((part) => part.type !== "literal").map((part) => [part.type, part.value]));
+  const map = Object.fromEntries(
+    parts.filter((part) => part.type !== 'literal').map((part) => [part.type, part.value]),
+  );
   return {
     hour: Number(map.hour),
     minute: Number(map.minute),
     second: Number(map.second),
-    timeString: formatter.format(date)
+    timeString: formatter.format(date),
   };
 };
 
 const formatShortTime = (date, timeZone) => {
-  const formatter = new Intl.DateTimeFormat("nl-BE", {
+  const formatter = new Intl.DateTimeFormat('nl-BE', {
     timeZone,
     hour12: false,
-    hour: "2-digit",
-    minute: "2-digit"
+    hour: '2-digit',
+    minute: '2-digit',
   });
   return formatter.format(date);
 };
 
 const getHourlyIndex = (times, date, timeZone) => {
   if (!Array.isArray(times)) return -1;
-  const formatter = new Intl.DateTimeFormat("sv-SE", {
+  const formatter = new Intl.DateTimeFormat('sv-SE', {
     timeZone,
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-    hour: "2-digit",
-    hour12: false
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    hour12: false,
   });
   const parts = formatter.formatToParts(date);
-  const map = Object.fromEntries(parts.filter((part) => part.type !== "literal").map((part) => [part.type, part.value]));
+  const map = Object.fromEntries(
+    parts.filter((part) => part.type !== 'literal').map((part) => [part.type, part.value]),
+  );
   const key = `${map.year}-${map.month}-${map.day}T${map.hour}:00`;
   return times.indexOf(key);
 };
@@ -91,43 +95,43 @@ const getWeatherSummary = (data, timeZone, now = new Date()) => {
     windDirection: current.wind_direction_10m,
     humidity: current.relative_humidity_2m,
     precipitationProbability,
-    description: weatherCodeMap[current.weather_code] ?? "Weer"
+    description: weatherCodeMap[current.weather_code] ?? 'Weer',
   };
 };
 
 const setRotation = (el, deg) => {
   if (!el) return;
-  el.style.setProperty("--rotation", `${deg}deg`);
+  el.style.setProperty('--rotation', `${deg}deg`);
 };
 
 const getBrowserCoords = () =>
   new Promise((resolve, reject) => {
-    if (typeof navigator === "undefined" || !navigator.geolocation) {
-      reject(new Error("Geolocation unsupported"));
+    if (typeof navigator === 'undefined' || !navigator.geolocation) {
+      reject(new Error('Geolocation unsupported'));
       return;
     }
     navigator.geolocation.getCurrentPosition(
       (position) => {
         resolve({
           lat: position.coords.latitude,
-          lon: position.coords.longitude
+          lon: position.coords.longitude,
         });
       },
       (error) => reject(error),
       {
         enableHighAccuracy: false,
         maximumAge: 10 * 60 * 1000,
-        timeout: 8000
-      }
+        timeout: 8000,
+      },
     );
   });
 
 const buildReverseGeocodeUrl = (lat, lon) => {
-  const url = new URL("https://geocoding-api.open-meteo.com/v1/reverse");
-  url.searchParams.set("latitude", String(lat));
-  url.searchParams.set("longitude", String(lon));
-  url.searchParams.set("language", "nl");
-  url.searchParams.set("count", "1");
+  const url = new URL('https://geocoding-api.open-meteo.com/v1/reverse');
+  url.searchParams.set('latitude', String(lat));
+  url.searchParams.set('longitude', String(lon));
+  url.searchParams.set('language', 'nl');
+  url.searchParams.set('count', '1');
   return url;
 };
 
@@ -139,16 +143,16 @@ const getLocationName = async (lat, lon) => {
   const data = await res.json();
   const result = data?.results?.[0];
   if (!result?.name) {
-    throw new Error("No reverse geocode results");
+    throw new Error('No reverse geocode results');
   }
   return result.name;
 };
 
 const updateClockWidget = (widget, timeZone) => {
-  const timeEls = widget.querySelectorAll("[data-clock-time]");
-  const hourHand = widget.querySelector("[data-clock-hour]");
-  const minuteHand = widget.querySelector("[data-clock-minute]");
-  const secondHand = widget.querySelector("[data-clock-second]");
+  const timeEls = widget.querySelectorAll('[data-clock-time]');
+  const hourHand = widget.querySelector('[data-clock-hour]');
+  const minuteHand = widget.querySelector('[data-clock-minute]');
+  const secondHand = widget.querySelector('[data-clock-second]');
 
   if (!timeEls.length && !hourHand && !minuteHand && !secondHand) return;
 
@@ -187,33 +191,34 @@ const initWeatherWidget = (widget) => {
   const timeZone = widget.dataset.widgetTz ?? defaultTimeZone;
   const refreshMs = Number(widget.dataset.widgetRefresh ?? weatherRefreshMs);
 
-  const tempEl = widget.querySelector("[data-wx-temp]");
-  const descEl = widget.querySelector("[data-wx-desc]");
-  const locationEl = widget.querySelector("[data-wx-location]");
-  const updatedEl = widget.querySelector("[data-wx-updated]");
-  const apparentEl = widget.querySelector("[data-wx-apparent]");
-  const windEl = widget.querySelector("[data-wx-wind]");
-  const windDirEl = widget.querySelector("[data-wx-wind-direction]");
-  const precipEl = widget.querySelector("[data-wx-precip]");
-  const precipProbEl = widget.querySelector("[data-wx-precip-prob]");
-  const humidityEl = widget.querySelector("[data-wx-humidity]");
+  const tempEl = widget.querySelector('[data-wx-temp]');
+  const descEl = widget.querySelector('[data-wx-desc]');
+  const locationEl = widget.querySelector('[data-wx-location]');
+  const updatedEl = widget.querySelector('[data-wx-updated]');
+  const apparentEl = widget.querySelector('[data-wx-apparent]');
+  const windEl = widget.querySelector('[data-wx-wind]');
+  const windDirEl = widget.querySelector('[data-wx-wind-direction]');
+  const precipEl = widget.querySelector('[data-wx-precip]');
+  const precipProbEl = widget.querySelector('[data-wx-precip-prob]');
+  const humidityEl = widget.querySelector('[data-wx-humidity]');
 
-  const manualCoords = Number.isFinite(manualLat) && Number.isFinite(manualLon)
-    ? { lat: manualLat, lon: manualLon }
-    : null;
+  const manualCoords =
+    Number.isFinite(manualLat) && Number.isFinite(manualLon)
+      ? { lat: manualLat, lon: manualLon }
+      : null;
   let coords = manualCoords ?? defaultCoords;
   let locationName = manualLocation;
 
   const buildUrl = (latValue, lonValue) => {
-    const url = new URL("https://api.open-meteo.com/v1/forecast");
-    url.searchParams.set("latitude", String(latValue));
-    url.searchParams.set("longitude", String(lonValue));
+    const url = new URL('https://api.open-meteo.com/v1/forecast');
+    url.searchParams.set('latitude', String(latValue));
+    url.searchParams.set('longitude', String(lonValue));
     url.searchParams.set(
-      "current",
-      "temperature_2m,apparent_temperature,precipitation,weather_code,wind_speed_10m,wind_direction_10m,relative_humidity_2m"
+      'current',
+      'temperature_2m,apparent_temperature,precipitation,weather_code,wind_speed_10m,wind_direction_10m,relative_humidity_2m',
     );
-    url.searchParams.set("hourly", "precipitation_probability");
-    url.searchParams.set("timezone", timeZone);
+    url.searchParams.set('hourly', 'precipitation_probability');
+    url.searchParams.set('timezone', timeZone);
     return url;
   };
   let url = buildUrl(coords.lat, coords.lon);
@@ -226,27 +231,38 @@ const initWeatherWidget = (widget) => {
       const summary = getWeatherSummary(data, timeZone);
 
       if (tempEl) {
-        tempEl.textContent = summary.temperature == null ? "--°" : `${numberFormat.format(summary.temperature)}°`;
+        tempEl.textContent =
+          summary.temperature == null ? '--°' : `${numberFormat.format(summary.temperature)}°`;
       }
       if (descEl) descEl.textContent = summary.description;
       if (locationEl) locationEl.textContent = locationName;
       if (apparentEl) {
-        apparentEl.textContent = summary.apparentTemperature == null ? "—" : `${numberFormat.format(summary.apparentTemperature)}°`;
+        apparentEl.textContent =
+          summary.apparentTemperature == null
+            ? '—'
+            : `${numberFormat.format(summary.apparentTemperature)}°`;
       }
       if (windEl) {
-        windEl.textContent = summary.windSpeed == null ? "—" : `${numberFormat.format(summary.windSpeed)} km/h`;
+        windEl.textContent =
+          summary.windSpeed == null ? '—' : `${numberFormat.format(summary.windSpeed)} km/h`;
       }
       if (windDirEl) {
-        windDirEl.textContent = summary.windDirection == null ? "—" : `${numberFormat.format(summary.windDirection)}°`;
+        windDirEl.textContent =
+          summary.windDirection == null ? '—' : `${numberFormat.format(summary.windDirection)}°`;
       }
       if (precipEl) {
-        precipEl.textContent = summary.precipitation == null ? "—" : `${numberFormat.format(summary.precipitation)} mm`;
+        precipEl.textContent =
+          summary.precipitation == null ? '—' : `${numberFormat.format(summary.precipitation)} mm`;
       }
       if (precipProbEl) {
-        precipProbEl.textContent = summary.precipitationProbability == null ? "—" : `${numberFormat.format(summary.precipitationProbability)}%`;
+        precipProbEl.textContent =
+          summary.precipitationProbability == null
+            ? '—'
+            : `${numberFormat.format(summary.precipitationProbability)}%`;
       }
       if (humidityEl) {
-        humidityEl.textContent = summary.humidity == null ? "—" : `${numberFormat.format(summary.humidity)}%`;
+        humidityEl.textContent =
+          summary.humidity == null ? '—' : `${numberFormat.format(summary.humidity)}%`;
       }
       if (updatedEl) {
         const now = new Date();
@@ -254,7 +270,7 @@ const initWeatherWidget = (widget) => {
         updatedEl.textContent = formatShortTime(now, timeZone);
       }
     } catch (error) {
-      if (descEl) descEl.textContent = "Weer: fout bij ophalen.";
+      if (descEl) descEl.textContent = 'Weer: fout bij ophalen.';
     }
   };
 
@@ -285,11 +301,11 @@ const initWeatherWidget = (widget) => {
       const browserCoords = await getBrowserCoords();
       coords = browserCoords;
       url = buildUrl(coords.lat, coords.lon);
-      locationName = "Huidige locatie";
+      locationName = 'Huidige locatie';
       try {
         locationName = await getLocationName(coords.lat, coords.lon);
       } catch (error) {
-        locationName = "Huidige locatie";
+        locationName = 'Huidige locatie';
       }
     } catch (error) {
       coords = defaultCoords;
@@ -312,9 +328,9 @@ const initWidgets = () => {
   });
 };
 
-if (typeof document !== "undefined") {
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initWidgets);
+if (typeof document !== 'undefined') {
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initWidgets);
   } else {
     initWidgets();
   }
@@ -337,5 +353,5 @@ export {
   buildReverseGeocodeUrl,
   updateClockWidget,
   initWeatherWidget,
-  initWidgets
+  initWidgets,
 };
