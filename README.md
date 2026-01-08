@@ -116,10 +116,48 @@ npm test
 
 ## After setup
 
+### Add new pages
+
+1. Create .html file in `/html/nav/`
+2. Add front matter:
+```yaml
+---
+layout: base
+title: "My Page"
+nav_label: "My Page"
+nav_order: 100
+permalink: /my-page/
+css:
+  - /assets/css/main.css
+module_js: true
+---
+```
+>`nav_order` should not be the same number as any other page inside `/html/nav`.
+
+### Add a widget
+
+1. Put js file in `assets/js/widgets`
+2. Create .md file in `/widgets`
+3. Add front matter:
+  ```yaml
+  ---
+  layout: base
+  title: 'My Widget'
+  summary: 'A custom widget.'
+  image: '/assets/images/widgets/my-widget.svg'
+  css:
+    - /assets/css/main.css
+    - /assets/css/dash.css
+  js:
+    - /assets/js/widgets/my-widget.js
+  module_js: true
+  ---
+  ```
+
 ### Add a blog post
 
-1. Create a new Markdown file in `blog/` (for example: `blog/my-new-post.md`).
-2. Add front matter with the required fields:
+1. Create new .md file in `blog/` (for example: `blog/my-new-post.md`).
+2. Add front matter:
    ```yaml
    ---
    layout: blog
@@ -131,13 +169,16 @@ npm test
    date: 2024-01-12
    ---
    ```
-3. Add the post content below the front matter.
-4. Make sure all images are inside `assets/images/blog`.
+3. Add post content below front matter.
+4. Images should be in `assets/images/blog`.
 
 ## TODO
 
-- Harden Firebase security rules and add login flow tests.
 - On-site blog creator with login protection
+  - upon file editor creation, force tag selection to make sure files are always categorised.
+  - Filter tags based directory: `blog/{tag}/` -> add filter menu displaying all available tags.
+  - seperate cover images from blog images; `{tag}/images/covers/`
+
+- Harden Firebase security rules and add login flow tests.
 - Add service worker caching for offline widget data.
 - Add RSS/Atom feed for blog posts.
-- Add tags frontend-matter to blog-posts, along with filter menu displaying all available tags (max. 10).
