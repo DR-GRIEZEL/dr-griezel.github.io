@@ -132,10 +132,12 @@ npm test
    ---
    ```
 3. Add the post content below the front matter.
+4. Make sure all images are inside `assets/images/blog`.
 
 ## TODO
 
 - Harden Firebase security rules and add login flow tests.
+- On-site blog creator with login protection
 - Add service worker caching for offline widget data.
 - Add RSS/Atom feed for blog posts.
-- Expand widget test coverage (weather/error cases).
+- Add tags frontend-matter to blog-posts, along with filter menu displaying all available tags (max. 10).
