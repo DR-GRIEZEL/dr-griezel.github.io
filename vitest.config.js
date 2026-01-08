@@ -6,11 +6,12 @@ export default defineConfig({
     coverage: {
       reporter: ['text', 'json', 'html'],
       include: [
-        'assets/js/login-auth.js',
-        'assets/js/login-page-init.js',
-        'assets/js/login-page.js',
-        'assets/js/widgets.js',
-        'assets/js/pomodoro-core.js',
+        'assets/js/login/auth.js',
+        'assets/js/login/buttons-init.js',
+        'assets/js/login/login-buttons.js',
+        'assets/js/widgets/widgets.js',
+        'assets/js/widgets/pomodoro-core.js',
+        'assets/js/widgets/pomodoro.js',
         'test/**/*.js',
       ],
       exclude: ['test/**/*.test.js'],

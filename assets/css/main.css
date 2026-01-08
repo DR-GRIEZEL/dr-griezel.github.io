@@ -224,61 +224,66 @@ body::before {
   outline: none;
   box-shadow: 0 0 0 4px var(--ring);
 }
-.sidebar-footer {
-  margin-top: auto;
-}
-.login-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+.auth-buttons {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  display: grid;
   gap: 8px;
-  width: 100%;
-  padding: 12px 16px;
-  border-radius: 14px;
-  text-decoration: none;
-  color: #04140a;
-  background: linear-gradient(130deg, #3bff9a, #1dff81 55%, #7effc0);
-  box-shadow:
-    0 0 16px color-mix(in oklab, var(--primary) 65%, transparent),
-    0 10px 24px rgba(0, 0, 0, 0.4);
-  font-weight: 600;
-  position: relative;
-  overflow: hidden;
+  z-index: 20;
+  align-items: center;
+  justify-items: end;
+}
+.auth-buttons__group {
+  display: inline-flex;
+  gap: 6px;
+  padding: 6px;
+  background: color-mix(in oklab, var(--card) 85%, transparent);
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  box-shadow: var(--shadow);
+}
+.auth-button {
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  background: transparent;
+  color: var(--text);
   transition:
     transform 0.15s ease,
+    border-color 0.15s ease,
     box-shadow 0.15s ease;
 }
-.login-icon {
-  width: 18px;
-  height: 18px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+.auth-button--google {
+  background: linear-gradient(120deg, #3bff9a, #1dff81 60%, #7effc0);
   color: #04140a;
-  flex-shrink: 0;
+  border-color: transparent;
 }
-.login-icon svg {
-  width: 18px;
-  height: 18px;
-  fill: currentColor;
+.auth-button--github {
+  background: linear-gradient(120deg, #0f172a, #1f2937);
+  color: #e2e8f0;
+  border-color: transparent;
 }
-.login-button::after {
-  content: '';
-  position: absolute;
-  inset: -40%;
-  background: radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.55), transparent 55%);
-  opacity: 0.7;
-  transform: translateX(-60%);
-  transition: transform 0.5s ease;
-}
-.login-button:hover {
+.auth-button:hover {
   transform: translateY(-1px);
-  box-shadow:
-    0 0 22px color-mix(in oklab, var(--primary) 70%, transparent),
-    0 14px 28px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.25);
 }
-.login-button:hover::after {
-  transform: translateX(0);
+.auth-status {
+  font-size: 0.75rem;
+  color: var(--muted);
+  text-align: right;
+  min-height: 1em;
+}
+.auth-status[data-tone='success'] {
+  color: #5dffb8;
+}
+.auth-status[data-tone='error'] {
+  color: #ff7b7b;
 }
 
 body.sidebar-collapsed .sidebar {
@@ -292,17 +297,6 @@ body.sidebar-collapsed .nav-label {
   width: 0;
   height: 0;
   overflow: hidden;
-}
-body.sidebar-collapsed .login-label {
-  opacity: 0;
-  pointer-events: none;
-  width: 0;
-  height: 0;
-  overflow: hidden;
-}
-body.sidebar-collapsed .login-button {
-  justify-content: center;
-  padding: 12px 10px;
 }
 body.sidebar-collapsed .sidebar-arrow {
   transform: rotate(135deg);
@@ -438,6 +432,7 @@ main {
   gap: 12px;
 }
 
+<<<<<<< HEAD
 /* ====== Login page ====== */
 .login-shell {
   display: grid;
@@ -558,6 +553,8 @@ main {
   }
 }
 
+=======
+>>>>>>> codex/fix-login-methods-and-add-buttons-8fb7em
 /* ====== Footer ====== */
 footer {
   border-top: 1px solid var(--border-strong);

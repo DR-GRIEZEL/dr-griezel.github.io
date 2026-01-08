@@ -1,16 +1,16 @@
-import { capFor, defaultConfig, formatDuration } from "./pomodoro-core.js";
+import { capFor, defaultConfig, formatDuration } from './pomodoro-core.js';
 
 const AUTO_START_BREAK = true;
 const AUTO_START_FOCUS = false;
 
 const initPomodoroWidget = (widget, index) => {
-  const timerEl = widget.querySelector("[data-pomo-time]");
-  const subEl = widget.querySelector("[data-pomo-state]");
-  const barIn = widget.querySelector("[data-pomo-bar]");
-  const bStart = widget.querySelector("[data-pomo-start]");
-  const bPause = widget.querySelector("[data-pomo-pause]");
-  const bBreak = widget.querySelector("[data-pomo-break]");
-  const bReset = widget.querySelector("[data-pomo-reset]");
+  const timerEl = widget.querySelector('[data-pomo-time]');
+  const subEl = widget.querySelector('[data-pomo-state]');
+  const barIn = widget.querySelector('[data-pomo-bar]');
+  const bStart = widget.querySelector('[data-pomo-start]');
+  const bPause = widget.querySelector('[data-pomo-pause]');
+  const bBreak = widget.querySelector('[data-pomo-break]');
+  const bReset = widget.querySelector('[data-pomo-reset]');
 
   if (!timerEl || !subEl || !barIn || !bStart || !bPause || !bBreak || !bReset) {
     return;
@@ -27,14 +27,14 @@ const initPomodoroWidget = (widget, index) => {
   } catch (_) {
     state = null;
   }
-  if (!state) state = { mode: "off", remaining: 0, running: false, cycle: 1, lastDay: todayStr };
+  if (!state) state = { mode: 'off', remaining: 0, running: false, cycle: 1, lastDay: todayStr };
 
   const midnightResetIfNeeded = () => {
     const nowStr = new Date().toISOString().slice(0, 10);
     if (state.lastDay !== nowStr) {
       state.lastDay = nowStr;
       state.cycle = 1;
-      state.mode = "off";
+      state.mode = 'off';
       state.running = false;
       state.remaining = 0;
     }
@@ -63,15 +63,15 @@ const initPomodoroWidget = (widget, index) => {
     midnightResetIfNeeded();
 
     timerEl.textContent = formatDuration(state.remaining);
-    let label = "uit";
-    if (state.mode === "break") label = "pauze";
-    else if (state.mode === "focus") label = `cyclus ${state.cycle}/${config.cycles}`;
-    subEl.textContent = `${label} ${state.running ? "• actief" : "• gepauzeerd"}`;
+    let label = 'uit';
+    if (state.mode === 'break') label = 'pauze';
+    else if (state.mode === 'focus') label = `cyclus ${state.cycle}/${config.cycles}`;
+    subEl.textContent = `${label} ${state.running ? '• actief' : '• gepauzeerd'}`;
 
     const cap = capFor(state.mode, config);
-    barIn.style.width = cap > 0 ? `${100 * (1 - state.remaining / cap)}%` : "0%";
+    barIn.style.width = cap > 0 ? `${100 * (1 - state.remaining / cap)}%` : '0%';
 
-    bStart.disabled = state.running || (state.mode !== "off" && state.remaining === 0);
+    bStart.disabled = state.running || (state.mode !== 'off' && state.remaining === 0);
     bPause.disabled = !state.running;
   };
 
@@ -83,17 +83,17 @@ const initPomodoroWidget = (widget, index) => {
       state.remaining = 0;
       state.running = false;
 
-      if (state.mode === "focus") {
-        state.mode = "break";
+      if (state.mode === 'focus') {
+        state.mode = 'break';
         state.remaining = config.break;
         state.running = !!AUTO_START_BREAK;
-        chime("🎉 Focus klaar!", `Start (${Math.round(config.break / 60)} min. pauze...)`);
-      } else if (state.mode === "break") {
+        chime('🎉 Focus klaar!', `Start (${Math.round(config.break / 60)} min. pauze...)`);
+      } else if (state.mode === 'break') {
         if (state.cycle < config.cycles) state.cycle += 1;
-        state.mode = "off";
+        state.mode = 'off';
         state.remaining = 0;
         state.running = !!AUTO_START_FOCUS;
-        chime("⏰ Pauze voltooid!", `Cyclus ${state.cycle}/${config.cycles}`);
+        chime('⏰ Pauze voltooid!', `Cyclus ${state.cycle}/${config.cycles}`);
       }
     }
     render();
@@ -101,8 +101,8 @@ const initPomodoroWidget = (widget, index) => {
   };
 
   const start = () => {
-    if (state.mode === "off") {
-      state.mode = "focus";
+    if (state.mode === 'off') {
+      state.mode = 'focus';
       state.remaining = config.focus;
     }
     if (state.running || state.remaining === 0) return;
@@ -119,7 +119,7 @@ const initPomodoroWidget = (widget, index) => {
   };
 
   const startBreak = () => {
-    state.mode = "break";
+    state.mode = 'break';
     state.remaining = config.break;
     state.running = true;
     render();
@@ -128,27 +128,27 @@ const initPomodoroWidget = (widget, index) => {
   };
 
   const reset = () => {
-    state.mode = "off";
+    state.mode = 'off';
     state.remaining = 0;
     state.running = false;
     render();
     save();
   };
 
-  bStart.addEventListener("click", start);
-  bPause.addEventListener("click", pause);
-  bBreak.addEventListener("click", startBreak);
-  bReset.addEventListener("click", reset);
+  bStart.addEventListener('click', start);
+  bPause.addEventListener('click', pause);
+  bBreak.addEventListener('click', startBreak);
+  bReset.addEventListener('click', reset);
 
   render();
 };
 
-const chime = (title = "Timer", body = "") => {
+const chime = (title = 'Timer', body = '') => {
   try {
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
     const o = ctx.createOscillator();
     const g = ctx.createGain();
-    o.type = "sine";
+    o.type = 'sine';
     o.frequency.value = 880;
     o.connect(g);
     g.connect(ctx.destination);
@@ -160,9 +160,9 @@ const chime = (title = "Timer", body = "") => {
   } catch (_) {
     // ignore
   }
-  if ("Notification" in window && Notification.permission === "granted") {
+  if ('Notification' in window && Notification.permission === 'granted') {
     new Notification(title, { body });
-  } else if ("Notification" in window && Notification.permission !== "denied") {
+  } else if ('Notification' in window && Notification.permission !== 'denied') {
     Notification.requestPermission();
   }
 };
@@ -174,8 +174,8 @@ const initPomodoroWidgets = () => {
   });
 };
 
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", initPomodoroWidgets);
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initPomodoroWidgets);
 } else {
   initPomodoroWidgets();
 }
