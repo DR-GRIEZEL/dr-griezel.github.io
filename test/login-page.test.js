@@ -22,68 +22,114 @@ describe('initLoginPage', () => {
     expect(() => initLoginPage({})).toThrow('login elements are required');
     expect(() =>
       initLoginPage({
-        popupButton: createButton(),
-        redirectButton: createButton(),
+        googlePopupButton: createButton(),
+        googleRedirectButton: createButton(),
+        githubPopupButton: createButton(),
+        githubRedirectButton: createButton(),
         statusElement: createStatus(),
       }),
     ).toThrow('login handlers are required');
   });
 
-  it('updates status on popup success', async () => {
-    const popupButton = createButton();
-    const redirectButton = createButton();
+  it('updates status on google popup success', async () => {
+    const googlePopupButton = createButton();
+    const googleRedirectButton = createButton();
+    const githubPopupButton = createButton();
+    const githubRedirectButton = createButton();
     const statusElement = createStatus();
 
     initLoginPage({
-      popupButton,
-      redirectButton,
+      googlePopupButton,
+      googleRedirectButton,
+      githubPopupButton,
+      githubRedirectButton,
       statusElement,
       loginGooglePopup: vi.fn().mockResolvedValue({ displayName: 'Test User' }),
       loginGoogleRedirect: vi.fn().mockResolvedValue(undefined),
-      handleRedirectResult: vi.fn().mockResolvedValue(null),
+      loginGithubPopup: vi.fn().mockResolvedValue(null),
+      loginGithubRedirect: vi.fn().mockResolvedValue(undefined),
+      handleRedirectResult: vi.fn().mockResolvedValue(undefined),
     });
 
-    await popupButton.handlers.click();
+    await googlePopupButton.handlers.click();
 
     expect(statusElement.textContent).toBe('Ingelogd als Test User.');
     expect(statusElement.dataset.tone).toBe('success');
   });
 
-  it('updates status on popup error', async () => {
-    const popupButton = createButton();
-    const redirectButton = createButton();
+  it('updates status on github popup error', async () => {
+    const googlePopupButton = createButton();
+    const googleRedirectButton = createButton();
+    const githubPopupButton = createButton();
+    const githubRedirectButton = createButton();
     const statusElement = createStatus();
 
     initLoginPage({
-      popupButton,
-      redirectButton,
+      googlePopupButton,
+      googleRedirectButton,
+      githubPopupButton,
+      githubRedirectButton,
       statusElement,
-      loginGooglePopup: vi.fn().mockRejectedValue(new Error('popup failed')),
+      loginGooglePopup: vi.fn().mockResolvedValue(null),
       loginGoogleRedirect: vi.fn().mockResolvedValue(undefined),
-      handleRedirectResult: vi.fn().mockResolvedValue(null),
+      loginGithubPopup: vi.fn().mockRejectedValue(new Error('popup failed')),
+      loginGithubRedirect: vi.fn().mockResolvedValue(undefined),
+      handleRedirectResult: vi.fn().mockResolvedValue(undefined),
     });
 
-    await popupButton.handlers.click();
+    await githubPopupButton.handlers.click();
 
-    expect(statusElement.textContent).toBe('Popup-login mislukt. Gebruik de redirect-flow.');
+    expect(statusElement.textContent).toBe('GitHub popup-login mislukt. Gebruik redirect.');
     expect(statusElement.dataset.tone).toBe('error');
   });
 
   it('updates status when redirect returns a user', async () => {
-    const popupButton = createButton();
-    const redirectButton = createButton();
+    const googlePopupButton = createButton();
+    const googleRedirectButton = createButton();
+    const githubPopupButton = createButton();
+    const githubRedirectButton = createButton();
     const statusElement = createStatus();
 
     await initLoginPage({
-      popupButton,
-      redirectButton,
+      googlePopupButton,
+      googleRedirectButton,
+      githubPopupButton,
+      githubRedirectButton,
       statusElement,
       loginGooglePopup: vi.fn().mockResolvedValue(null),
       loginGoogleRedirect: vi.fn().mockResolvedValue(undefined),
+      loginGithubPopup: vi.fn().mockResolvedValue(null),
+      loginGithubRedirect: vi.fn().mockResolvedValue(undefined),
       handleRedirectResult: vi.fn().mockResolvedValue({ user: { email: 'test@example.com' } }),
     });
 
     expect(statusElement.textContent).toBe('Ingelogd als test@example.com.');
     expect(statusElement.dataset.tone).toBe('success');
+  });
+
+  it('updates status when redirect reports error', async () => {
+    const googlePopupButton = createButton();
+    const googleRedirectButton = createButton();
+    const githubPopupButton = createButton();
+    const githubRedirectButton = createButton();
+    const statusElement = createStatus();
+
+    await initLoginPage({
+      googlePopupButton,
+      googleRedirectButton,
+      githubPopupButton,
+      githubRedirectButton,
+      statusElement,
+      loginGooglePopup: vi.fn().mockResolvedValue(null),
+      loginGoogleRedirect: vi.fn().mockResolvedValue(undefined),
+      loginGithubPopup: vi.fn().mockResolvedValue(null),
+      loginGithubRedirect: vi.fn().mockResolvedValue(undefined),
+      handleRedirectResult: vi.fn().mockResolvedValue({ error: new Error('redirect failed') }),
+    });
+
+    expect(statusElement.textContent).toBe(
+      'Redirect-login mislukt. Controleer de Firebase OAuth-instellingen.',
+    );
+    expect(statusElement.dataset.tone).toBe('error');
   });
 });

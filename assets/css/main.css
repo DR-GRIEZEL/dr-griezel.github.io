@@ -480,6 +480,22 @@ main {
   display: grid;
   gap: 12px;
 }
+.login-actions__group {
+  display: grid;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 18px;
+  border: 1px solid color-mix(in oklab, var(--border-strong) 75%, transparent);
+  background: color-mix(in oklab, var(--card) 80%, transparent);
+}
+.login-actions__label {
+  margin: 0;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.75rem;
+}
 .login-action {
   border: 1px solid var(--border-strong);
   border-radius: 16px;

@@ -1,16 +1,32 @@
 export function initLoginPage({
-  popupButton,
-  redirectButton,
+  googlePopupButton,
+  googleRedirectButton,
+  githubPopupButton,
+  githubRedirectButton,
   statusElement,
   loginGooglePopup,
   loginGoogleRedirect,
+  loginGithubPopup,
+  loginGithubRedirect,
   handleRedirectResult,
 }) {
-  if (!popupButton || !redirectButton || !statusElement) {
+  if (
+    !googlePopupButton ||
+    !googleRedirectButton ||
+    !githubPopupButton ||
+    !githubRedirectButton ||
+    !statusElement
+  ) {
     throw new Error('login elements are required');
   }
 
-  if (!loginGooglePopup || !loginGoogleRedirect || !handleRedirectResult) {
+  if (
+    !loginGooglePopup ||
+    !loginGoogleRedirect ||
+    !loginGithubPopup ||
+    !loginGithubRedirect ||
+    !handleRedirectResult
+  ) {
     throw new Error('login handlers are required');
   }
 
@@ -19,29 +35,51 @@ export function initLoginPage({
     statusElement.dataset.tone = tone;
   };
 
-  popupButton.addEventListener('click', () => {
-    setStatus('Popup-login gestart...', 'pending');
-    return loginGooglePopup()
+  const formatUserLabel = (user) => user?.displayName || user?.email || 'gebruiker';
+
+  const handleLogin = (promise, errorMessage) =>
+    promise
       .then((user) => {
-        const label = user?.displayName || user?.email || 'gebruiker';
-        setStatus(`Ingelogd als ${label}.`, 'success');
+        if (user) {
+          setStatus(`Ingelogd als ${formatUserLabel(user)}.`, 'success');
+        }
       })
       .catch(() => {
-        setStatus('Popup-login mislukt. Gebruik de redirect-flow.', 'error');
+        setStatus(errorMessage, 'error');
       });
+
+  googlePopupButton.addEventListener('click', () => {
+    setStatus('Google popup-login gestart...', 'pending');
+    return handleLogin(loginGooglePopup(), 'Google popup-login mislukt. Gebruik redirect.');
   });
 
-  redirectButton.addEventListener('click', () => {
-    setStatus('Redirect-login gestart...', 'pending');
+  googleRedirectButton.addEventListener('click', () => {
+    setStatus('Google redirect-login gestart...', 'pending');
     return loginGoogleRedirect().catch(() => {
-      setStatus('Redirect-login mislukt. Controleer je browserinstellingen.', 'error');
+      setStatus('Google redirect-login mislukt. Controleer je browserinstellingen.', 'error');
+    });
+  });
+
+  githubPopupButton.addEventListener('click', () => {
+    setStatus('GitHub popup-login gestart...', 'pending');
+    return handleLogin(loginGithubPopup(), 'GitHub popup-login mislukt. Gebruik redirect.');
+  });
+
+  githubRedirectButton.addEventListener('click', () => {
+    setStatus('GitHub redirect-login gestart...', 'pending');
+    return loginGithubRedirect().catch(() => {
+      setStatus('GitHub redirect-login mislukt. Controleer je browserinstellingen.', 'error');
     });
   });
 
   return handleRedirectResult().then((result) => {
     if (result?.user) {
-      const label = result.user.displayName || result.user.email || 'gebruiker';
-      setStatus(`Ingelogd als ${label}.`, 'success');
+      setStatus(`Ingelogd als ${formatUserLabel(result.user)}.`, 'success');
+      return;
+    }
+
+    if (result?.error) {
+      setStatus('Redirect-login mislukt. Controleer de Firebase OAuth-instellingen.', 'error');
     }
   });
 }

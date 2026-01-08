@@ -21,12 +21,24 @@ module_js: true
     </header>
 
     <div class="login-actions">
-      <button class="login-action login-action--primary" type="button" data-login-popup>
-        Login met Google (popup)
-      </button>
-      <button class="login-action login-action--ghost" type="button" data-login-redirect>
-        Login met Google (redirect)
-      </button>
+      <div class="login-actions__group">
+        <p class="login-actions__label">Google</p>
+        <button class="login-action login-action--primary" type="button" data-login-google-popup>
+          Login met Google (popup)
+        </button>
+        <button class="login-action login-action--ghost" type="button" data-login-google-redirect>
+          Login met Google (redirect)
+        </button>
+      </div>
+      <div class="login-actions__group">
+        <p class="login-actions__label">GitHub</p>
+        <button class="login-action login-action--primary" type="button" data-login-github-popup>
+          Login met GitHub (popup)
+        </button>
+        <button class="login-action login-action--ghost" type="button" data-login-github-redirect>
+          Login met GitHub (redirect)
+        </button>
+      </div>
     </div>
 
     <p class="login-status" role="status" aria-live="polite" data-login-status></p>
