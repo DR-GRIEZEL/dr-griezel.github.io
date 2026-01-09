@@ -172,6 +172,10 @@ module_js: true
 
 ## ✅ TODO
 
+- **Login:**
+  - [ ] Automatically assign gmail/github accounts to discord (user_id, username, profile picture, ...) -> via Discord API (in-website or in-app)
+  - [ ] User settings page
+
 - **Scalability:**
   - [ ] Scan API for frontpage metadata, pull blog content upon clicking link
   - [ ] Create post -> Send data via API -> Store .md files externally
