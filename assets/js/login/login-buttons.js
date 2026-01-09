@@ -6,6 +6,7 @@ import {
   signInWithPopup,
   signInWithRedirect,
   getRedirectResult,
+  onAuthStateChanged,
 } from 'https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js';
 import { createAuthHandlers } from './auth.js';
 import { initLoginButtons } from './buttons-init.js';
@@ -16,6 +17,8 @@ const googleClientId = '78150871126-imnoi25btctc85q56hou7fm3ecs04kp9.apps.google
 const googleButton = document.querySelector('[data-auth-google]');
 const githubButton = document.querySelector('[data-auth-github]');
 const statusElement = document.querySelector('[data-auth-status]');
+const userElement = document.querySelector('[user-auth-user]');
+const buttonsGroup = googleButton?.closest('.auth-buttons__group') ?? null;
 
 const isConfigReady = isFirebaseConfigReady();
 
@@ -28,6 +31,25 @@ if (!isConfigReady) {
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
   auth.useDeviceLanguage();
+
+  // Toggle UI on auth state
+  const formatUserLabel = (user) => user?.displayName || user?.email || 'gebruiker';
+
+  onAuthStateChanged(auth, (user) => {
+    const loggedIn = Boolean(user);
+
+    if (buttonsGroup) buttonsGroup.hidden = loggedIn;
+    if (userElement) {
+      userElement.hidden = !loggedIn;
+      userElement.textContent = loggedIn ? formatUserLabel(user) : '';
+    }
+
+    // Only show status on error
+    if (loggedIn) {
+      statusElement.textContent = '';
+      statusElement.dataset.tone = '';
+    }
+  });
 
   const {
     loginGooglePopup,
