@@ -1,7 +1,5 @@
 # dr-griezel.github.io
 
-#### Dashboard built with Jekyll layouts and vanilla HTML/CSS/JS.
-
 ## 📌 Framework overview
 
 - **Jekyll (static site generator)**: Markdown/HTML pages are compiled with layouts and includes.
