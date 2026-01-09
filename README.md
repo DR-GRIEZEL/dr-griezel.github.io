@@ -168,11 +168,16 @@ module_js: true
    ---
    ```
 3. Add post content below front matter.
-4. Images should be in `assets/images/blog`.
+4. Images should be in `assets/images/blog`. (Temporarily -- see TODO)
 
 ## ✅ TODO
 
-- On-site blog creator with login protection
+Scalability
+Scan API for frontpage metadata, pull blog content upon clicking link
+Create post -> Send data via API -> Store .md files externally
+Drop image self-hosting entirely if API usage increases too much (Try compression first)
+
+- On-site blog creator with login protection 
   - upon file editor creation, force tag selection to make sure files are always categorised.
   - Filter tags based directory: `blog/{tag}/` -> add filter menu displaying all available tags.
   - seperate cover images from blog images; `{tag}/images/covers/`
