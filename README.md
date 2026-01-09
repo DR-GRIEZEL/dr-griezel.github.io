@@ -1,4 +1,4 @@
-<center># dr-griezel.github.io</center>
+# [dr-griezel.github.io](https:.//dr-griezel.github.io)
 
 ## 📌 Framework overview
 
@@ -112,7 +112,7 @@ Run the unit tests (Vitest is configured to emit coverage):
 npm test
 ```
 
-## 3. After setup (TODO: make annotations consistent)
+## 3. After setup (TODO: make annotations consistent, double quotes for non-coders)
 
 ### Add new pages
 
@@ -172,25 +172,25 @@ module_js: true
 
 ## ✅ TODO
 
-- Scalability
-  - Scan API for frontpage metadata, pull blog content upon clicking link
-  - Create post -> Send data via API -> Store .md files externally
-  - Drop image self-hosting entirely if API usage increases too much (Try compression first)
+- **Scalability:**
+  - [ ] Scan API for frontpage metadata, pull blog content upon clicking link
+  - [ ] Create post -> Send data via API -> Store .md files externally
+  - [ ] Drop image self-hosting entirely if API usage increases too much (Try compression first)
 
-- On-site blog creator with login protection 
-  - upon file editor creation, force tag selection to make sure files are always categorised.
-  - Filter tags based directory: `blog/{tag}/` -> add filter menu displaying all available tags.
-  - seperate cover images from blog images; `{tag}/images/covers/`
-  - put website metadata images inside /assets/img/
+- **On-site blog creator with login protection**
+  - [ ] upon file editor creation, force tag selection to make sure files are always categorised.
+  - [ ] Filter tags based directory: `blog/{tag}/` -> add filter menu displaying all available tags.
+  - [ ] seperate cover images from blog images; `{tag}/images/covers/`
+  - [ ] put website metadata images inside /assets/img/
 
-- Easy of use for non-coders:
-  - put ALL code inside a `/src` folder.
-  - create `/config` folder -> check if _config.yml can read from root + put configurable images inside `config/images/`
-  - keep only /blog/ and /test/ folder inside root (besides /src)
+- **Easy of use for non-coders:**
+  - [ ] put ALL code inside a `/src` folder.
+  - [ ] create `/config` folder -> check if _config.yml can read from root + put configurable images inside `config/images/`
+  - [ ] keep only /blog/ and /test/ folder inside root (besides /src)
  
-  - prefab css stylings (per user themes)
+  - [ ] prefab css stylings (per user themes)
 
-- General fixes & features:
-  - Harden Firebase security rules and add login flow tests.
-  - Add service worker caching for offline widget data.
-  - Add RSS/Atom feed for blog posts.
+- **General fixes & features:**
+  - [ ] Harden Firebase security rules and add login flow tests.
+  - [ ] Add service worker caching for offline widget data.
+  - [ ] Add RSS/Atom feed for blog posts.
