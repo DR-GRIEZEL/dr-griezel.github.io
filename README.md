@@ -1,4 +1,4 @@
-# dr-griezel.github.io
+<center># dr-griezel.github.io</center>
 
 ## 📌 Framework overview
 
@@ -172,10 +172,10 @@ module_js: true
 
 ## ✅ TODO
 
-Scalability
-Scan API for frontpage metadata, pull blog content upon clicking link
-Create post -> Send data via API -> Store .md files externally
-Drop image self-hosting entirely if API usage increases too much (Try compression first)
+- Scalability
+  - Scan API for frontpage metadata, pull blog content upon clicking link
+  - Create post -> Send data via API -> Store .md files externally
+  - Drop image self-hosting entirely if API usage increases too much (Try compression first)
 
 - On-site blog creator with login protection 
   - upon file editor creation, force tag selection to make sure files are always categorised.
@@ -187,6 +187,8 @@ Drop image self-hosting entirely if API usage increases too much (Try compressio
   - put ALL code inside a `/src` folder.
   - create `/config` folder -> check if _config.yml can read from root + put configurable images inside `config/images/`
   - keep only /blog/ and /test/ folder inside root (besides /src)
+ 
+  - prefab css stylings (per user themes)
 
 - General fixes & features:
   - Harden Firebase security rules and add login flow tests.
