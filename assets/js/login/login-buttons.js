@@ -20,6 +20,12 @@ const statusElement = document.querySelector('[data-auth-status]');
 const userElement = document.querySelector('[user-auth-user]');
 const buttonsGroup = googleButton?.closest('.auth-buttons__group') ?? null;
 
+// Toggle visibility of elements based on auth state
+const authOnly = document.querySelectorAll("[data-auth-only]");
+const loggedOut = document.querySelectorAll("[data-auth-logged-out]");
+const userSlots = document.querySelectorAll("[data-auth-user]");
+
+// Setup
 const isConfigReady = isFirebaseConfigReady();
 
 if (!isConfigReady) {
@@ -38,6 +44,7 @@ if (!isConfigReady) {
   onAuthStateChanged(auth, (user) => {
     const loggedIn = Boolean(user);
 
+    // Hide buttons on login
     if (buttonsGroup) buttonsGroup.hidden = loggedIn;
     if (userElement) {
       userElement.hidden = !loggedIn;
@@ -49,6 +56,14 @@ if (!isConfigReady) {
       statusElement.textContent = '';
       statusElement.dataset.tone = '';
     }
+
+    // Show hidden data
+    authOnly.forEach((el) => (el.hidden = !loggedIn));
+    loggedOut.forEach((el) => (el.hidden = loggedIn));
+
+    userSlots.forEach((el) => {
+      if (loggedIn) el.textcontent = formatUserLabel(user);
+    });
   });
 
   const {

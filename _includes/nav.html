@@ -10,7 +10,7 @@
     {% include navbar-pages.html nav_root="html/nav/" %}
 
     <div class="sidebar-auth" aria-label="Login">
-      <div class="auth-buttons__group" role="group" aria-label="Login opties">
+      <div class="auth-buttons__group" role="group" aria-label="Login opties" data-auth-logged-out>
         <button class="auth-button auth-button--github" type="button" data-auth-github>
           GitHub
         </button>
@@ -19,7 +19,7 @@
         </button>
       </div>
       <span class="auth-user" data-auth-user hidden></span>
-      <span class="auth-status" role="status" aria-live="polite" data-auth-status></span>
+      <span class="auth-status" role="status" aria-live="polite" data-auth-logged-out data-auth-status></span>
     </div>
 
   </nav>

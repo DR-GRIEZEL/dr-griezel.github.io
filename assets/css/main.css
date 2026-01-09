@@ -267,16 +267,18 @@ body::before {
   box-shadow: 0 10px 22px rgba(0, 0, 0, 0.25);
 }
 
-.auth-status {
+.auth-status,
+.auth-user {
   font-size: 0.75rem;
   color: var(--muted);
   text-align: center;
-  min-height: 1em;
   display: block;
   width: 100%;
-  max-width: 360px;
+  max-width: 72px;
   margin: 0;
 }
+.auth-status { min-height: 1em; }
+
 .auth-status[data-tone='success'] {
   color: #5dffb8;
 }
@@ -284,19 +286,9 @@ body::before {
   color: #ff7b7b;
 }
 
-.auth-user {
-  font-size: 0.75rem;
-  color: var(--muted);
-  text-align: center;
-  display: block;
-  width: 100%;
-  max-width: 360px;
-  margin: 0;
-}
-
 /* Sidebar auth placement */
 .sidebar-auth {
-  margin-top: auto;        /* duwt auth naar onder in de sidebar */
+  margin-top: auto;        /* Places login buttons under navlinks */
   display: grid;
   gap: 10px;
   padding-top: 10px;
@@ -308,13 +300,13 @@ body::before {
 }
 
 .sidebar-auth .auth-button {
-  flex: 1 1 auto;          /* buttons vullen de pill netjes */
+  flex: 1 1 auto;
   text-align: center;
 }
 
-/* Optioneel: in collapsed sidebar verberg status tekst */
+/* HIDE LOGIN BUTTONS ON FOLD */
 body.sidebar-collapsed .sidebar-auth .auth-status {
-  display: none;
+  display: none !important;
 }
 
 
