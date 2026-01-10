@@ -8,6 +8,7 @@
 ![Last commit](https://img.shields.io/github/last-commit/DR-GRIEZEL/dr-griezel.github.io?style=for-the-badge)
 ![Commits since tag](https://img.shields.io/github/commits-since/DR-GRIEZEL/dr-griezel.github.io/v1.0.0?style=for-the-badge)
 ![Repo size](https://img.shields.io/github/repo-size/DR-GRIEZEL/dr-griezel.github.io?style=for-the-badge)
+![Top language](https://img.shields.io/github/languages/top/DR-GRIEZEL/dr-griezel.github.io?style=for-the-badge)
 ![License](https://img.shields.io/github/license/DR-GRIEZEL/dr-griezel.github.io?style=for-the-badge)
 
 ## Quality Control
@@ -15,9 +16,15 @@
 ![CI](https://img.shields.io/github/actions/workflow/status/DR-GRIEZEL/dr-griezel.github.io/codeql.yml?style=for-the-badge)
 ![CI](https://img.shields.io/github/actions/workflow/status/DR-GRIEZEL/dr-griezel.github.io/ci.yml?style=for-the-badge)
 
+[📈 Coverage report](https://dr-griezel.github.io/dr-griezel.github.io/coverage/)
+
 ## Releases
 
 ![Release](https://img.shields.io/github/v/release/DR-GRIEZEL/dr-griezel.github.io?style=for-the-badge)
+
+## Special thanks to
+
+![Contributors](https://img.shields.io/github/contributors/DR-GRIEZEL/dr-griezel.github.io?style=for-the-badge)
 
 ---
 
@@ -205,6 +212,8 @@ module_js: true
   - [-] User settings page
 
 - **On-site blog creator with login protection**
+
+>Current tags: 🧠 Models, ⚙️ Systems, 🧪 Labs, 🔐 Security, 📈 Markets
 
   - [ ] Scan API for frontpage metadata, pull blog content upon clicking link
   - [ ] Create post (title, desc frontmatter fields, choose from preset tags (emoji) ( category/folder, body = textbox) -> ~~Send data via API~~ (Store .md files internally for now)
