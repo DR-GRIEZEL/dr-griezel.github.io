@@ -2,6 +2,7 @@
   {%- assign icon_colors = "#38ff98,#ff8d6b,#7a9bff,#ff7ad9,#6ee7f0,#ffd76b" | split: "," -%}
   {%- assign nav_pages = site.pages
     | where_exp: "p", "p.path contains 'html/nav/'"
+    | where_exp: "p", "p.nav_hidden != true"
     | sort: "nav_order"
   -%}
 
@@ -22,7 +23,10 @@
   {%- endfor -%}
   <!-- Alleen zichtbaar als ingelogd -->
   <li data-auth-only hidden>
-    <a href="{{ '/dashboard.html' | relative_url }}">
+
+    <hr> // Add seperator first, only when logged in
+
+    <a href="{{ '/dashboard/' | relative_url }}">
       <span class="nav-icon" style="--icon-color: var(--accent);">
         <svg viewBox="0 0 24 24" aria-hidden="true">
           <path d="M4 13h7V4H4v9Zm9 7h7V11h-7v9ZM4 20h7v-5H4v5Zm9-11h7V4h-7v5Z"/>
@@ -33,7 +37,7 @@
   </li>
 
   <li data-auth-only hidden>
-    <a href="{{ '/settings.html' | relative_url }}">
+    <a href="{{ '/settings/' | relative_url }}">
       <span class="nav-icon" style="--icon-color: var(--accent);">
         <svg viewBox="0 0 24 24" aria-hidden="true">
           <path d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4Zm0 2c-4.42 0-8 2-8 4v2h16v-2c0-2-3.58-4-8-4Z"/>

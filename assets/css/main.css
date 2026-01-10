@@ -304,6 +304,11 @@ body::before {
   text-align: center;
 }
 
+/* Hide when logged in */
+.sidebar-auth .auth-button [data-auth-only] {
+  display: none !important;
+}
+
 /* HIDE LOGIN BUTTONS ON FOLD */
 body.sidebar-collapsed .sidebar-auth .auth-status {
   display: none !important;
