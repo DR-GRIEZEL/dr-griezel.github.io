@@ -175,8 +175,8 @@ module_js: true
 ## ✅ TODO
 
 - **Login:**
-  - [ ] Add verification method after auth to access data: automatically assign gmail/github accounts to discord (user_id, username, profile picture, ...) -> via Discord API: 1. in-app (creating manual registration function) 2. (preferred) use discord in-website auth login instead.
-  - [ ] User settings page
+  - [ ] Add verification method after auth to access data: automatically assign gmail/github accounts to discord (user_id, username, profile picture, ...) -> via Discord API: 1. in-app (creating manual registration command which generates a one-time code (copy code or generate encrypted URL?) every session)
+  - [-] User settings page
 
 - **On-site blog creator with login protection**
 
