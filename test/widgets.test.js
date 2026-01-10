@@ -54,6 +54,11 @@ describe("widget helpers", () => {
     expect(getHourlyIndex(times, date, "UTC")).toBe(-1);
   });
 
+  it("returns -1 when hourly times is not an array", () => {
+    const date = new Date("2024-01-01T12:34:00Z");
+    expect(getHourlyIndex(null, date, "UTC")).toBe(-1);
+  });
+
   it("builds a weather summary", () => {
     const data = {
       current: {
@@ -97,6 +102,17 @@ describe("widget helpers", () => {
     expect(summary.description).toBe(weatherCodeMap[1]);
   });
 
+  it("falls back to a default weather description for unknown codes", () => {
+    const data = {
+      current: {
+        weather_code: 999
+      }
+    };
+    const summary = getWeatherSummary(data, "UTC", new Date("2024-01-01T12:10:00Z"));
+
+    expect(summary.description).toBe("Weer");
+  });
+
   it("resolves a location name from reverse geocoding", async () => {
     const fetchMock = vi.fn().mockResolvedValue({
       ok: true,
@@ -119,10 +135,24 @@ describe("widget helpers", () => {
     await expect(getLocationName(1, 2)).rejects.toThrow("No reverse geocode results");
   });
 
+  it("throws when reverse geocoding fails with a non-ok response", async () => {
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: false,
+      status: 500
+    });
+    vi.stubGlobal("fetch", fetchMock);
+
+    await expect(getLocationName(1, 2)).rejects.toThrow("Reverse geocode failed: 500");
+  });
+
   it("sets rotation CSS custom property", () => {
     const style = { setProperty: vi.fn() };
     setRotation({ style }, 45);
     expect(style.setProperty).toHaveBeenCalledWith("--rotation", "45deg");
+  });
+
+  it("ignores rotation updates when no element is provided", () => {
+    expect(() => setRotation(null, 90)).not.toThrow();
   });
 
   it("builds a reverse geocode URL with query params", () => {
@@ -146,6 +176,15 @@ describe("widget helpers", () => {
 
   it("rejects when geolocation is unsupported", async () => {
     await expect(getBrowserCoords()).rejects.toThrow("Geolocation unsupported");
+  });
+
+  it("rejects when geolocation fails", async () => {
+    const failure = new Error("denied");
+    const getCurrentPosition = vi.fn((_, onError) => onError(failure));
+    vi.stubGlobal("navigator", { geolocation: { getCurrentPosition } });
+
+    await expect(getBrowserCoords()).rejects.toBe(failure);
+    expect(getCurrentPosition).toHaveBeenCalledTimes(1);
   });
 
   it("updates a clock widget with time and hand rotations", () => {
@@ -285,6 +324,110 @@ describe("widget helpers", () => {
     await flushPromises(4);
 
     expect(descEl.textContent).toBe("Weer: fout bij ophalen.");
+
+    widget.isConnected = false;
+    vi.runOnlyPendingTimers();
+    vi.useRealTimers();
+  });
+
+  it("initializes a weather widget from geolocation", async () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2024-01-01T03:00:00Z"));
+
+    const getCurrentPosition = vi.fn((success) =>
+      success({ coords: { latitude: 51.05, longitude: 3.72 } })
+    );
+    vi.stubGlobal("navigator", { geolocation: { getCurrentPosition } });
+
+    const fetchMock = vi.fn((request) => {
+      const url = String(request);
+      if (url.includes("geocoding-api.open-meteo.com")) {
+        return {
+          ok: true,
+          json: () => ({ results: [{ name: "Ghent" }] })
+        };
+      }
+      return {
+        ok: true,
+        json: () => ({
+          current: {
+            temperature_2m: 9,
+            apparent_temperature: 7,
+            precipitation: 0,
+            weather_code: 2,
+            wind_speed_10m: 4,
+            wind_direction_10m: 150,
+            relative_humidity_2m: 60
+          },
+          hourly: {
+            time: ["2024-01-01T03:00"],
+            precipitation_probability: [25]
+          }
+        })
+      };
+    });
+    vi.stubGlobal("fetch", fetchMock);
+
+    const locationEl = { textContent: "" };
+    const widget = {
+      dataset: { widgetTz: "UTC", widgetRefresh: "10" },
+      isConnected: true,
+      querySelector: (selector) => (selector === "[data-wx-location]" ? locationEl : null)
+    };
+
+    initWeatherWidget(widget);
+    await flushPromises(6);
+
+    expect(locationEl.textContent).toBe("Ghent");
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+    expect(String(fetchMock.mock.calls[0][0])).toContain("geocoding-api.open-meteo.com");
+    expect(String(fetchMock.mock.calls[1][0])).toContain("latitude=51.05");
+    expect(String(fetchMock.mock.calls[1][0])).toContain("longitude=3.72");
+
+    widget.isConnected = false;
+    vi.runOnlyPendingTimers();
+    vi.useRealTimers();
+  });
+
+  it("falls back to default coords when geolocation fails", async () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2024-01-01T03:00:00Z"));
+    vi.stubGlobal("navigator", {});
+
+    const fetchMock = vi.fn(() => ({
+      ok: true,
+      json: () => ({
+        current: {
+          temperature_2m: 9,
+          apparent_temperature: 7,
+          precipitation: 0,
+          weather_code: 2,
+          wind_speed_10m: 4,
+          wind_direction_10m: 150,
+          relative_humidity_2m: 60
+        },
+        hourly: {
+          time: ["2024-01-01T03:00"],
+          precipitation_probability: [25]
+        }
+      })
+    }));
+    vi.stubGlobal("fetch", fetchMock);
+
+    const locationEl = { textContent: "" };
+    const widget = {
+      dataset: { widgetTz: "UTC", widgetRefresh: "10" },
+      isConnected: true,
+      querySelector: (selector) => (selector === "[data-wx-location]" ? locationEl : null)
+    };
+
+    initWeatherWidget(widget);
+    await flushPromises(4);
+
+    expect(locationEl.textContent).toBe("Brussel");
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    expect(String(fetchMock.mock.calls[0][0])).toContain("latitude=50.8503");
+    expect(String(fetchMock.mock.calls[0][0])).toContain("longitude=4.3517");
 
     widget.isConnected = false;
     vi.runOnlyPendingTimers();
