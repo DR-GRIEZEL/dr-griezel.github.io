@@ -227,72 +227,55 @@ body::before {
 
 /* AUTH BUTTONS */
 
-.google-logo { display: block; }
-.google-logo--large { display: none; }
-
-@media (min-width: 520px) {
-  .google-logo--small { display: none; }
-  .google-logo--large { display: block; }
-}
-
 .auth-buttons__group {
   display: inline-flex;
-  gap: 6px;
-  padding: 6px;
-  background: color-mix(in oklab, var(--card) 85%, transparent);
-  border: 1px solid var(--border-strong);
-  border-radius: 999px;
-  box-shadow: var(--shadow);
-}
-.auth-button {
-  border: 1px solid var(--border-strong);
-  border-radius: 999px;
-  padding: 6px 10px;
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  cursor: pointer;
-  background: transparent;
-  color: var(--text);
-  transition:
-    transform 0.15s ease,
-    border-color 0.15s ease,
-    box-shadow 0.15s ease;
-}
-.auth-button--google {
-  background: linear-gradient(120deg, #3bff9a, #1dff81 60%, #7effc0);
-  color: #04140a;
-  border-color: transparent;
-}
-.auth-button--github {
-  background: linear-gradient(120deg, #0f172a, #1f2937);
-  color: #e2e8f0;
-  border-color: transparent;
-}
-.auth-button:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.25);
-}
-
-.auth-status,
-.auth-user {
-  font-size: 0.75rem;
-  color: var(--muted);
-  text-align: center;
-  display: block;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
   width: 100%;
-  max-width: 72px;
-  margin: 0;
 }
-.auth-status { min-height: 1em; }
+.auth-icon-btn {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  padding: 6px;
+  border-radius: 10px;
+  cursor: pointer;
+  line-height: 0; /* prevents extra vertical space */
+}
 
-.auth-status[data-tone='success'] {
-  color: #5dffb8;
+/* Icon sizing */
+.auth-icon-btn img,
+.auth-icon-btn svg {
+  width: 18px;
+  height: 18px;
+  display: block;
 }
-.auth-status[data-tone='error'] {
-  color: #ff7b7b;
+
+/* Simple hover effect (works for img or inline svg) */
+.auth-icon-btn:hover {
+  transform: translateY(-1px);
 }
+.auth-icon-btn:hover img,
+.auth-icon-btn:hover svg {
+  filter: drop-shadow(0 8px 14px rgba(0, 0, 0, 0.25));
+}
+
+/* keyboard focus ring */
+.auth-icon-btn:focus-visible {
+  outline: 2px solid color-mix(in oklab, var(--accent) 70%, transparent);
+  outline-offset: 2px;
+}
+
+/* Switch small/large on sidebar fold */
+.google-logo--small { display: none; }
+.google-logo--large { display: block; }
+
+body.sidebar-collapsed .google-logo--small { display: block; }
+body.sidebar-collapsed .google-logo--large { display: none; }
+
+body.sidebar-collapsed .logout-logo--small { display: block; }
+body.sidebar-collapsed .logout-logo--large { display: none; }
 
 /* Sidebar auth placement */
 .sidebar-auth {
@@ -302,24 +285,20 @@ body::before {
   padding-top: 10px;
 }
 
-.sidebar-auth .auth-buttons__group {
-  justify-content: center;
-  width: 100%;
-}
-
-.sidebar-auth .auth-button {
-  flex: 1 1 auto;
+.auth-status,
+.auth-user {
+  font-size: 0.75rem;
+  color: var(--muted);
   text-align: center;
+  margin: 0;
 }
+.auth-status { min-height: 1em; }
 
-/* Hide when logged in */
-.sidebar-auth .auth-button [data-auth-only] {
-  display: none !important;
+.auth-status[data-tone='success'] {
+  color: #5dffb8;
 }
-
-/* HIDE LOGIN BUTTONS ON FOLD */
-body.sidebar-collapsed .sidebar-auth .auth-status {
-  display: none !important;
+.auth-status[data-tone='error'] {
+  color: #ff7b7b;
 }
 
 

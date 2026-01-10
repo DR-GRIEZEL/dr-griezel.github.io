@@ -11,6 +11,7 @@ import {
 import { createAuthHandlers } from './auth.js';
 import { initLoginButtons } from './buttons-init.js';
 import { firebaseConfig, isFirebaseConfigReady } from './firebase-config.js';
+import { signOut } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
 
 const googleClientId = '78150871126-imnoi25btctc85q56hou7fm3ecs04kp9.apps.googleusercontent.com';
 
@@ -33,23 +34,20 @@ if (!isConfigReady) {
     statusElement.textContent = 'Login is nog niet geconfigureerd.';
     statusElement.dataset.tone = 'error';
   }
-} else if (googleButton && githubButton && statusElement) {
+} else if (googleButton && statusElement) { // && gitButton
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
   auth.useDeviceLanguage();
 
   // Toggle UI on auth state
   const formatUserLabel = (user) => user?.displayName || user?.email || 'gebruiker';
+  const logoutBtn = document.querySelector("[data-auth-logout]");
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", () => signOut(auth));
+  }
 
   onAuthStateChanged(auth, (user) => {
     const loggedIn = Boolean(user);
-
-    // Hide buttons on login
-    if (buttonsGroup) buttonsGroup.hidden = loggedIn;
-    if (userElement) {
-      userElement.hidden = !loggedIn;
-      userElement.textContent = loggedIn ? formatUserLabel(user) : '';
-    }
 
     // Only show status on error
     if (loggedIn) {
@@ -57,13 +55,19 @@ if (!isConfigReady) {
       statusElement.dataset.tone = '';
     }
 
-    // Show hidden data
+    // Toggle auth-only / logged-out UI
     authOnly.forEach((el) => (el.hidden = !loggedIn));
     loggedOut.forEach((el) => (el.hidden = loggedIn));
-
+    // Username slots updaten
     userSlots.forEach((el) => {
-      if (loggedIn) el.textcontent = formatUserLabel(user);
+      if (loggedIn) el.textContent = formatUserLabel(user);
+      // if some slots need to hold default text, use different selector for username
     });
+    // (optional) status empty on succes
+    if (loggedIn && statusElement) {
+      statusElement.textContent = '';
+      statusElement.dataset.tone = '';
+    }
   });
 
   const {

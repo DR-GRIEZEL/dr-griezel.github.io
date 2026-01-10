@@ -10,15 +10,17 @@
     {% include navbar-pages.html nav_root="html/nav/" %}
 
     <div class="sidebar-auth" aria-label="Login">
-      <div class="auth-buttons__group" role="group" aria-label="Login opties" data-auth-logged-out>
-        <!--
-        <button class="auth-button auth-button--github" type="button" data-auth-github>
-          GitHub
+      <div class="auth-buttons__group" role="group" aria-label="Login opties">
+        <!-- Logged out -->
+        <button class="auth-icon-btn" type="button" data-auth-logged-out data-auth-google aria-label="Login met Google">
+          <img class="google-logo google-logo--small" src="/assets/img/login/google_small.svg" alt="" decoding="async" />
+          <img class="google-logo google-logo--large" src="/assets/img/login/google_large.svg" alt="" decoding="async" />
         </button>
-        -->
-        <button class="auth-button auth-button--google" type="button" data-auth-google aria-label="Login met Google">
-          <img class="google-logo google-logo--small" src="/assets/img/login/google_small.svg" alt="" width="18" height="18" decoding="async" />
-          <img class="google-logo google-logo--large" src="/assets/img/login/google_large.svg" alt="" width="64" height="18" decoding="async" />
+
+        <!-- Logged in -->
+        <button class="auth-icon-btn" type="button" data-auth-only data-auth-logout aria-label="Logout">
+          <img class="logout-logo logout-logo--small" src="/assets/img/login/logout_small.svg" alt="" decoding="async" />
+          <img class="logout-logo logout-logo--large" src="/assets/img/login/logout_large.svg" alt="" decoding="async" />
         </button>
       </div>
       <span class="auth-user" data-auth-user hidden></span>
