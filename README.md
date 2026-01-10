@@ -191,8 +191,12 @@ module_js: true
   - [ ] Filter tags based directory: `blog/{tag}/` -> add filter menu displaying all available tags.
   - [ ] seperate cover images from blog images; `{tag}/images/covers/`
   - [ ] put website metadata images inside /assets/img/
+
+Not sure, needs more research/refinement:
  
   - [ ] integrate like/comment system (without trackers)
+  - [ ] generate svg based on title/tag (enter title -> generate .svg img -> attach .svg link to frontmatter (requires ChatGPT API)
+  - [ ] Edit existing articles in editor
 
 - **Easy of use for non-coders:**
   - [ ] put ALL code inside a `/src` folder.
