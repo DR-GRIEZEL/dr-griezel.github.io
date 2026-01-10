@@ -268,8 +268,8 @@ body::before {
 }
 
 /* Switch small/large on sidebar fold */
-.google-logo--small { display: none; }
-.google-logo--large { display: block; }
+.google-logo--small { display: none !important; }
+.google-logo--large { display: block !important; }
 
 body.sidebar-collapsed .google-logo--small { display: block; }
 body.sidebar-collapsed .google-logo--large { display: none; }

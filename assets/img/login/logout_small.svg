@@ -1,0 +1,22 @@
+<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background (identiek formaat/stijl als referentie) -->
+  <rect x="0.5" y="0.5" width="39" height="39" rx="19.5" fill="white"></rect>
+  
+  <!-- Icon area: 20x20 @ (10,10) -->
+  <g clip-path="url(#clip0_logout_small)">
+    <!-- Door -->
+    <path d="M13.2 14.2H18.8C19.68 14.2 20.4 14.92 20.4 15.8V24.2C20.4 25.08 19.68 25.8 18.8 25.8H13.2C12.32 25.8 11.6 25.08 11.6 24.2V15.8C11.6 14.92 12.32 14.2 13.2 14.2Z" stroke="#1F1F1F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
+    <!-- Arrow -->
+    <path d="M19.6 20H28.2" stroke="#1F1F1F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
+    <path d="M25.8 17.6L28.2 20L25.8 22.4" stroke="#1F1F1F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
+  </g>
+
+  <!-- Border (identiek) -->
+  <rect x="0.5" y="0.5" width="39" height="39" rx="19.5" stroke="#747775"></rect>
+
+  <defs>
+    <clipPath id="clip0_logout_small">
+      <rect width="20" height="20" fill="white" transform="translate(10 10)"></rect>
+    </clipPath>
+  </defs>
+</svg>
