@@ -173,15 +173,15 @@ module_js: true
 ## ✅ TODO
 
 - **Login:**
-  - [ ] Automatically assign gmail/github accounts to discord (user_id, username, profile picture, ...) -> via Discord API (in-website or in-app)
+  - [ ] Add verification method after auth to access data: automatically assign gmail/github accounts to discord (user_id, username, profile picture, ...) -> via Discord API: 1. in-app (creating manual registration function) 2. (preferred) use discord in-website auth login instead.
   - [ ] User settings page
 
-- **Scalability:**
+- **On-site blog creator with login protection**
+
   - [ ] Scan API for frontpage metadata, pull blog content upon clicking link
   - [ ] Create post -> Send data via API -> Store .md files externally
   - [ ] Drop image self-hosting entirely if API usage increases too much (Try compression first)
 
-- **On-site blog creator with login protection**
   - [ ] upon file editor creation, force tag selection to make sure files are always categorised.
   - [ ] Filter tags based directory: `blog/{tag}/` -> add filter menu displaying all available tags.
   - [ ] seperate cover images from blog images; `{tag}/images/covers/`
