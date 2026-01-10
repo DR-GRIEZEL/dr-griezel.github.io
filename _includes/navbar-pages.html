@@ -1,8 +1,11 @@
 <ul>
+
+  <hr>
+
   {%- assign icon_colors = "#38ff98,#ff8d6b,#7a9bff,#ff7ad9,#6ee7f0,#ffd76b" | split: "," -%}
   {%- assign nav_pages = site.pages
     | where_exp: "p", "p.path contains 'html/nav/'"
-    | where_exp: "p", "p.nav_hidden != true"
+    | where_exp: "p", "p.req_login != true"
     | sort: "nav_order"
   -%}
 

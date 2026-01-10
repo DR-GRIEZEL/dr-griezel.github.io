@@ -144,7 +144,7 @@ module_js: true
   layout: base
   title: 'My Widget'
   summary: 'A custom widget.'
-  image: '/assets/images/widgets/my-widget.svg'
+  image: '/assets/imgwidgets/my-widget.svg'
   css:
     - /assets/css/main.css
     - /assets/css/dash.css
@@ -165,12 +165,12 @@ module_js: true
    subtitle: 'Post subtitle'
    css:
      - /assets/css/main.css
-   image: '/assets/images/blog/your-image.svg'
+   image: '/assets/imgblog/your-image.svg'
    date: 2024-01-12
    ---
    ```
 3. Add post content below front matter.
-4. Images should be in `assets/images/blog`. (Temporarily -- see TODO)
+4. Images should be in `assets/imgblog`. (Temporarily -- see TODO)
 
 ## ✅ TODO
 

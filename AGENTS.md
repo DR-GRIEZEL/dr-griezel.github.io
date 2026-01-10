@@ -5,7 +5,7 @@ Keep the site stable and easy to change without breaking the framework.
 
 ## Safe-edit rules
 1. **Edit content, not structure.**
-   - ✅ Safe: change text, images, links, colors in `assets/css/` and `assets/images/`.
+   - ✅ Safe: change text, images, links, colors in `assets/css/` and `assets/img`.
    - ✅ Safe: add new pages in `html/nav/`.
    - ⚠️ Be careful: files in `_layouts/`, `_includes/`, and `_config.yml`.
 2. **One change at a time.** Make a small change, test, then move on.

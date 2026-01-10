@@ -2,7 +2,7 @@
 layout: base
 title: 'Pomodoro Widget'
 summary: 'Focus-timer met pauzes, status en voortgangsbalk.'
-image: '/assets/images/widgets/pomodoro.svg'
+image: '/assets/imgwidgets/pomodoro.svg'
 css:
   - /assets/css/main.css
   - /assets/css/dash.css

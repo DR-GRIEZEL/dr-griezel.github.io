@@ -227,6 +227,14 @@ body::before {
 
 /* AUTH BUTTONS */
 
+.google-logo { display: block; }
+.google-logo--large { display: none; }
+
+@media (min-width: 520px) {
+  .google-logo--small { display: none; }
+  .google-logo--large { display: block; }
+}
+
 .auth-buttons__group {
   display: inline-flex;
   gap: 6px;
@@ -350,7 +358,7 @@ body.sidebar-collapsed .sidebar-arrow {
   position: relative;
 }
 .hero-banner {
-  background-image: url('/assets/images/banner.svg');
+  background-image: url('/assets/imgbanner.svg');
   background-size: cover;
   background-position: center;
   border-bottom: 1px solid var(--border-strong);
