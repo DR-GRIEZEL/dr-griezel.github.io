@@ -83,7 +83,7 @@ body::before {
   z-index: 0;
 }
 
-.osrs-headbang {
+.mascot_overlay {
   position: fixed;
   top: 12px;
   right: 12px;
@@ -94,11 +94,11 @@ body::before {
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' fill='none'/><circle cx='32' cy='28' r='16' fill='rgb(198,140,76)'/><rect x='16' y='12' width='32' height='10' fill='rgb(56,40,20)'/><rect x='18' y='22' width='10' height='4' fill='rgb(56,40,20)'/><rect x='26' y='26' width='4' height='4' fill='rgb(0,0,0)'/><rect x='34' y='26' width='4' height='4' fill='rgb(0,0,0)'/><rect x='28' y='34' width='8' height='2' fill='rgb(80,30,30)'/><line x1='10' y1='30' x2='4' y2='24' stroke='rgb(255,255,255)' stroke-width='2'/><line x1='54' y1='30' x2='60' y2='24' stroke='rgb(255,255,255)' stroke-width='2'/></svg>");
   background-size: contain;
   background-repeat: no-repeat;
-  animation: osrs-headbang 0.4s infinite alternate ease-in-out;
+  animation: mascot_overlay 0.4s infinite alternate ease-in-out;
   transform-origin: 50% 60%;
 }
 
-@keyframes osrs-headbang {
+@keyframes mascot_overlay {
   0% {
     transform: rotate(-8deg);
   }
@@ -224,69 +224,83 @@ body::before {
   outline: none;
   box-shadow: 0 0 0 4px var(--ring);
 }
+
+/* AUTH BUTTONS */
+
 .auth-buttons__group {
   display: inline-flex;
-  gap: 6px;
-  padding: 6px;
-  background: color-mix(in oklab, var(--card) 85%, transparent);
-  border: 1px solid var(--border-strong);
-  border-radius: 999px;
-  box-shadow: var(--shadow);
-}
-.auth-button {
-  border: 1px solid var(--border-strong);
-  border-radius: 999px;
-  padding: 6px 10px;
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  cursor: pointer;
-  background: transparent;
-  color: var(--text);
-  transition:
-    transform 0.15s ease,
-    border-color 0.15s ease,
-    box-shadow 0.15s ease;
-}
-.auth-button--google {
-  background: linear-gradient(120deg, #3bff9a, #1dff81 60%, #7effc0);
-  color: #04140a;
-  border-color: transparent;
-}
-.auth-button--github {
-  background: linear-gradient(120deg, #0f172a, #1f2937);
-  color: #e2e8f0;
-  border-color: transparent;
-}
-.auth-button:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.25);
-}
-.footer-auth {
-  width: min(100%, 360px);
-  margin-inline: auto;
-  display: flex;
-  flex-direction: column;
+  gap: 8px;
   align-items: center;
-  gap: 6px;
+  justify-content: center;
+  width: 100%;
 }
-.auth-status {
+.auth-icon-btn {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  padding: 6px;
+  border-radius: 10px;
+  cursor: pointer;
+  line-height: 0; /* prevents extra vertical space */
+}
+
+/* Icon sizing */
+.auth-icon-btn img,
+.auth-icon-btn svg {
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+
+/* Simple hover effect (works for img or inline svg) */
+.auth-icon-btn:hover {
+  transform: translateY(-1px);
+}
+.auth-icon-btn:hover img,
+.auth-icon-btn:hover svg {
+  filter: drop-shadow(0 8px 14px rgba(0, 0, 0, 0.25));
+}
+
+/* keyboard focus ring */
+.auth-icon-btn:focus-visible {
+  outline: 2px solid color-mix(in oklab, var(--accent) 70%, transparent);
+  outline-offset: 2px;
+}
+
+/* Switch small/large on sidebar fold */
+.google-logo--small { display: none !important; }
+.google-logo--large { display: block !important; }
+
+body.sidebar-collapsed .google-logo--small { display: block; }
+body.sidebar-collapsed .google-logo--large { display: none; }
+
+body.sidebar-collapsed .logout-logo--small { display: block; }
+body.sidebar-collapsed .logout-logo--large { display: none; }
+
+/* Sidebar auth placement */
+.sidebar-auth {
+  margin-top: auto;        /* Places login buttons under navlinks */
+  display: grid;
+  gap: 10px;
+  padding-top: 10px;
+}
+
+.auth-status,
+.auth-user {
   font-size: 0.75rem;
   color: var(--muted);
   text-align: center;
-  min-height: 1em;
-  display: block;
-  width: 100%;
-  max-width: 360px;
   margin: 0;
 }
+.auth-status { min-height: 1em; }
+
 .auth-status[data-tone='success'] {
   color: #5dffb8;
 }
 .auth-status[data-tone='error'] {
   color: #ff7b7b;
 }
+
 
 body.sidebar-collapsed .sidebar {
   width: 72px;
@@ -323,7 +337,7 @@ body.sidebar-collapsed .sidebar-arrow {
   position: relative;
 }
 .hero-banner {
-  background-image: url('/assets/images/banner.svg');
+  background-image: url('/assets/imgbanner.svg');
   background-size: cover;
   background-position: center;
   border-bottom: 1px solid var(--border-strong);
@@ -434,126 +448,6 @@ main {
   gap: 12px;
 }
 
-/* ====== Login page ====== */
-.login-shell {
-  display: grid;
-  gap: 24px;
-  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
-  align-items: start;
-  --firebase-ui-primary: var(--primary);
-  --firebase-ui-secondary: var(--accent);
-  --firebase-ui-border-radius: 16px;
-}
-.login-card {
-  background: linear-gradient(
-    160deg,
-    color-mix(in oklab, var(--card) 90%, var(--primary)),
-    var(--card)
-  );
-  border: 1px solid var(--border-strong);
-  border-radius: 24px;
-  padding: 32px;
-  box-shadow: var(--shadow);
-  display: grid;
-  gap: 24px;
-}
-.login-card__header h1 {
-  margin: 8px 0 12px;
-  font-size: clamp(1.6rem, 2.2vw, 2.2rem);
-}
-.login-eyebrow {
-  text-transform: uppercase;
-  font-size: 0.75rem;
-  letter-spacing: 0.2em;
-  color: var(--muted);
-  margin: 0;
-}
-.login-lede {
-  margin: 0;
-  color: var(--muted);
-}
-.login-actions {
-  display: grid;
-  gap: 12px;
-}
-.login-actions__group {
-  display: grid;
-  gap: 12px;
-  padding: 16px;
-  border-radius: 18px;
-  border: 1px solid color-mix(in oklab, var(--border-strong) 75%, transparent);
-  background: color-mix(in oklab, var(--card) 80%, transparent);
-}
-.login-actions__label {
-  margin: 0;
-  font-weight: 700;
-  color: var(--muted);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  font-size: 0.75rem;
-}
-.login-action {
-  border: 1px solid var(--border-strong);
-  border-radius: 16px;
-  padding: 14px 18px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition:
-    transform 0.15s ease,
-    box-shadow 0.15s ease,
-    border-color 0.15s ease;
-}
-.login-action--primary {
-  background: linear-gradient(120deg, #3bff9a, #1dff81 60%, #7effc0);
-  color: #04140a;
-  box-shadow: 0 10px 30px rgba(4, 20, 10, 0.3);
-  border-color: transparent;
-}
-.login-action--ghost {
-  background: transparent;
-  color: var(--text);
-}
-.login-action:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
-}
-.login-status {
-  min-height: 1.5em;
-  margin: 0;
-  color: var(--muted);
-  font-size: 0.95rem;
-}
-.login-status[data-tone='success'] {
-  color: #5dffb8;
-}
-.login-status[data-tone='error'] {
-  color: #ff7b7b;
-}
-.login-panel {
-  background: color-mix(in oklab, var(--card) 88%, transparent);
-  border: 1px solid var(--border-strong);
-  border-radius: 20px;
-  padding: 24px;
-  display: grid;
-  gap: 12px;
-}
-.login-panel h2 {
-  margin: 0;
-}
-.login-panel ul {
-  margin: 0;
-  padding-left: 18px;
-  color: var(--muted);
-  display: grid;
-  gap: 8px;
-}
-@media (max-width: 960px) {
-  .login-shell {
-    grid-template-columns: 1fr;
-  }
-}
-
 /* ====== Footer ====== */
 footer {
   border-top: 1px solid var(--border-strong);
@@ -573,7 +467,7 @@ footer p {
   margin: 0;
 }
 
-/* ====== Buttons (optioneel) ====== */
+/* ====== Buttons ====== */
 .button {
   display: inline-flex;
   align-items: center;
@@ -605,7 +499,7 @@ footer p {
   box-shadow: 0 0 0 4px var(--ring);
 }
 
-/* ====== Accessibility niceties ====== */
+/* ====== Accessibility ====== */
 :focus-visible {
   outline: none;
   box-shadow: 0 0 0 4px var(--ring);

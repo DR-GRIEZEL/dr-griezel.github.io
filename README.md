@@ -1,8 +1,6 @@
-# dr-griezel.github.io
+# [dr-griezel.github.io](https:.//dr-griezel.github.io)
 
-#### Dashboard built with Jekyll layouts and vanilla HTML/CSS/JS.
-
-## Framework overview
+## 📌 Framework overview
 
 - **Jekyll (static site generator)**: Markdown/HTML pages are compiled with layouts and includes.
 - **Layouts**: `_layouts/base.html` composes the page chrome (sidebar, header, footer, main content).
@@ -27,7 +25,7 @@
   - `html/nav/updates.html` loads `assets/js/updates.js` as a module.
   - `updates.js` fetches GitHub commits and renders them into the updates list.
 
-## Directory structure
+## 📁 Directory structure
 
 ```
 .
@@ -50,7 +48,7 @@
 └── README.md
 ```
 
-## Firebase login setup
+## 1. Firebase login setup
 
 The footer login buttons use Firebase Authentication to sign in with Google or GitHub. To run the flow locally you need to swap in your own Firebase project values:
 
@@ -59,7 +57,7 @@ The footer login buttons use Firebase Authentication to sign in with Google or G
 3. If you register a new Google OAuth client, update the `googleClientId` constant in `assets/js/login/login-buttons.js` so the Firebase providers use the correct client ID.
 4. Keep your Firebase security rules and GitHub client secret locked down—these frontend keys are public by design, so proper server-side rules are what prevent abuse.
 
-## Self-hosting tutorial
+## 2. Self-hosting tutorial
 
 ### Option A: Jekyll (local build)
 
@@ -114,12 +112,52 @@ Run the unit tests (Vitest is configured to emit coverage):
 npm test
 ```
 
-## After setup
+## 3. After setup (TODO: make annotations consistent, double quotes for non-coders)
+
+### Add new pages
+
+1. Create .html file in `/html/nav/`
+2. Add front matter:
+```yaml
+---
+layout: base
+title: "My Page"
+nav_label: "My Page"
+nav_order: 100
+permalink: /my-page/
+css:
+  - /assets/css/main.css
+module_js: true
+---
+```
+3. Optional field: `req_login` hides pages when not logged in.
+
+>`nav_order` should not be the same number as any other page inside `/html/nav`.
+
+### Add a widget
+
+1. Put js file in `assets/js/widgets`
+2. Create .md file in `/widgets`
+3. Add front matter:
+  ```yaml
+  ---
+  layout: base
+  title: 'My Widget'
+  summary: 'A custom widget.'
+  image: '/assets/imgwidgets/my-widget.svg'
+  css:
+    - /assets/css/main.css
+    - /assets/css/dash.css
+  js:
+    - /assets/js/widgets/my-widget.js
+  module_js: true
+  ---
+  ```
 
 ### Add a blog post
 
-1. Create a new Markdown file in `blog/` (for example: `blog/my-new-post.md`).
-2. Add front matter with the required fields:
+1. Create new .md file in `blog/` (for example: `blog/my-new-post.md`).
+2. Add front matter:
    ```yaml
    ---
    layout: blog
@@ -127,17 +165,38 @@ npm test
    subtitle: 'Post subtitle'
    css:
      - /assets/css/main.css
-   image: '/assets/images/blog/your-image.svg'
+   image: '/assets/imgblog/your-image.svg'
    date: 2024-01-12
    ---
    ```
-3. Add the post content below the front matter.
-4. Make sure all images are inside `assets/images/blog`.
+3. Add post content below front matter.
+4. Images should be in `assets/imgblog`. (Temporarily -- see TODO)
 
-## TODO
+## ✅ TODO
 
-- Harden Firebase security rules and add login flow tests.
-- On-site blog creator with login protection
-- Add service worker caching for offline widget data.
-- Add RSS/Atom feed for blog posts.
-- Add tags frontend-matter to blog-posts, along with filter menu displaying all available tags (max. 10).
+- **Login:**
+  - [ ] Add verification method after auth to access data: automatically assign gmail/github accounts to discord (user_id, username, profile picture, ...) -> via Discord API: 1. in-app (creating manual registration command which generates a one-time code (copy code or generate encrypted URL?) every session)
+  - [-] User settings page
+
+- **On-site blog creator with login protection**
+
+  - [ ] Scan API for frontpage metadata, pull blog content upon clicking link
+  - [ ] Create post -> Send data via API -> Store .md files externally
+  - [ ] Drop image self-hosting entirely if API usage increases too much (Try compression first)
+
+  - [ ] upon file editor creation, force tag selection to make sure files are always categorised.
+  - [ ] Filter tags based directory: `blog/{tag}/` -> add filter menu displaying all available tags.
+  - [ ] seperate cover images from blog images; `{tag}/images/covers/`
+  - [ ] put website metadata images inside /assets/img/
+
+- **Easy of use for non-coders:**
+  - [ ] put ALL code inside a `/src` folder.
+  - [ ] create `/config` folder -> check if _config.yml can read from root + put configurable images inside `config/images/`
+  - [ ] keep only /blog/ and /test/ folder inside root (besides /src)
+ 
+  - [ ] prefab css stylings (per user themes)
+
+- **General fixes & features:**
+  - [ ] Harden Firebase security rules and add login flow tests.
+  - [ ] Add service worker caching for offline widget data.
+  - [ ] Add RSS/Atom feed for blog posts.

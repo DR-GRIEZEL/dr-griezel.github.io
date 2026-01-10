@@ -51,10 +51,10 @@ export function initLoginButtons({
   const formatUserLabel = (user) => user?.displayName || user?.email || 'gebruiker';
 
   const startRedirect = (providerLabel, redirectFn) => {
-    setStatus(`${providerLabel} redirect-login gestart...`, 'pending');
+    setStatus(`${providerLabel} logging in...`, 'pending');
     return redirectFn().catch(() => {
       setStatus(
-        `${providerLabel} redirect-login mislukt. Controleer je browserinstellingen.`,
+        `${providerLabel} login failed, permission required. (check browser settings)`,
         'error',
       );
     });
@@ -65,7 +65,7 @@ export function initLoginButtons({
       return startRedirect(providerLabel, redirectFn);
     }
 
-    setStatus(`${providerLabel} popup-login gestart...`, 'pending');
+    setStatus(`${providerLabel} logging in...`, 'pending');
     return popupFn()
       .then((user) => {
         if (user) {
@@ -76,7 +76,7 @@ export function initLoginButtons({
         if (shouldFallbackToRedirect(error)) {
           return startRedirect(providerLabel, redirectFn);
         }
-        setStatus(`${providerLabel} popup-login mislukt. Gebruik redirect.`, 'error');
+        setStatus(`${providerLabel} login failed.`, 'error');
       });
   };
 
@@ -90,12 +90,12 @@ export function initLoginButtons({
 
   return handleRedirectResult().then((result) => {
     if (result?.user) {
-      setStatus(`Ingelogd als ${formatUserLabel(result.user)}.`, 'success');
+      setStatus(`logged in as ${formatUserLabel(result.user)}.`, 'success');
       return;
     }
 
     if (result?.error) {
-      setStatus('Redirect-login mislukt. Controleer de Firebase OAuth-instellingen.', 'error');
+      setStatus('Redirect failed.', 'error');
     }
   });
 }

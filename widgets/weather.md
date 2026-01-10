@@ -2,7 +2,7 @@
 layout: base
 title: 'Weather Widget'
 summary: 'Realtime weer met extra details zoals gevoelstemperatuur, wind en neerslagkans.'
-image: '/assets/images/widgets/weather.svg'
+image: '/assets/imgwidgets/weather.svg'
 css:
   - /assets/css/main.css
   - /assets/css/dash.css

@@ -1,6 +1,7 @@
 <!doctype html>
 
 <html lang="nl">
+
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -8,39 +9,33 @@
     <link
       rel="apple-touch-icon"
       sizes="180x180"
-      href="/assets/images/favicon/apple-touch-icon.png"
+      href="/assets/imgfavicon/apple-touch-icon.png"
     />
     <link
       rel="icon"
       type="image/png"
       sizes="32x32"
-      href="/assets/images/favicon/favicon-32x32.png"
+      href="/assets/imgfavicon/favicon-32x32.png"
     />
     <link
       rel="icon"
       type="image/png"
       sizes="16x16"
-      href="/assets/images/favicon/favicon-16x16.png"
+      href="/assets/imgfavicon/favicon-16x16.png"
     />
-    <link rel="manifest" href="/assets/images/favicon/site.webmanifest" />
-    <link rel="shortcut icon" href="/assets/images/favicon/favicon.ico" />
+    <link rel="manifest" href="/assets/imgfavicon/site.webmanifest" />
+    <link rel="shortcut icon" href="/assets/imgfavicon/favicon.ico" />
+
+    {% if page.req_login %}
+      <script type="module" src="{{ '/assets/js/gate-content.js' | relative_url }}"></script>
+    {% endif %}
 
     {% if page.css %} {% for href in page.css %}
     <link rel="stylesheet" href="{{ href }}" />
     {% endfor %} {% endif %}
   </head>
+
   <body>
-    <div class="auth-buttons">
-      <div class="auth-buttons__group" role="group" aria-label="Login opties">
-        <button class="auth-button auth-button--github" type="button" data-auth-github>
-          GitHub
-        </button>
-        <button class="auth-button auth-button--google" type="button" data-auth-google>
-          Google
-        </button>
-      </div>
-      <span class="auth-status" role="status" aria-live="polite" data-auth-status></span>
-    </div>
     <div class="layout">
       {% include nav.html %}
       <div class="page">
@@ -49,7 +44,7 @@
         <footer>{% include footer.html %}</footer>
       </div>
     </div>
-    <div class="osrs-headbang" aria-hidden="true"></div>
+    <div class="mascot_overlay" aria-hidden="true"></div>
 
     <script src="/assets/js/site.js" defer></script>
     <script src="/assets/js/login/login-buttons.js" type="module"></script>
@@ -71,4 +66,5 @@
     ></script>
     {% endfor %} {% endif %}
   </body>
+
 </html>
