@@ -6,7 +6,6 @@
 ![GitHub stars](https://img.shields.io/github/stars/DR-GRIEZEL/dr-griezel.github.io?style=for-the-badge)
 ![GitHub forks](https://img.shields.io/github/forks/DR-GRIEZEL/dr-griezel.github.io?style=for-the-badge)
 ![Last commit](https://img.shields.io/github/last-commit/DR-GRIEZEL/dr-griezel.github.io?style=for-the-badge)
-![Commits since tag](https://img.shields.io/github/commits-since/DR-GRIEZEL/dr-griezel.github.io/v1.0.0?style=for-the-badge)
 ![Repo size](https://img.shields.io/github/repo-size/DR-GRIEZEL/dr-griezel.github.io?style=for-the-badge)
 ![Top language](https://img.shields.io/github/languages/top/DR-GRIEZEL/dr-griezel.github.io?style=for-the-badge)
 ![License](https://img.shields.io/github/license/DR-GRIEZEL/dr-griezel.github.io?style=for-the-badge)
@@ -20,11 +19,13 @@
 
 ![Release](https://img.shields.io/github/v/release/DR-GRIEZEL/dr-griezel.github.io?style=for-the-badge)
 
-## Special thanks to
+## Contributors
 
 ![Contributors](https://img.shields.io/github/contributors/DR-GRIEZEL/dr-griezel.github.io?style=for-the-badge)
 
 ---
+
+# Overview
 
 ## 📌 Framework overview
 
@@ -73,6 +74,8 @@
 ├── package.json
 └── README.md
 ```
+
+# Tutorial
 
 ## 1. Firebase login setup
 
@@ -199,6 +202,8 @@ module_js: true
    ```
 3. Add post content below front matter.
 4. Images should be in `assets/imgblog`. (Temporarily -- see TODO)
+
+# Roadmap & Todo's
 
 ## ✅ TODO
 
