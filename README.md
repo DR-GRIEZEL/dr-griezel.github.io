@@ -184,13 +184,15 @@ module_js: true
 - **On-site blog creator with login protection**
 
   - [ ] Scan API for frontpage metadata, pull blog content upon clicking link
-  - [ ] Create post -> Send data via API -> Store .md files externally
+  - [ ] Create post (title, desc frontmatter fields, choose from preset tags (emoji) ( category/folder, body = textbox) -> ~~Send data via API~~ (Store .md files internally for now)
   - [ ] Drop image self-hosting entirely if API usage increases too much (Try compression first)
 
   - [ ] upon file editor creation, force tag selection to make sure files are always categorised.
   - [ ] Filter tags based directory: `blog/{tag}/` -> add filter menu displaying all available tags.
   - [ ] seperate cover images from blog images; `{tag}/images/covers/`
   - [ ] put website metadata images inside /assets/img/
+ 
+  - [ ] integrate like/comment system (without trackers)
 
 - **Easy of use for non-coders:**
   - [ ] put ALL code inside a `/src` folder.
