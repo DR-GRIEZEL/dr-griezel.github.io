@@ -267,15 +267,22 @@ body::before {
   outline-offset: 2px;
 }
 
-/* Switch small/large on sidebar fold */
-.google-logo--small { display: none !important; }
-.google-logo--large { display: block !important; }
+/* Default (unfolded): show LARGE */
+.sidebar-auth .google-logo--small { display: none !important; }
+.sidebar-auth .google-logo--large { display: block !important; }
 
-body.sidebar-collapsed .google-logo--small { display: block; }
-body.sidebar-collapsed .google-logo--large { display: none; }
+/* Folded: show SMALL */
+body.sidebar-collapsed .sidebar-auth .google-logo--small { display: block !important; }
+body.sidebar-collapsed .sidebar-auth .google-logo--large { display: none !important; }
 
-body.sidebar-collapsed .logout-logo--small { display: block; }
-body.sidebar-collapsed .logout-logo--large { display: none; }
+/* Default (unfolded): show LARGE logout */
+.sidebar-auth .logout-logo--small { display: none !important; }
+.sidebar-auth .logout-logo--large { display: block !important; }
+
+/* Folded: show SMALL logout */
+body.sidebar-collapsed .sidebar-auth .logout-logo--small { display: block !important; }
+body.sidebar-collapsed .sidebar-auth .logout-logo--large { display: none !important; }
+
 
 /* Sidebar auth placement */
 .sidebar-auth {
