@@ -50,7 +50,9 @@
 
 ## 1. Firebase login setup
 
-The footer login buttons use Firebase Authentication to sign in with Google or GitHub. To run the flow locally you need to swap in your own Firebase project values:
+The ogin buttons use Firebase Authentication to sign in with Google (support for GitHub and others coming soon)
+
+To run the flow locally you need to swap in your own Firebase project values:
 
 1. Create or reuse a Firebase project, register a Web app, and paste the config object into `assets/js/login/firebase-config.js`. The module exports `firebaseConfig` and a readiness check (`isFirebaseConfigReady`); the login script displays a warning if the config is still missing or contains the `'...'` placeholders.
 2. Enable the Google and GitHub sign-in providers and add your local (`http://localhost:4000`) and hosted (`https://dr-griezel.github.io/`) domains to the authorized list. Make sure the OAuth redirect URIs match the domains where you expect the buttons to run.
