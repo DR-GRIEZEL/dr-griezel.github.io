@@ -16,8 +16,6 @@
 ![CI](https://img.shields.io/github/actions/workflow/status/DR-GRIEZEL/dr-griezel.github.io/codeql.yml?style=for-the-badge)
 ![CI](https://img.shields.io/github/actions/workflow/status/DR-GRIEZEL/dr-griezel.github.io/ci.yml?style=for-the-badge)
 
-[📈 Coverage report](https://dr-griezel.github.io/dr-griezel.github.io/coverage/)
-
 ## Releases
 
 ![Release](https://img.shields.io/github/v/release/DR-GRIEZEL/dr-griezel.github.io?style=for-the-badge)
