@@ -29,18 +29,24 @@ export function initLoginButtons({
   handleRedirectResult,
   isEmbeddedBrowser = defaultIsEmbeddedBrowser,
 }) {
-  if (!googleButton || !githubButton || !statusElement) {
-    throw new Error('login elements are required');
+
+  const hasGoogle = Boolean(googleButton)
+  const hasGithub = Boolean(githubButton)
+
+  if (hasGoogle && (!statusElement)) { // || !githubButton
+    throw new Error('google status element is required; disable google login if not used.');
   }
 
   if (
     !loginGooglePopup ||
     !loginGoogleRedirect ||
-    !loginGithubPopup ||
-    !loginGithubRedirect ||
     !handleRedirectResult
   ) {
-    throw new Error('login handlers are required');
+    throw new Error('google handlers + redirect handler are required; disable google login if not used.');
+  }
+
+  if (hasGithub && (!loginGithubPopup || !loginGithubRedirect)) {
+    throw new Error('github handlers are required; disable github login if not used.');
   }
 
   const setStatus = (message, tone) => {

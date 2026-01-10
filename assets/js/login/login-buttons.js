@@ -18,7 +18,7 @@ const googleClientId = '78150871126-imnoi25btctc85q56hou7fm3ecs04kp9.apps.google
 const googleButton = document.querySelector('[data-auth-google]');
 const githubButton = document.querySelector('[data-auth-github]');
 const statusElement = document.querySelector('[data-auth-status]');
-const userElement = document.querySelector('[user-auth-user]');
+const userElement = document.querySelector('[data-auth-user]');
 const buttonsGroup = googleButton?.closest('.auth-buttons__group') ?? null;
 
 // Toggle visibility of elements based on auth state

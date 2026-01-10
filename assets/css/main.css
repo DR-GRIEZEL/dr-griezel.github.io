@@ -244,12 +244,26 @@ body::before {
   line-height: 0; /* prevents extra vertical space */
 }
 
-/* Icon sizing */
+/* Icon sizing: base (keep consistent box) */
 .auth-icon-btn img,
 .auth-icon-btn svg {
   width: 18px;
   height: 18px;
   display: block;
+}
+
+/* Small = compact square-ish */
+.sidebar-auth .google-logo--small,
+.sidebar-auth .logout-logo--small {
+  height: 18px;
+  width: 18px;
+}
+
+/* Large = bredere variant (pas width aan zoals je SVG bedoeld is) */
+.sidebar-auth .google-logo--large,
+.sidebar-auth .logout-logo--large {
+  height: 18px;
+  width: 64px; /* of 72px, whatever je large SVG is */
 }
 
 /* Simple hover effect (works for img or inline svg) */

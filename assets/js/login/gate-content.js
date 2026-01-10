@@ -1,4 +1,4 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
+import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
 import { firebaseConfig, isFirebaseConfigReady } from "/assets/js/login/firebase-config.js";
 
@@ -24,5 +24,6 @@ onAuthStateChanged(auth, (user) => {
     // route:
     window.location.replace("/500/");
   }
+  return;
 });
 
