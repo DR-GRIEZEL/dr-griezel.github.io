@@ -1,5 +1,26 @@
 # [dr-griezel.github.io](https:.//dr-griezel.github.io)
 
+## General
+
+<!-- Badges -->
+![GitHub stars](https://img.shields.io/github/stars/DR-GRIEZEL/dr-griezel.github.io?style=for-the-badge)
+![GitHub forks](https://img.shields.io/github/forks/DR-GRIEZEL/dr-griezel.github.io?style=for-the-badge)
+![Last commit](https://img.shields.io/github/last-commit/DR-GRIEZEL/dr-griezel.github.io?style=for-the-badge)
+![Commits since tag](https://img.shields.io/github/commits-since/DR-GRIEZEL/dr-griezel.github.io/v1.0.0?style=for-the-badge)
+![Repo size](https://img.shields.io/github/repo-size/DR-GRIEZEL/dr-griezel.github.io?style=for-the-badge)
+![License](https://img.shields.io/github/license/DR-GRIEZEL/dr-griezel.github.io?style=for-the-badge)
+
+## Quality Control
+
+![CI](https://img.shields.io/github/actions/workflow/status/DR-GRIEZEL/dr-griezel.github.io/codeql.yml?style=for-the-badge)
+![CI](https://img.shields.io/github/actions/workflow/status/DR-GRIEZEL/dr-griezel.github.io/ci.yml?style=for-the-badge)
+
+## Releases
+
+![Release](https://img.shields.io/github/v/release/DR-GRIEZEL/dr-griezel.github.io?style=for-the-badge)
+
+---
+
 ## 📌 Framework overview
 
 - **Jekyll (static site generator)**: Markdown/HTML pages are compiled with layouts and includes.
@@ -50,7 +71,9 @@
 
 ## 1. Firebase login setup
 
-The footer login buttons use Firebase Authentication to sign in with Google or GitHub. To run the flow locally you need to swap in your own Firebase project values:
+The ogin buttons use Firebase Authentication to sign in with Google (support for GitHub and others coming soon)
+
+To run the flow locally you need to swap in your own Firebase project values:
 
 1. Create or reuse a Firebase project, register a Web app, and paste the config object into `assets/js/login/firebase-config.js`. The module exports `firebaseConfig` and a readiness check (`isFirebaseConfigReady`); the login script displays a warning if the config is still missing or contains the `'...'` placeholders.
 2. Enable the Google and GitHub sign-in providers and add your local (`http://localhost:4000`) and hosted (`https://dr-griezel.github.io/`) domains to the authorized list. Make sure the OAuth redirect URIs match the domains where you expect the buttons to run.
@@ -174,6 +197,9 @@ module_js: true
 
 ## ✅ TODO
 
+- **Widget Ideas:**
+  - unix/dt/iso converter
+
 - **Login:**
   - [ ] Add verification method after auth to access data: automatically assign gmail/github accounts to discord (user_id, username, profile picture, ...) -> via Discord API: 1. in-app (creating manual registration command which generates a one-time code (copy code or generate encrypted URL?) every session)
   - [-] User settings page
@@ -181,13 +207,19 @@ module_js: true
 - **On-site blog creator with login protection**
 
   - [ ] Scan API for frontpage metadata, pull blog content upon clicking link
-  - [ ] Create post -> Send data via API -> Store .md files externally
+  - [ ] Create post (title, desc frontmatter fields, choose from preset tags (emoji) ( category/folder, body = textbox) -> ~~Send data via API~~ (Store .md files internally for now)
   - [ ] Drop image self-hosting entirely if API usage increases too much (Try compression first)
 
   - [ ] upon file editor creation, force tag selection to make sure files are always categorised.
   - [ ] Filter tags based directory: `blog/{tag}/` -> add filter menu displaying all available tags.
   - [ ] seperate cover images from blog images; `{tag}/images/covers/`
   - [ ] put website metadata images inside /assets/img/
+
+Not sure, needs more research/refinement:
+ 
+  - [ ] integrate like/comment system (without trackers)
+  - [ ] generate svg based on title/tag (enter title -> generate .svg img -> attach .svg link to frontmatter (requires ChatGPT API)
+  - [ ] Edit existing articles in editor
 
 - **Easy of use for non-coders:**
   - [ ] put ALL code inside a `/src` folder.
