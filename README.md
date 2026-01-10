@@ -1,5 +1,26 @@
 # [dr-griezel.github.io](https:.//dr-griezel.github.io)
 
+## General
+
+<!-- Badges -->
+![GitHub stars](https://img.shields.io/github/stars/DR-GRIEZEL/dr-griezel.github.io?style=for-the-badge)
+![GitHub forks](https://img.shields.io/github/forks/DR-GRIEZEL/dr-griezel.github.io?style=for-the-badge)
+![Last commit](https://img.shields.io/github/last-commit/DR-GRIEZEL/dr-griezel.github.io?style=for-the-badge)
+![Commits since tag](https://img.shields.io/github/commits-since/DR-GRIEZEL/dr-griezel.github.io/v1.0.0?style=for-the-badge)
+![Repo size](https://img.shields.io/github/repo-size/DR-GRIEZEL/dr-griezel.github.io?style=for-the-badge)
+![License](https://img.shields.io/github/license/DR-GRIEZEL/dr-griezel.github.io?style=for-the-badge)
+
+## Quality Control
+
+![CI](https://img.shields.io/github/actions/workflow/status/DR-GRIEZEL/dr-griezel.github.io/codeql.yml?style=for-the-badge)
+![CI](https://img.shields.io/github/actions/workflow/status/DR-GRIEZEL/dr-griezel.github.io/ci.yml?style=for-the-badge)
+
+## Releases
+
+![Release](https://img.shields.io/github/v/release/DR-GRIEZEL/dr-griezel.github.io?style=for-the-badge)
+
+---
+
 ## 📌 Framework overview
 
 - **Jekyll (static site generator)**: Markdown/HTML pages are compiled with layouts and includes.
