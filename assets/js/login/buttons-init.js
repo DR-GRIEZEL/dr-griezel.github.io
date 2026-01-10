@@ -29,20 +29,15 @@ export function initLoginButtons({
   handleRedirectResult,
   isEmbeddedBrowser = defaultIsEmbeddedBrowser,
 }) {
+  const hasGoogle = Boolean(googleButton);
+  const hasGithub = Boolean(githubButton);
 
-  const hasGoogle = Boolean(googleButton)
-  const hasGithub = Boolean(githubButton)
-
-  if (hasGoogle && (!statusElement)) { // || !githubButton
-    throw new Error('google status element is required; disable google login if not used.');
+  if (!hasGoogle || !statusElement) {
+    throw new Error('login elements are required; disable login if not used.');
   }
 
-  if (
-    !loginGooglePopup ||
-    !loginGoogleRedirect ||
-    !handleRedirectResult
-  ) {
-    throw new Error('google handlers + redirect handler are required; disable google login if not used.');
+  if (!loginGooglePopup || !loginGoogleRedirect || !handleRedirectResult) {
+    throw new Error('login handlers are required; disable google login if not used.');
   }
 
   if (hasGithub && (!loginGithubPopup || !loginGithubRedirect)) {
@@ -90,9 +85,11 @@ export function initLoginButtons({
     startPopup('Google', loginGooglePopup, loginGoogleRedirect),
   );
 
-  githubButton.addEventListener('click', () =>
-    startPopup('GitHub', loginGithubPopup, loginGithubRedirect),
-  );
+  if (hasGithub) {
+    githubButton.addEventListener('click', () =>
+      startPopup('GitHub', loginGithubPopup, loginGithubRedirect),
+    );
+  }
 
   return handleRedirectResult().then((result) => {
     if (result?.user) {

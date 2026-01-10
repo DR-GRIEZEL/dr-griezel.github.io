@@ -19,14 +19,31 @@ describe('initLoginButtons', () => {
   });
 
   it('throws when required inputs are missing', () => {
-    expect(() => initLoginButtons({})).toThrow('login elements are required');
+    expect(() => initLoginButtons({})).toThrow(
+      'login elements are required; disable login if not used.',
+    );
     expect(() =>
       initLoginButtons({
         googleButton: createButton(),
         githubButton: createButton(),
         statusElement: createStatus(),
       }),
-    ).toThrow('login handlers are required');
+    ).toThrow('login handlers are required; disable google login if not used.');
+  });
+
+  it('allows initializing without github button', () => {
+    const googleButton = createButton();
+    const statusElement = createStatus();
+
+    expect(() =>
+      initLoginButtons({
+        googleButton,
+        statusElement,
+        loginGooglePopup: vi.fn().mockResolvedValue(null),
+        loginGoogleRedirect: vi.fn().mockResolvedValue(undefined),
+        handleRedirectResult: vi.fn().mockResolvedValue(undefined),
+      }),
+    ).not.toThrow();
   });
 
   it('updates status on google popup success', async () => {
@@ -73,7 +90,8 @@ describe('initLoginButtons', () => {
     await googleButton.handlers.click();
 
     expect(loginGoogleRedirect).toHaveBeenCalled();
-    expect(statusElement.textContent).toBe('Google redirect-login gestart...');
+    expect(statusElement.textContent).toBe('Google logging in...');
+    expect(statusElement.dataset.tone).toBe('pending');
   });
 
   it('falls back to redirect on popup errors', async () => {
@@ -97,7 +115,8 @@ describe('initLoginButtons', () => {
     await googleButton.handlers.click();
 
     expect(loginGoogleRedirect).toHaveBeenCalled();
-    expect(statusElement.textContent).toBe('Google redirect-login gestart...');
+    expect(statusElement.textContent).toBe('Google logging in...');
+    expect(statusElement.dataset.tone).toBe('pending');
   });
 
   it('updates status when redirect reports error', async () => {
@@ -117,9 +136,7 @@ describe('initLoginButtons', () => {
       isEmbeddedBrowser: () => false,
     });
 
-    expect(statusElement.textContent).toBe(
-      'Redirect-login mislukt. Controleer de Firebase OAuth-instellingen.',
-    );
+    expect(statusElement.textContent).toBe('Redirect failed.');
     expect(statusElement.dataset.tone).toBe('error');
   });
 });

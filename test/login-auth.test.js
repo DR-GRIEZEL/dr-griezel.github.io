@@ -1,10 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-
-<<<<<<< HEAD
-import { createAuthHandlers } from '../assets/js/login-auth.js';
-=======
 import { createAuthHandlers } from '../assets/js/login/auth.js';
->>>>>>> codex/fix-login-methods-and-add-buttons-8fb7em
 
 describe('createAuthHandlers', () => {
   it('throws when required dependencies are missing', () => {

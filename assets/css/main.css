@@ -282,25 +282,40 @@ body::before {
 }
 
 /* Default (unfolded): show LARGE */
-.sidebar-auth .google-logo--small { display: none !important; }
-.sidebar-auth .google-logo--large { display: block !important; }
+.sidebar-auth .google-logo--small {
+  display: none !important;
+}
+.sidebar-auth .google-logo--large {
+  display: block !important;
+}
 
 /* Folded: show SMALL */
-body.sidebar-collapsed .sidebar-auth .google-logo--small { display: block !important; }
-body.sidebar-collapsed .sidebar-auth .google-logo--large { display: none !important; }
+body.sidebar-collapsed .sidebar-auth .google-logo--small {
+  display: block !important;
+}
+body.sidebar-collapsed .sidebar-auth .google-logo--large {
+  display: none !important;
+}
 
 /* Default (unfolded): show LARGE logout */
-.sidebar-auth .logout-logo--small { display: none !important; }
-.sidebar-auth .logout-logo--large { display: block !important; }
+.sidebar-auth .logout-logo--small {
+  display: none !important;
+}
+.sidebar-auth .logout-logo--large {
+  display: block !important;
+}
 
 /* Folded: show SMALL logout */
-body.sidebar-collapsed .sidebar-auth .logout-logo--small { display: block !important; }
-body.sidebar-collapsed .sidebar-auth .logout-logo--large { display: none !important; }
-
+body.sidebar-collapsed .sidebar-auth .logout-logo--small {
+  display: block !important;
+}
+body.sidebar-collapsed .sidebar-auth .logout-logo--large {
+  display: none !important;
+}
 
 /* Sidebar auth placement */
 .sidebar-auth {
-  margin-top: auto;        /* Places login buttons under navlinks */
+  margin-top: auto; /* Places login buttons under navlinks */
   display: grid;
   gap: 10px;
   padding-top: 10px;
@@ -313,7 +328,9 @@ body.sidebar-collapsed .sidebar-auth .logout-logo--large { display: none !import
   text-align: center;
   margin: 0;
 }
-.auth-status { min-height: 1em; }
+.auth-status {
+  min-height: 1em;
+}
 
 .auth-status[data-tone='success'] {
   color: #5dffb8;
@@ -321,7 +338,6 @@ body.sidebar-collapsed .sidebar-auth .logout-logo--large { display: none !import
 .auth-status[data-tone='error'] {
   color: #ff7b7b;
 }
-
 
 body.sidebar-collapsed .sidebar {
   width: 72px;
@@ -345,6 +361,16 @@ body.sidebar-collapsed .sidebar-arrow {
   margin: 24px 0;
   background: linear-gradient(90deg, transparent, var(--border-strong), transparent);
   box-shadow: var(--glow);
+}
+
+.sidebar-nav .nav-divider {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-nav .nav-divider .section-divider {
+  margin: 12px 0;
 }
 
 @media (max-width: 900px) {

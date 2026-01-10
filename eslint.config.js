@@ -1,20 +1,21 @@
-import js from "@eslint/js";
-import globals from "globals";
-import prettier from "eslint-config-prettier";
+/* global require module */
+const js = require('@eslint/js');
+const globals = require('globals');
+const prettier = require('eslint-config-prettier');
 
-export default [
+module.exports = [
   js.configs.recommended,
 
   {
-    files: ["assets/js/**/*.js"],
+    files: ['assets/js/**/*.js'],
     languageOptions: {
-      sourceType: "module",
-      globals: { ...globals.browser }
+      sourceType: 'module',
+      globals: { ...globals.browser },
     },
     rules: {
-      "no-unused-vars": ["warn", { argsIgnorePattern: "^_" }]
-    }
+      'no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
+    },
   },
 
-  prettier
+  prettier,
 ];
