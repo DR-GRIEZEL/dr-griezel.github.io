@@ -174,6 +174,9 @@ module_js: true
 
 ## ✅ TODO
 
+- **Widget Ideas:**
+  - unix/dt/iso converter
+
 - **Login:**
   - [ ] Add verification method after auth to access data: automatically assign gmail/github accounts to discord (user_id, username, profile picture, ...) -> via Discord API: 1. in-app (creating manual registration command which generates a one-time code (copy code or generate encrypted URL?) every session)
   - [-] User settings page
