@@ -130,6 +130,8 @@ css:
 module_js: true
 ---
 ```
+3. Optional field: `req_login` hides pages when not logged in.
+
 >`nav_order` should not be the same number as any other page inside `/html/nav`.
 
 ### Add a widget
