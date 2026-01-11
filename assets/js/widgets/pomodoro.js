@@ -63,10 +63,10 @@ const initPomodoroWidget = (widget, index) => {
     midnightResetIfNeeded();
 
     timerEl.textContent = formatDuration(state.remaining);
-    let label = 'uit';
-    if (state.mode === 'break') label = 'pauze';
-    else if (state.mode === 'focus') label = `cyclus ${state.cycle}/${config.cycles}`;
-    subEl.textContent = `${label} ${state.running ? '• actief' : '• gepauzeerd'}`;
+    let label = 'off';
+    if (state.mode === 'break') label = 'break';
+    else if (state.mode === 'focus') label = `cycle ${state.cycle}/${config.cycles}`;
+    subEl.textContent = `${label} ${state.running ? '• active' : '• paused'}`;
 
     const cap = capFor(state.mode, config);
     barIn.style.width = cap > 0 ? `${100 * (1 - state.remaining / cap)}%` : '0%';
@@ -87,13 +87,13 @@ const initPomodoroWidget = (widget, index) => {
         state.mode = 'break';
         state.remaining = config.break;
         state.running = !!AUTO_START_BREAK;
-        chime('🎉 Focus klaar!', `Start (${Math.round(config.break / 60)} min. pauze...)`);
+        chime('🎉 Focus complete!', `Start (${Math.round(config.break / 60)} min. break...)`);
       } else if (state.mode === 'break') {
         if (state.cycle < config.cycles) state.cycle += 1;
         state.mode = 'off';
         state.remaining = 0;
         state.running = !!AUTO_START_FOCUS;
-        chime('⏰ Pauze voltooid!', `Cyclus ${state.cycle}/${config.cycles}`);
+        chime('⏰ Break finished!', `Cycle ${state.cycle}/${config.cycles}`);
       }
     }
     render();

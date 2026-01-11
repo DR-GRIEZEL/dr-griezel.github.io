@@ -1,26 +1,73 @@
 ---
 layout: base
-title: "Blog"
-nav_label: "Blog"
+title: 'Blog'
+nav_label: 'Blog'
 nav_order: 2
 permalink: /blog/
 css:
   - /assets/css/main.css
+js:
+  - /assets/js/blog-filter.js
 module_js: true
 ---
 
-<div class="grid">
-  {% assign blog_pages = site.pages | where: "dir", "/blog/" | where: "layout", "blog" | sort: "date" | reverse %}
-  {% for page in blog_pages %}
-    <section class="card">
-      <a href="{{ page.url | relative_url }}">
-        <img class="card-image" src="{{ page.image | relative_url }}" alt="{{ page.title }}">
-      </a>
-      <h2><a class="card-link" href="{{ page.url | relative_url }}">{{ page.title }}</a></h2>
-      {% if page.subtitle %}
-        <p class="card-subtitle">{{ page.subtitle }}</p>
-      {% endif %}
-      <p>{{ page.excerpt | strip_html | truncatewords: 26 }}</p>
-    </section>
+{% assign blog_pages = site.pages | where: "layout", "blog" | where_exp: "post", "post.path contains
+'/blog/'" | where_exp: "post", "post.url != page.url" | sort: "date" | reverse %} {% assign
+categories = "" | split: "" %} {% for post in blog_pages %} {% assign slug_source = post.category |
+default: post.dir | split: "/" | last %} {% assign category_slug = slug_source | default: "general"
+| downcase %} {% if category_slug == "" or category_slug == "blog" %} {% assign category_slug =
+"general" %} {% endif %} {% unless categories contains category_slug %} {% assign categories =
+categories | push: category_slug %} {% endunless %} {% endfor %} {% if blog_pages.size == 0 %}
+<p class="muted">Er zijn nog geen blogposts om te tonen.</p>
+{% else %}
+<div class="blog-filters" role="tablist" aria-label="Filter blogcategorieën">
+  <button
+    type="button"
+    class="blog-filter-button is-active"
+    data-blog-filter="all"
+    aria-pressed="true"
+  >
+    Alle categorieën
+  </button>
+  {% for category in categories %}
+  <button
+    type="button"
+    class="blog-filter-button"
+    data-blog-filter="{{ category }}"
+    aria-pressed="false"
+  >
+    {{ category | replace: "-", " " | capitalize }}
+  </button>
   {% endfor %}
 </div>
+
+<div class="grid blog-grid">
+  {% for post in blog_pages %} {% assign slug_source = post.category | default: post.dir | split:
+  "/" | last %} {% assign category_slug = slug_source | default: "general" | downcase %} {% if
+  category_slug == "" or category_slug == "blog" %} {% assign category_slug = "general" %} {% endif
+  %} {% assign category_label = category_slug | replace: "-", " " | capitalize %}
+  <section class="card" data-blog-card data-blog-category="{{ category_slug }}">
+    <a href="{{ post.url | relative_url }}">
+      <img class="card-image" src="{{ post.image | relative_url }}" alt="{{ post.title }}" />
+    </a>
+    <div class="card-body">
+      <div class="card-meta">
+        <span class="card-category-label">{{ category_label }}</span>
+        {% if post.date %}
+        <time datetime="{{ post.date | date: '%Y-%m-%d' }}">
+          {{ post.date | date: '%-d %B %Y' }}
+        </time>
+        {% endif %}
+      </div>
+      <h2>
+        <a class="card-link" href="{{ post.url | relative_url }}">{{ post.title }}</a>
+      </h2>
+      {% if post.subtitle %}
+      <p class="card-subtitle">{{ post.subtitle }}</p>
+      {% endif %}
+      <p>{{ post.excerpt | strip_html | truncatewords: 26 }}</p>
+    </div>
+  </section>
+  {% endfor %}
+</div>
+{% endif %}

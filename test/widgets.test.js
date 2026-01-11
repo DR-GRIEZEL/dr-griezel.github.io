@@ -102,11 +102,11 @@ describe('widget helpers', () => {
   it('resolves a location name from reverse geocoding', async () => {
     const fetchMock = vi.fn().mockResolvedValue({
       ok: true,
-      json: async () => ({ results: [{ name: 'Brussel' }] }),
+      json: async () => ({ results: [{ name: 'Brussels' }] }),
     });
     vi.stubGlobal('fetch', fetchMock);
 
-    await expect(getLocationName(50.85, 4.35)).resolves.toBe('Brussel');
+    await expect(getLocationName(50.85, 4.35)).resolves.toBe('Brussels');
     expect(fetchMock).toHaveBeenCalledTimes(1);
     expect(String(fetchMock.mock.calls[0][0])).toContain('latitude=50.85');
   });
@@ -132,7 +132,7 @@ describe('widget helpers', () => {
     expect(url).toBeInstanceOf(URL);
     expect(url.searchParams.get('latitude')).toBe('50.85');
     expect(url.searchParams.get('longitude')).toBe('4.35');
-    expect(url.searchParams.get('language')).toBe('nl');
+    expect(url.searchParams.get('language')).toBe('en');
     expect(url.searchParams.get('count')).toBe('1');
   });
 
@@ -252,7 +252,7 @@ describe('widget helpers', () => {
     await flushPromises(4);
 
     expect(fetchMock).toHaveBeenCalledTimes(1);
-    expect(descEl.textContent).toBe('Weer');
+    expect(descEl.textContent).toBe('Weather');
     expect(locationEl.textContent).toBe('Test City');
     expect(updatedEl.textContent).toBe('03:00');
     expect(updatedEl.dateTime).not.toBe('');

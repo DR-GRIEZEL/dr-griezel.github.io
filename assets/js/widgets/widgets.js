@@ -2,39 +2,39 @@ const defaultTimeZone = 'Europe/Brussels';
 const weatherRefreshMs = 5 * 60 * 1000;
 const clockRefreshMs = 1000;
 const defaultCoords = { lat: 50.8503, lon: 4.3517 };
-const defaultLocation = 'Brussel';
+const defaultLocation = 'Brussels';
 
 const weatherCodeMap = {
-  0: '☀️ Helder',
-  1: '🌤️ Overwegend helder',
-  2: '⛅ Deels bewolkt',
-  3: '☁️ Bewolkt',
-  45: '🌫️ Mist',
-  48: '🌫️ Mist',
-  51: '🌦️ Motregen (licht)',
-  53: '🌧️ Motregen',
-  55: '🌧️ Motregen (zwaar)',
-  61: '🌦️ Regen (licht)',
-  63: '🌧️ Regen',
-  65: '🌧️ Regen (zwaar)',
-  71: '🌨️ Sneeuw (licht)',
-  73: '🌨️ Sneeuw',
-  75: '❄️ Sneeuw (zwaar)',
-  80: '🌦️ Buien (licht)',
-  81: '🌧️ Buien',
-  82: '⛈️ Buien (zwaar)',
-  95: '⛈️ Onweer',
-  96: '⛈️ Onweer (hagel)',
-  99: '⛈️ Onweer (zware hagel)',
+  0: '☀️ Clear',
+  1: '🌤️ Mostly clear',
+  2: '⛅ Partly cloudy',
+  3: '☁️ Cloudy',
+  45: '🌫️ Fog',
+  48: '🌫️ Fog',
+  51: '🌦️ Drizzle (light)',
+  53: '🌧️ Drizzle',
+  55: '🌧️ Drizzle (heavy)',
+  61: '🌦️ Rain (light)',
+  63: '🌧️ Rain',
+  65: '🌧️ Rain (heavy)',
+  71: '🌨️ Snow (light)',
+  73: '🌨️ Snow',
+  75: '❄️ Snow (heavy)',
+  80: '🌦️ Showers (light)',
+  81: '🌧️ Showers',
+  82: '⛈️ Showers (heavy)',
+  95: '⛈️ Thunderstorm',
+  96: '⛈️ Thunderstorm (hail)',
+  99: '⛈️ Thunderstorm (heavy hail)',
 };
 
 const clockTimers = new WeakMap();
 const weatherTimers = new WeakMap();
 
-const numberFormat = new Intl.NumberFormat('nl-BE', { maximumFractionDigits: 0 });
+const numberFormat = new Intl.NumberFormat('en-GB', { maximumFractionDigits: 0 });
 
 const formatTimeParts = (date, timeZone) => {
-  const formatter = new Intl.DateTimeFormat('nl-BE', {
+  const formatter = new Intl.DateTimeFormat('en-GB', {
     timeZone,
     hour12: false,
     hour: '2-digit',
@@ -54,7 +54,7 @@ const formatTimeParts = (date, timeZone) => {
 };
 
 const formatShortTime = (date, timeZone) => {
-  const formatter = new Intl.DateTimeFormat('nl-BE', {
+  const formatter = new Intl.DateTimeFormat('en-GB', {
     timeZone,
     hour12: false,
     hour: '2-digit',
@@ -95,7 +95,7 @@ const getWeatherSummary = (data, timeZone, now = new Date()) => {
     windDirection: current.wind_direction_10m,
     humidity: current.relative_humidity_2m,
     precipitationProbability,
-    description: weatherCodeMap[current.weather_code] ?? 'Weer',
+    description: weatherCodeMap[current.weather_code] ?? 'Weather',
   };
 };
 
@@ -130,7 +130,7 @@ const buildReverseGeocodeUrl = (lat, lon) => {
   const url = new URL('https://geocoding-api.open-meteo.com/v1/reverse');
   url.searchParams.set('latitude', String(lat));
   url.searchParams.set('longitude', String(lon));
-  url.searchParams.set('language', 'nl');
+  url.searchParams.set('language', 'en');
   url.searchParams.set('count', '1');
   return url;
 };
