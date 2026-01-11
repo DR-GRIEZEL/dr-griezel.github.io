@@ -23,7 +23,7 @@
   "homepage": "https://github.com/DR-GRIEZEL/dr-griezel.github.io#readme",
   "devDependencies": {
     "@eslint/js": "^9.0.0",
-    "@vitest/coverage-v8": "^2.1.9",
+    "@vitest/coverage-v8": "^4.0.16",
     "eslint": "^9.0.0",
     "eslint-config-prettier": "^9.0.0",
     "globals": "^15.0.0",
