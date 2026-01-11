@@ -11,15 +11,25 @@ js:
 module_js: true
 ---
 
-{% assign blog_pages = site.pages | where: "layout", "blog" | where_exp: "post", "post.url contains
-'/blog/' or post.url contains '/blogs/' or post.path contains 'blog/' or post.path contains
-'blogs/'" | where_exp: "post", "post.url != page.url" | sort: "date" | reverse %} {% assign
-categories = "" | split: "" %} {% for post in blog_pages %} {% assign slug_source = post.category |
-default: post.dir | split: "/" | last %} {% assign category_slug = slug_source | default: "general"
-| downcase %} {% if category_slug == "" or category_slug == "blog" or category_slug == "blogs" %} {%
-assign category_slug = "general" %} {% endif %} {% unless categories contains category_slug %} {%
-assign categories = categories | push: category_slug %} {% endunless %} {% endfor %} {% if
-blog_pages.size == 0 %}
+{% assign blog_pages = site.pages | where: "layout", "blog" %}
+{% assign blog_pages = blog_pages
+  | where_exp: "post", "post.url contains '/blog/' or post.url contains '/blogs/' or post.path contains 'blog/' or post.path contains 'blogs/'"
+  | where_exp: "post", "post.url != page.url"
+  | sort: "date"
+  | reverse
+%}
+{% assign categories = "" | split: "" %}
+{% for post in blog_pages %}
+  {% assign slug_source = post.category | default: post.dir | split: "/" | last %}
+  {% assign category_slug = slug_source | default: "general" | downcase %}
+  {% if category_slug == "" or category_slug == "blog" or category_slug == "blogs" %}
+    {% assign category_slug = "general" %}
+  {% endif %}
+  {% unless categories contains category_slug %}
+    {% assign categories = categories | push: category_slug %}
+  {% endunless %}
+{% endfor %}
+{% if blog_pages.size == 0 %}
 <p class="muted">Er zijn nog geen blogposts om te tonen.</p>
 {% else %}
 <div class="blog-filters" role="tablist" aria-label="Filter blogcategorieën">
@@ -44,11 +54,13 @@ blog_pages.size == 0 %}
 </div>
 
 <div class="grid blog-grid">
-  {% for post in blog_pages %} {% assign slug_source = post.category | default: post.dir | split:
-  "/" | last %} {% assign category_slug = slug_source | default: "general" | downcase %} {% if
-  category_slug == "" or category_slug == "blog" or category_slug == "blogs" %} {% assign
-  category_slug = "general" %} {% endif %} {% assign category_label = category_slug | replace: "-",
-  " " | capitalize %}
+  {% for post in blog_pages %}
+    {% assign slug_source = post.category | default: post.dir | split: "/" | last %}
+    {% assign category_slug = slug_source | default: "general" | downcase %}
+    {% if category_slug == "" or category_slug == "blog" or category_slug == "blogs" %}
+      {% assign category_slug = "general" %}
+    {% endif %}
+    {% assign category_label = category_slug | replace: "-", " " | capitalize %}
   <section class="card" data-blog-card data-blog-category="{{ category_slug }}">
     <a href="{{ post.url | relative_url }}">
       <img class="card-image" src="{{ post.image | relative_url }}" alt="{{ post.title }}" />
