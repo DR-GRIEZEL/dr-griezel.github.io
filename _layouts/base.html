@@ -1,36 +1,19 @@
 <!doctype html>
 
 <html lang="nl">
-
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{{ site.title }}</title>
-    <link
-      rel="apple-touch-icon"
-      sizes="180x180"
-      href="/assets/imgfavicon/apple-touch-icon.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="32x32"
-      href="/assets/imgfavicon/favicon-32x32.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="16x16"
-      href="/assets/imgfavicon/favicon-16x16.png"
-    />
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/imgfavicon/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/imgfavicon/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/imgfavicon/favicon-16x16.png" />
     <link rel="manifest" href="/assets/imgfavicon/site.webmanifest" />
     <link rel="shortcut icon" href="/assets/imgfavicon/favicon.ico" />
 
     {% if page.req_login %}
-      <script type="module" src="{{ '/assets/js/gate-content.js' | relative_url }}"></script>
-    {% endif %}
-
-    {% if page.css %} {% for href in page.css %}
+    <script type="module" src="{{ '/assets/js/login/gate-content.js' | relative_url }}"></script>
+    {% endif %} {% if page.css %} {% for href in page.css %}
     <link rel="stylesheet" href="{{ href }}" />
     {% endfor %} {% endif %}
   </head>
@@ -66,5 +49,4 @@
     ></script>
     {% endfor %} {% endif %}
   </body>
-
 </html>

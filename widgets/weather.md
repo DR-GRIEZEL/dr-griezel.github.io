@@ -1,7 +1,7 @@
 ---
 layout: base
 title: 'Weather Widget'
-summary: 'Realtime weer met extra details zoals gevoelstemperatuur, wind en neerslagkans.'
+summary: 'Realtime weather with extra details like feels-like, wind, and precipitation chance.'
 image: '/assets/imgwidgets/weather.svg'
 css:
   - /assets/css/main.css
@@ -11,7 +11,7 @@ js:
 module_js: true
 ---
 
-<section class="card" aria-label="Weer" data-widget="weather">
+<section class="card" aria-label="Weather" data-widget="weather">
   <div class="wxbox" role="group" aria-describedby="wx-meta">
     <div class="wxline">
       <strong class="wx-temp" data-wx-temp>--°</strong>
@@ -19,7 +19,7 @@ module_js: true
     </div>
     <div class="wx-details">
       <div class="wx-detail">
-        <span class="wx-label">Gevoel</span>
+        <span class="wx-label">Feels like</span>
         <span class="wx-value" data-wx-apparent>—</span>
       </div>
       <div class="wx-detail">
@@ -27,19 +27,19 @@ module_js: true
         <span class="wx-value" data-wx-wind>—</span>
       </div>
       <div class="wx-detail">
-        <span class="wx-label">Richting</span>
+        <span class="wx-label">Direction</span>
         <span class="wx-value" data-wx-wind-direction>—</span>
       </div>
       <div class="wx-detail">
-        <span class="wx-label">Neerslag</span>
+        <span class="wx-label">Precipitation</span>
         <span class="wx-value" data-wx-precip>—</span>
       </div>
       <div class="wx-detail">
-        <span class="wx-label">Neerslagkans</span>
+        <span class="wx-label">Precip chance</span>
         <span class="wx-value" data-wx-precip-prob>—</span>
       </div>
       <div class="wx-detail">
-        <span class="wx-label">Vochtigheid</span>
+        <span class="wx-label">Humidity</span>
         <span class="wx-value" data-wx-humidity>—</span>
       </div>
     </div>

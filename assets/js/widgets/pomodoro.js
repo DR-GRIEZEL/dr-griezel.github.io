@@ -24,7 +24,7 @@ const initPomodoroWidget = (widget, index) => {
   let state = null;
   try {
     state = JSON.parse(localStorage.getItem(key));
-  } catch (_) {
+  } catch {
     state = null;
   }
   if (!state) state = { mode: 'off', remaining: 0, running: false, cycle: 1, lastDay: todayStr };
@@ -157,7 +157,7 @@ const chime = (title = 'Timer', body = '') => {
     g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.3);
     o.start();
     o.stop(ctx.currentTime + 0.35);
-  } catch (_) {
+  } catch {
     // ignore
   }
   if ('Notification' in window && Notification.permission === 'granted') {

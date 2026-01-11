@@ -91,19 +91,18 @@ body::before {
   height: 64px;
   z-index: 9999;
   pointer-events: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' fill='none'/><circle cx='32' cy='28' r='16' fill='rgb(198,140,76)'/><rect x='16' y='12' width='32' height='10' fill='rgb(56,40,20)'/><rect x='18' y='22' width='10' height='4' fill='rgb(56,40,20)'/><rect x='26' y='26' width='4' height='4' fill='rgb(0,0,0)'/><rect x='34' y='26' width='4' height='4' fill='rgb(0,0,0)'/><rect x='28' y='34' width='8' height='2' fill='rgb(80,30,30)'/><line x1='10' y1='30' x2='4' y2='24' stroke='rgb(255,255,255)' stroke-width='2'/><line x1='54' y1='30' x2='60' y2='24' stroke='rgb(255,255,255)' stroke-width='2'/></svg>");
   background-image: url('/assets/img/wizzy gg.png');
   background-size: contain;
   background-repeat: no-repeat;
   animation: ai_helper_overlay 0.4s infinite alternate ease-in-out;
-  transform-origin: 50% 60%;
 }
-
 @keyframes ai_helper_overlay {
   0% {
-    transform: rotate(-8deg);
+    transform: rotate(-4deg);
   }
   100% {
-    transform: rotate(8deg);
+    transform: rotate(4deg);
   }
 }
 
@@ -238,33 +237,32 @@ body::before {
   appearance: none;
   border: 0;
   background: transparent;
-  padding: 10px;
-  border-radius: 14px;
+  padding: 6px;
+  border-radius: 10px;
   cursor: pointer;
-  line-height: 0;
-  transition: transform 0.15s ease;
+  line-height: 0; /* prevents extra vertical space */
 }
 
 /* Icon sizing: base (keep consistent box) */
 .auth-icon-btn img,
 .auth-icon-btn svg {
-  width: 27px;
-  height: 27px;
+  width: 18px;
+  height: 18px;
   display: block;
 }
 
 /* Small = compact square-ish */
 .sidebar-auth .google-logo--small,
 .sidebar-auth .logout-logo--small {
-  height: 27px;
-  width: 27px;
+  height: 18px;
+  width: 18px;
 }
 
 /* Large = bredere variant (pas width aan zoals je SVG bedoeld is) */
 .sidebar-auth .google-logo--large,
 .sidebar-auth .logout-logo--large {
-  height: 27px;
-  width: 96px;
+  height: 72px;
+  width: 144px;
 }
 
 /* Simple hover effect (works for img or inline svg) */

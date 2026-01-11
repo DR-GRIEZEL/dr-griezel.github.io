@@ -1,9 +1,9 @@
-const owner = "DR-GRIEZEL";
-const repo = "dr-griezel.github.io";
+const owner = 'DR-GRIEZEL';
+const repo = 'dr-griezel.github.io';
 const url = `https://api.github.com/repos/${owner}/${repo}/commits?per_page=20`;
 
-const statusEl = typeof document === "undefined" ? null : document.getElementById("updates-status");
-const listEl = typeof document === "undefined" ? null : document.getElementById("updates-list");
+const statusEl = typeof document === 'undefined' ? null : document.getElementById('updates-status');
+const listEl = typeof document === 'undefined' ? null : document.getElementById('updates-list');
 
 const setStatus = (message, target = statusEl) => {
   if (target) {
@@ -12,48 +12,48 @@ const setStatus = (message, target = statusEl) => {
 };
 
 const formatDate = (iso) => {
-  if (!iso) return "";
+  if (!iso) return '';
   const date = new Date(iso);
-  if (Number.isNaN(date.getTime())) return "";
-  return new Intl.DateTimeFormat("en-US", {
-    year: "numeric",
-    month: "short",
-    day: "2-digit",
+  if (Number.isNaN(date.getTime())) return '';
+  return new Intl.DateTimeFormat('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: '2-digit',
   }).format(date);
 };
 
 const getCommitTitle = (commit) => {
-  return commit?.commit?.message?.split("\n")[0] || "Untitled commit";
+  return commit?.commit?.message?.split('\n')[0] || 'Untitled commit';
 };
 
 const getCommitMetaText = (commit) => {
-  const author = commit?.commit?.author?.name || commit?.author?.login || "Unknown author";
+  const author = commit?.commit?.author?.name || commit?.author?.login || 'Unknown author';
   const date = formatDate(commit?.commit?.author?.date);
-  const sha = commit?.sha ? commit.sha.slice(0, 7) : "";
+  const sha = commit?.sha ? commit.sha.slice(0, 7) : '';
   const segments = [author];
 
   if (date) segments.push(date);
   if (sha) segments.push(sha);
 
-  return segments.join(" · ");
+  return segments.join(' · ');
 };
 
 const renderCommits = (commits, target = listEl) => {
   if (!target) return;
-  target.innerHTML = "";
+  target.innerHTML = '';
 
   commits.forEach((commit) => {
-    const item = document.createElement("li");
-    item.className = "updates-item";
+    const item = document.createElement('li');
+    item.className = 'updates-item';
 
-    const link = document.createElement("a");
+    const link = document.createElement('a');
     link.href = commit.html_url;
-    link.target = "_blank";
-    link.rel = "noopener noreferrer";
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
     link.textContent = getCommitTitle(commit);
 
-    const meta = document.createElement("div");
-    meta.className = "updates-meta";
+    const meta = document.createElement('div');
+    meta.className = 'updates-meta';
     meta.textContent = getCommitMetaText(commit);
 
     item.append(link, meta);
@@ -62,10 +62,10 @@ const renderCommits = (commits, target = listEl) => {
 };
 
 const loadCommits = async () => {
-  setStatus("Loading updates…");
+  setStatus('Loading updates…');
   try {
     const res = await fetch(url, {
-      headers: { Accept: "application/vnd.github+json" },
+      headers: { Accept: 'application/vnd.github+json' },
     });
 
     if (!res.ok) {
@@ -74,14 +74,14 @@ const loadCommits = async () => {
 
     const commits = await res.json();
     if (!Array.isArray(commits) || commits.length === 0) {
-      setStatus("No updates available yet.");
+      setStatus('No updates available yet.');
       return;
     }
 
     renderCommits(commits);
-    setStatus("");
-  } catch (error) {
-    setStatus("Unable to load updates right now.");
+    setStatus('');
+  } catch {
+    setStatus('Unable to load updates right now.');
   }
 };
 

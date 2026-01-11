@@ -11,20 +11,18 @@ import {
 import { createAuthHandlers } from './auth.js';
 import { initLoginButtons } from './buttons-init.js';
 import { firebaseConfig, isFirebaseConfigReady } from './firebase-config.js';
-import { signOut } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
+import { signOut } from 'https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js';
 
 const googleClientId = '78150871126-imnoi25btctc85q56hou7fm3ecs04kp9.apps.googleusercontent.com';
 
 const googleButton = document.querySelector('[data-auth-google]');
 const githubButton = document.querySelector('[data-auth-github]');
 const statusElement = document.querySelector('[data-auth-status]');
-const userElement = document.querySelector('[data-auth-user]');
-const buttonsGroup = googleButton?.closest('.auth-buttons__group') ?? null;
 
 // Toggle visibility of elements based on auth state
-const authOnly = document.querySelectorAll("[data-auth-only]");
-const loggedOut = document.querySelectorAll("[data-auth-logged-out]");
-const userSlots = document.querySelectorAll("[data-auth-user]");
+const authOnly = document.querySelectorAll('[data-auth-only]');
+const loggedOut = document.querySelectorAll('[data-auth-logged-out]');
+const userSlots = document.querySelectorAll('[data-auth-user]');
 
 // Setup
 const isConfigReady = isFirebaseConfigReady();
@@ -34,16 +32,17 @@ if (!isConfigReady) {
     statusElement.textContent = 'Login is nog niet geconfigureerd.';
     statusElement.dataset.tone = 'error';
   }
-} else if (googleButton && statusElement) { // && gitButton
+} else if (googleButton && statusElement) {
+  // && gitButton
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
   auth.useDeviceLanguage();
 
   // Toggle UI on auth state
   const formatUserLabel = (user) => user?.displayName || user?.email || 'gebruiker';
-  const logoutBtn = document.querySelector("[data-auth-logout]");
+  const logoutBtn = document.querySelector('[data-auth-logout]');
   if (logoutBtn) {
-    logoutBtn.addEventListener("click", () => signOut(auth));
+    logoutBtn.addEventListener('click', () => signOut(auth));
   }
 
   onAuthStateChanged(auth, (user) => {

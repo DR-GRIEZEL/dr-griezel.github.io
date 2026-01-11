@@ -269,7 +269,7 @@ const initWeatherWidget = (widget) => {
         updatedEl.dateTime = now.toISOString();
         updatedEl.textContent = formatShortTime(now, timeZone);
       }
-    } catch (error) {
+    } catch {
       if (descEl) descEl.textContent = 'Weer: fout bij ophalen.';
     }
   };
@@ -304,10 +304,10 @@ const initWeatherWidget = (widget) => {
       locationName = 'Huidige locatie';
       try {
         locationName = await getLocationName(coords.lat, coords.lon);
-      } catch (error) {
+      } catch {
         locationName = 'Huidige locatie';
       }
-    } catch (error) {
+    } catch {
       coords = defaultCoords;
       locationName = defaultLocation;
       url = buildUrl(coords.lat, coords.lon);

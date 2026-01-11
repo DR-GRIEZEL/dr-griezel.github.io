@@ -10,6 +10,8 @@ export default defineConfig({
         'assets/js/login/buttons-init.js',
         'assets/js/login/login-buttons.js',
         'assets/js/login/gate-core.js',
+        'assets/js/login/gate-bootstrap.js',
+        'assets/js/login/gate-content.js',
         'assets/js/blog-filter.js',
         'assets/js/widgets/widgets.js',
         'assets/js/widgets/pomodoro-core.js',
