@@ -1,13 +1,43 @@
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional.
-export const firebaseConfig = {
-  apiKey: 'AIzaSyC4dw2DS7X5OMsnwiwFSYLdeUH1jEDRzGo',
-  authDomain: 'dashboard-a81aa.firebaseapp.com',
-  projectId: 'dashboard-a81aa',
-  storageBucket: 'dashboard-a81aa.firebasestorage.app',
-  messagingSenderId: '78150871126',
-  appId: '1:78150871126:web:c950dca3d2c972658a33f7',
-  measurementId: 'G-NX4BKD7GHN',
+const defaultFirebaseConfig = {
+  apiKey: '',
+  authDomain: '',
+  projectId: '',
+  storageBucket: '',
+  messagingSenderId: '',
+  appId: '',
+  measurementId: '',
 };
+
+const getDatasetConfig = (root) => {
+  if (!root?.dataset) return {};
+  const dataset = root.dataset;
+  return {
+    apiKey: dataset.firebaseApiKey,
+    authDomain: dataset.firebaseAuthDomain,
+    projectId: dataset.firebaseProjectId,
+    storageBucket: dataset.firebaseStorageBucket,
+    messagingSenderId: dataset.firebaseMessagingSenderId,
+    appId: dataset.firebaseAppId,
+    measurementId: dataset.firebaseMeasurementId,
+  };
+};
+
+export const getFirebaseConfigFromRuntime = (runtimeConfig = {}, root = null) => {
+  return {
+    ...defaultFirebaseConfig,
+    ...getDatasetConfig(root),
+    ...runtimeConfig,
+  };
+};
+
+const getRuntimeConfig = () => {
+  const runtimeConfig = globalThis.__FIREBASE_CONFIG__ || {};
+  const root = typeof document === 'undefined' ? null : document.documentElement;
+  return getFirebaseConfigFromRuntime(runtimeConfig, root);
+};
+
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional.
+export const firebaseConfig = getRuntimeConfig();
 
 export const isFirebaseConfigReady = () =>
   Object.values(firebaseConfig).every((value) => Boolean(value) && value !== '...');
