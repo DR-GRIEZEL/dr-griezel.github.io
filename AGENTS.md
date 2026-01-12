@@ -10,9 +10,11 @@ Keep the site stable and easy to change without breaking the framework.
    - ⚠️ Be careful: files in `src/_layouts/`, `src/_includes/`, and `_config.yml`.
 2. **One change at a time.** Make a small change, test, then move on.
 3. **Never delete files unless you are sure they are unused.**
-5. **Keep JS widgets modular.** Put new JS in `src/assets/js/` and import it from a page.
+4. **Keep JS widgets modular.** Put new JS in `src/assets/js/` and import it from a page.
+5. **Public repo:** Do not place **any** sensitive information like API secrets in workspace.
 
 ## Testing and coverage (required)
+- **Keep coverage above 90%, add unit tests whenever it drops below this value. Focus primarily on auth-pipeline.**
 - **Every new function or change to a function/stateflow must include unit tests and coverage.**
 - Add or update tests in `src/test/` and ensure coverage includes the new behavior.
 
