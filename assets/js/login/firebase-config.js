@@ -1,6 +1,6 @@
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional.
 export const firebaseConfig = {
-  apiKey: 'AIzaSyC4dw2DS7X5OMsnwiwFSYLdeUH1jEDRzGo',
+  apiKey: '{{ secret.GOOGLE_API_SECRET }}',
   authDomain: 'dashboard-a81aa.firebaseapp.com',
   projectId: 'dashboard-a81aa',
   storageBucket: 'dashboard-a81aa.firebasestorage.app',
