@@ -15,7 +15,7 @@ module_js: true
 {% assign blog_candidates = site.pages | concat: site.documents %}
 <!-- prettier-ignore -->
 {% assign blog_pages = blog_candidates
-  | where_exp: "post", "post.path and post.path contains '/blog/'"
+  | where_exp: "post", "post.url contains '/blog/'"
   | where_exp: "post", "post.url != page.url"
   | sort: "date"
   | reverse
