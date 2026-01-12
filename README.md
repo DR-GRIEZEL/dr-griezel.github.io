@@ -100,6 +100,20 @@ window.__FIREBASE_CONFIG__ = {
    The login script displays a warning if any values are missing.
 2. If you register a new Google OAuth client, update the `googleClientId` constant in `src/assets/js/login/login-buttons.js` so the Firebase providers use the correct client ID. (TODO: make config file)
 
+If you deploy via GitHub Pages and want to keep the keys out of the repo, use the workflow in
+`.github/workflows/pages.yml`. It writes `src/config/firebase-config.js` during the build, using
+GitHub Secrets.
+
+1. In GitHub → Settings → Pages, set **Source** to **GitHub Actions**.
+2. Add these repository secrets:
+   - `FIREBASE_API_KEY`
+   - `FIREBASE_AUTH_DOMAIN`
+   - `FIREBASE_PROJECT_ID`
+   - `FIREBASE_STORAGE_BUCKET`
+   - `FIREBASE_MESSAGING_SENDER_ID`
+   - `FIREBASE_APP_ID`
+   - `FIREBASE_MEASUREMENT_ID`
+
 ## 2. GitHub updates config
 
 The Updates page pulls commits based on `config/github_config.js`. Update `owner` and `repo` if you
