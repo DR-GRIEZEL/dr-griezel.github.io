@@ -98,14 +98,9 @@ window.__FIREBASE_CONFIG__ = {
 };
 ```
 
-This file is public on static hosting, so do not place server-only secrets here.
-GitHub Actions secrets are only available to the build and cannot be accessed by client-side JavaScript.
-
-1. Create or reuse a Firebase project, register a Web app, and paste the config object into `config/firebase-config.js`.
+1. Create a Firebase project, register a Web app, and paste the config object into `config/firebase-config.js`. (TODO: make config file)
    The login script displays a warning if any values are missing.
-2. Enable the Google and GitHub sign-in providers and add your local (`http://localhost:4000`) and hosted (`https://dr-griezel.github.io/`) domains to the authorized list. Make sure the OAuth redirect URIs match the domains where you expect the buttons to run.
-3. If you register a new Google OAuth client, update the `googleClientId` constant in `src/assets/js/login/login-buttons.js` so the Firebase providers use the correct client ID.
-4. Keep your Firebase security rules and GitHub client secret locked down—these frontend keys are public by design, so proper server-side rules are what prevent abuse.
+2. If you register a new Google OAuth client, update the `googleClientId` constant in `src/assets/js/login/login-buttons.js` so the Firebase providers use the correct client ID. (TODO: make config file)
 
 ## 2. GitHub updates config
 
