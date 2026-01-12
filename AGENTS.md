@@ -6,7 +6,7 @@ Keep the site stable, modular and scalable without breaking the framework.
 ## Safe-edit rules
 1. **Edit content, not structure.**
    - ✅ Safe: change text, images, links, colors in `src/assets/css/` and `src/assets/img/`.
-   - ✅ Safe: add new pages in `src/html/nav/`, add blog pages to `src/.
+   - ✅ Safe: add new pages in `src/html/nav/`, add blog pages to `src/blog/{category}`.
    - ⚠️ Be careful: files in `src/_layouts/`, `src/_includes/`, and `_config.yml`.
 2. **One change at a time.** Make a small change, test, then move on.
 3. **Never delete files unless you are sure they are unused.**
