@@ -86,3 +86,41 @@ describe('initBlogFilters', () => {
     expect(buttons[1].setAttribute).toHaveBeenCalledWith('aria-pressed', 'true');
   });
 });
+
+describe('blog filter bootstrap', () => {
+  afterEach(() => {
+    delete globalThis.document;
+    vi.resetModules();
+  });
+
+  it('registers a DOMContentLoaded handler when the document is loading', async () => {
+    vi.resetModules();
+    const addEventListener = vi.fn((event, handler) => {
+      if (event === 'DOMContentLoaded') handler();
+    });
+
+    vi.stubGlobal('document', {
+      readyState: 'loading',
+      addEventListener,
+      querySelectorAll: () => [],
+    });
+
+    await import('../assets/js/blog-filter.js');
+
+    expect(addEventListener).toHaveBeenCalledWith('DOMContentLoaded', expect.any(Function));
+  });
+
+  it('bootstraps immediately when the document is ready', async () => {
+    vi.resetModules();
+    const querySelectorAll = vi.fn(() => []);
+
+    vi.stubGlobal('document', {
+      readyState: 'complete',
+      querySelectorAll,
+    });
+
+    await import('../assets/js/blog-filter.js');
+
+    expect(querySelectorAll).toHaveBeenCalledWith('[data-blog-filter]');
+  });
+});

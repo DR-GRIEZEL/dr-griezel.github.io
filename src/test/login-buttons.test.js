@@ -139,4 +139,75 @@ describe('initLoginButtons', () => {
     expect(statusElement.textContent).toBe('Redirect failed.');
     expect(statusElement.dataset.tone).toBe('error');
   });
+
+  it('sets status when redirect provides a user', async () => {
+    const googleButton = createButton();
+    const githubButton = createButton();
+    const statusElement = createStatus();
+
+    await initLoginButtons({
+      googleButton,
+      githubButton,
+      statusElement,
+      loginGooglePopup: vi.fn().mockResolvedValue(null),
+      loginGoogleRedirect: vi.fn().mockResolvedValue(undefined),
+      loginGithubPopup: vi.fn().mockResolvedValue(null),
+      loginGithubRedirect: vi.fn().mockResolvedValue(undefined),
+      handleRedirectResult: vi.fn().mockResolvedValue({ user: { displayName: 'Ada' } }),
+      isEmbeddedBrowser: () => false,
+    });
+
+    expect(statusElement.textContent).toBe('logged in as Ada.');
+    expect(statusElement.dataset.tone).toBe('success');
+  });
+
+  it('reports popup errors that do not redirect', async () => {
+    const googleButton = createButton();
+    const githubButton = createButton();
+    const statusElement = createStatus();
+    const loginGoogleRedirect = vi.fn().mockResolvedValue(undefined);
+
+    initLoginButtons({
+      googleButton,
+      githubButton,
+      statusElement,
+      loginGooglePopup: vi.fn().mockRejectedValue({ code: 'auth/invalid' }),
+      loginGoogleRedirect,
+      loginGithubPopup: vi.fn().mockResolvedValue(null),
+      loginGithubRedirect: vi.fn().mockResolvedValue(undefined),
+      handleRedirectResult: vi.fn().mockResolvedValue(undefined),
+      isEmbeddedBrowser: () => false,
+    });
+
+    await googleButton.handlers.click();
+
+    expect(loginGoogleRedirect).not.toHaveBeenCalled();
+    expect(statusElement.textContent).toBe('Google login failed.');
+    expect(statusElement.dataset.tone).toBe('error');
+  });
+
+  it('reports redirect failures from embedded browsers', async () => {
+    const googleButton = createButton();
+    const githubButton = createButton();
+    const statusElement = createStatus();
+
+    initLoginButtons({
+      googleButton,
+      githubButton,
+      statusElement,
+      loginGooglePopup: vi.fn().mockResolvedValue(null),
+      loginGoogleRedirect: vi.fn().mockRejectedValue(new Error('blocked')),
+      loginGithubPopup: vi.fn().mockResolvedValue(null),
+      loginGithubRedirect: vi.fn().mockResolvedValue(undefined),
+      handleRedirectResult: vi.fn().mockResolvedValue(undefined),
+      isEmbeddedBrowser: () => true,
+    });
+
+    await googleButton.handlers.click();
+
+    expect(statusElement.textContent).toBe(
+      'Google login failed, permission required. (check browser settings)',
+    );
+    expect(statusElement.dataset.tone).toBe('error');
+  });
 });
