@@ -11,14 +11,18 @@ js:
 module_js: true
 ---
 
+<!-- prettier-ignore -->
 {% assign blog_candidates = site.pages | concat: site.documents %}
+<!-- prettier-ignore -->
 {% assign blog_pages = blog_candidates
-  | where_exp: "post", "post.path and post.path | downcase contains 'blog/'"
+  | where_exp: "post", "post.path and post.path contains '/blog/'"
   | where_exp: "post", "post.url != page.url"
   | sort: "date"
   | reverse
 %}
+<!-- prettier-ignore -->
 {% assign categories = "" | split: "" %}
+<!-- prettier-ignore -->
 {% for post in blog_pages %}
   {% assign slug_source = post.category | default: post.dir | split: "/" | last %}
   {% assign category_slug = slug_source | default: "general" | downcase %}
@@ -41,19 +45,22 @@ module_js: true
   >
     Alle categorieën
   </button>
+  <!-- prettier-ignore-start -->
   {% for category in categories %}
-  <button
-    type="button"
-    class="blog-filter-button"
-    data-blog-filter="{{ category }}"
-    aria-pressed="false"
-  >
-    {{ category | replace: "-", " " | capitalize }}
-  </button>
+    <button
+      type="button"
+      class="blog-filter-button"
+      data-blog-filter="{{ category }}"
+      aria-pressed="false"
+    >
+      {{ category | replace: "-", " " | capitalize }}
+    </button>
   {% endfor %}
+  <!-- prettier-ignore-end -->
 </div>
 
 <div class="grid blog-grid">
+  <!-- prettier-ignore-start -->
   {% for post in blog_pages %}
     {% assign slug_source = post.category | default: post.dir | split: "/" | last %}
     {% assign category_slug = slug_source | default: "general" | downcase %}
@@ -61,28 +68,29 @@ module_js: true
       {% assign category_slug = "general" %}
     {% endif %}
     {% assign category_label = category_slug | replace: "-", " " | capitalize %}
-  <section class="card" data-blog-card data-blog-category="{{ category_slug }}">
-    <a href="{{ post.url | relative_url }}">
-      <img class="card-image" src="{{ post.image | relative_url }}" alt="{{ post.title }}" />
-    </a>
-    <div class="card-body">
-      <div class="card-meta">
-        <span class="card-category-label">{{ category_label }}</span>
-        {% if post.date %}
-        <time datetime="{{ post.date | date: '%Y-%m-%d' }}">
-          {{ post.date | date: '%-d %B %Y' }}
-        </time>
+    <section class="card" data-blog-card data-blog-category="{{ category_slug }}">
+      <a href="{{ post.url | relative_url }}">
+        <img class="card-image" src="{{ post.image | relative_url }}" alt="{{ post.title }}" />
+      </a>
+      <div class="card-body">
+        <div class="card-meta">
+          <span class="card-category-label">{{ category_label }}</span>
+          {% if post.date %}
+          <time datetime="{{ post.date | date: '%Y-%m-%d' }}">
+            {{ post.date | date: '%-d %B %Y' }}
+          </time>
+          {% endif %}
+        </div>
+        <h2>
+          <a class="card-link" href="{{ post.url | relative_url }}">{{ post.title }}</a>
+        </h2>
+        {% if post.subtitle %}
+        <p class="card-subtitle">{{ post.subtitle }}</p>
         {% endif %}
+        <p>{{ post.excerpt | strip_html | truncatewords: 26 }}</p>
       </div>
-      <h2>
-        <a class="card-link" href="{{ post.url | relative_url }}">{{ post.title }}</a>
-      </h2>
-      {% if post.subtitle %}
-      <p class="card-subtitle">{{ post.subtitle }}</p>
-      {% endif %}
-      <p>{{ post.excerpt | strip_html | truncatewords: 26 }}</p>
-    </div>
-  </section>
+    </section>
   {% endfor %}
+  <!-- prettier-ignore-end -->
 </div>
 {% endif %}
