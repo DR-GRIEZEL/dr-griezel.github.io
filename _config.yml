@@ -3,3 +3,8 @@ baseurl: ""
 title: "✎ᝰ.🗒 ˎˊ˗ DR-GRIEZEL's Vault ⊹ ࣪ ˖⏱ ୭˚. ᵎ"
 subtitle: ">>>Research notes and build logs<<<"
 copyright: "DR-GRIEZEL, bachjamal-commits44"
+source: src
+exclude:
+  - test
+  - node_modules
+  - coverage

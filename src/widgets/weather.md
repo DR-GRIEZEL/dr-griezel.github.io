@@ -2,7 +2,7 @@
 layout: base
 title: 'Weather Widget'
 summary: 'Realtime weather with extra details like feels-like, wind, and precipitation chance.'
-image: '/assets/imgwidgets/weather.svg'
+image: '/assets/img/widgets/weather.svg'
 css:
   - /assets/css/main.css
   - /assets/css/dash.css

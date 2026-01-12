@@ -11,9 +11,9 @@ js:
 module_js: true
 ---
 
-{% assign blog_pages = site.pages | where: "layout", "blog" %}
-{% assign blog_pages = blog_pages
-  | where_exp: "post", "post.url contains '/blog/' or post.url contains '/blogs/' or post.path contains 'blog/' or post.path contains 'blogs/'"
+{% assign blog_candidates = site.pages | concat: site.documents %}
+{% assign blog_pages = blog_candidates
+  | where_exp: "post", "post.path and post.path | downcase contains 'blog/'"
   | where_exp: "post", "post.url != page.url"
   | sort: "date"
   | reverse

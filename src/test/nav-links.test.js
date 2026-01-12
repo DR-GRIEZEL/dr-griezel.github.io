@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { describe, expect, it } from 'vitest';
 
-const navDir = path.join('html', 'nav');
+const navDir = path.join('src', 'html', 'nav');
 
 const parseFrontMatter = (content) => {
   const match = content.match(/^---\s*([\s\S]*?)\s*---/);

@@ -7,7 +7,7 @@ module.exports = [
   js.configs.recommended,
 
   {
-    files: ['assets/js/**/*.js'],
+    files: ['src/assets/js/**/*.js'],
     languageOptions: {
       sourceType: 'module',
       globals: { ...globals.browser },

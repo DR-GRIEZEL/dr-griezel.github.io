@@ -4,7 +4,7 @@ title: "Forest Path"
 subtitle: "Een pad door het groen"
 css:
   - /assets/css/main.css
-image: "/assets/imgblog/forest-path.svg"
+image: "/assets/img/blog/forest-path.svg"
 date: 2024-01-19
 ---
 

@@ -31,46 +31,46 @@
 ## 📌 Framework overview
 
 - **Jekyll (static site generator)**: Markdown/HTML pages are compiled with layouts and includes.
-- **Layouts**: `_layouts/base.html` composes the page chrome (sidebar, header, footer, main content).
-- **Includes**: `_includes/nav.html`, `_includes/header.html`, `_includes/footer.html` are partials injected by layouts.
-- **Static assets**: `assets/css` and `assets/js` hold styling and behavior modules.
+- **Layouts**: `src/_layouts/base.html` composes the page chrome (sidebar, header, footer, main content).
+- **Includes**: `src/_includes/nav.html`, `src/_includes/header.html`, `src/_includes/footer.html` are partials injected by layouts.
+- **Static assets**: `src/assets/css` and `src/assets/js` hold styling and behavior modules.
 
 ### Module interactions (low-level)
 
 - **Navigation pipeline**
-  - Jekyll loads pages from `html/nav/`.
-  - `_includes/nav.html` filters `site.pages` to build sidebar links.
+  - Jekyll loads pages from `src/html/nav/`.
+  - `src/_includes/nav.html` filters `site.pages` to build sidebar links.
   - `nav_label` and `nav_order` in each page control label and order.
 - **Layout pipeline**
-  - `_layouts/base.html` renders the layout, then injects `page.css` and `page.js` lists.
-  - `assets/js/site.js` runs globally for layout behaviors (sidebar toggles, etc.).
+  - `src/_layouts/base.html` renders the layout, then injects `page.css` and `page.js` lists.
+  - `src/assets/js/site.js` runs globally for layout behaviors (sidebar toggles, etc.).
 - **Widget pipeline**
-  - `html/nav/index.html` composes widgets by rendering pages from `/widgets/`.
-  - `assets/js/widgets/widgets.js` provides clock/weather helpers.
-  - `assets/js/widgets/pomodoro-core.js` handles timer state and formatting.
-  - `assets/js/widgets/pomodoro.js` binds UI to the pomodoro core.
+  - `src/html/nav/index.html` composes widgets by rendering pages from `/widgets/`.
+  - `src/assets/js/widgets/widgets.js` provides clock/weather helpers.
+  - `src/assets/js/widgets/pomodoro-core.js` handles timer state and formatting.
+  - `src/assets/js/widgets/pomodoro.js` binds UI to the pomodoro core.
 - **Updates pipeline**
-  - `html/nav/updates.html` loads `assets/js/updates.js` as a module.
+  - `src/html/nav/updates.html` loads `src/assets/js/updates.js` as a module.
   - `updates.js` fetches GitHub commits and renders them into the updates list.
 
 ## 📁 Directory structure
 
 ```
 .
-├── _includes/            # Jekyll partials (nav/header/footer)
-├── _layouts/             # Base layout
-├── _data/                # Jekyll data (currently unused)
-├── assets/
-│   ├── css/              # Stylesheets
-│   ├── images/           # Icons and illustrations
-│   └── js/               # JS modules (widgets, pomodoro, updates)
-├── blog/                 # Blog post markdown entries
-├── html/
-│   ├── nav/              # Pages that appear in the sidebar
-│   ├── 404.html
-│   └── 500.html
-├── widgets/              # Widget partial pages
-├── test/                 # Vitest unit tests
+├── src/
+│   ├── _includes/        # Jekyll partials (nav/header/footer)
+│   ├── _layouts/         # Base layout
+│   ├── assets/
+│   │   ├── css/          # Stylesheets
+│   │   ├── img/          # Icons and illustrations
+│   │   └── js/           # JS modules (widgets, pomodoro, updates)
+│   ├── blog/             # Blog post markdown entries
+│   ├── html/
+│   │   ├── nav/          # Pages that appear in the sidebar
+│   │   ├── 404.html
+│   │   └── 500.html
+│   ├── widgets/          # Widget partial pages
+│   └── test/             # Vitest unit tests
 ├── _config.yml           # Jekyll config
 ├── package.json
 └── README.md
@@ -104,7 +104,7 @@ GitHub Actions secrets are only available to the build and cannot be accessed by
 1. Create or reuse a Firebase project, register a Web app, and paste the config object into `config/firebase-config.js`.
    The login script displays a warning if any values are missing.
 2. Enable the Google and GitHub sign-in providers and add your local (`http://localhost:4000`) and hosted (`https://dr-griezel.github.io/`) domains to the authorized list. Make sure the OAuth redirect URIs match the domains where you expect the buttons to run.
-3. If you register a new Google OAuth client, update the `googleClientId` constant in `assets/js/login/login-buttons.js` so the Firebase providers use the correct client ID.
+3. If you register a new Google OAuth client, update the `googleClientId` constant in `src/assets/js/login/login-buttons.js` so the Firebase providers use the correct client ID.
 4. Keep your Firebase security rules and GitHub client secret locked down—these frontend keys are public by design, so proper server-side rules are what prevent abuse.
 
 ## 2. GitHub updates config
@@ -171,7 +171,7 @@ npm test
 
 ### Add new pages
 
-1. Create .html file in `/html/nav/`
+1. Create .html file in `/src/html/nav/`
 2. Add front matter:
 
 ```yaml
@@ -189,12 +189,12 @@ module_js: true
 
 3. Optional field: `req_login` hides pages when not logged in.
 
-> `nav_order` should not be the same number as any other page inside `/html/nav`.
+> `nav_order` should not be the same number as any other page inside `/src/html/nav`.
 
 ### Add a widget
 
-1. Put js file in `assets/js/widgets`
-2. Create .md file in `/widgets`
+1. Put js file in `src/assets/js/widgets`
+2. Create .md file in `/src/widgets`
 3. Add front matter:
 
 ```yaml
@@ -202,7 +202,7 @@ module_js: true
 layout: base
 title: 'My Widget'
 summary: 'A custom widget.'
-image: '/assets/imgwidgets/my-widget.svg'
+image: '/assets/img/widgets/my-widget.svg'
 css:
   - /assets/css/main.css
   - /assets/css/dash.css
@@ -214,7 +214,7 @@ module_js: true
 
 ### Add a blog post
 
-1. Create new .md file in `blog/` (for example: `blog/my-new-post.md`).
+1. Create new .md file in `src/blog/` (for example: `src/blog/my-new-post.md`).
 2. Add front matter:
    ```yaml
    ---
@@ -223,12 +223,12 @@ module_js: true
    subtitle: 'Post subtitle'
    css:
      - /assets/css/main.css
-   image: '/assets/imgblog/your-image.svg'
+   image: '/assets/img/blog/your-image.svg'
    date: 2024-01-12
    ---
    ```
 3. Add post content below front matter.
-4. Images should be in `assets/imgblog`. (Temporarily -- see TODO)
+4. Images should be in `src/assets/img/blog`. (Temporarily -- see TODO)
 
 # Roadmap & Todo's
 
@@ -250,7 +250,7 @@ module_js: true
 - [ ] Drop image self-hosting entirely if API usage increases too much (Try compression first)
 
 - [ ] upon file editor creation, force tag selection to make sure files are always categorised.
-- [ ] Filter tags based directory: `blog/{tag}/` -> add filter menu displaying all available tags.
+- [ ] Filter tags based directory: `src/blog/{tag}/` -> add filter menu displaying all available tags.
 - [ ] seperate cover images from blog images; `{tag}/images/covers/`
 - [ ] put website metadata images inside /assets/img/
 
@@ -261,9 +261,9 @@ Not sure, needs more research/refinement:
 - [ ] Edit existing articles in editor
 
 - **Easy of use for non-coders:**
-  - [ ] put ALL code inside a `/src` folder.
+- [x] put ALL code inside a `/src` folder.
   - [ ] create `/config` folder -> check if \_config.yml can read from root + put configurable images inside `config/images/`
-  - [ ] keep only /blog/ and /test/ folder inside root (besides /src)
+  - [x] keep only /config/ folder inside root (besides /src)
   - [ ] prefab css stylings (per user themes)
 
 - **General fixes & features:**
