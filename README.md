@@ -80,10 +80,8 @@
 
 ## 1. Firebase login setup
 
-The login buttons use Firebase Authentication to sign in with Google (support for GitHub and others coming soon)
-
 The Firebase client config is loaded at runtime from `window.__FIREBASE_CONFIG__` or `data-firebase-*`
-attributes on the `<html>` element. To run the flow locally or in production, create
+attributes on the `<html>` element. To run the flow locally, create
 `config/firebase-config.js` and define the Firebase config object:
 
 ```js
@@ -240,9 +238,9 @@ module_js: true
 
 > Current tags: 🧠 Models, ⚙️ Systems, 🧪 Labs, 🔐 Security, 📈 Markets
 
-- [ ] Scan API for frontpage metadata, pull blog content upon clicking link
+- [?] Scan API for frontpage metadata, pull blog content upon clicking link
 - [ ] Create post (title, desc frontmatter fields, choose from preset tags (emoji) ( category/folder, body = textbox) -> ~~Send data via API~~ (Store .md files internally for now)
-- [ ] Drop image self-hosting entirely if API usage increases too much (Try compression first)
+- [?] Drop image self-hosting entirely if API usage increases too much (Try compression first)
 
 - [ ] upon file editor creation, force tag selection to make sure files are always categorised.
 - [ ] Filter tags based directory: `src/blog/{tag}/` -> add filter menu displaying all available tags.
@@ -251,8 +249,8 @@ module_js: true
 
 Not sure, needs more research/refinement:
 
-- [ ] integrate like/comment system (without trackers)
-- [ ] generate svg based on title/tag (enter title -> generate .svg img -> attach .svg link to frontmatter (requires ChatGPT API)
+- [?] integrate like/comment system
+- [?] generate svg based on title/tag (enter title -> generate .svg img -> attach .svg link to frontmatter (requires ChatGPT API)
 - [ ] Edit existing articles in editor
 
 - **Easy of use for non-coders:**
