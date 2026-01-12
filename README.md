@@ -167,7 +167,7 @@ Run the unit tests (Vitest is configured to emit coverage):
 npm test
 ```
 
-## 3. After setup (TODO: make annotations consistent, double quotes for non-coders)
+## 3. After setup
 
 ### Add new pages
 
