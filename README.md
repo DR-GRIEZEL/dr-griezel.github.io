@@ -3,6 +3,7 @@
 ## General
 
 <!-- Badges -->
+
 ![GitHub stars](https://img.shields.io/github/stars/DR-GRIEZEL/dr-griezel.github.io?style=for-the-badge)
 ![GitHub forks](https://img.shields.io/github/forks/DR-GRIEZEL/dr-griezel.github.io?style=for-the-badge)
 ![Repo size](https://img.shields.io/github/repo-size/DR-GRIEZEL/dr-griezel.github.io?style=for-the-badge)
@@ -79,16 +80,39 @@
 
 ## 1. Firebase login setup
 
-The ogin buttons use Firebase Authentication to sign in with Google (support for GitHub and others coming soon)
+The login buttons use Firebase Authentication to sign in with Google (support for GitHub and others coming soon)
 
-To run the flow locally you need to swap in your own Firebase project values:
+The Firebase client config is loaded at runtime from `window.__FIREBASE_CONFIG__` or `data-firebase-*`
+attributes on the `<html>` element. To run the flow locally or in production, create
+`config/firebase-config.js` and define the Firebase config object:
 
-1. Create or reuse a Firebase project, register a Web app, and paste the config object into `assets/js/login/firebase-config.js`. The module exports `firebaseConfig` and a readiness check (`isFirebaseConfigReady`); the login script displays a warning if the config is still missing or contains the `'...'` placeholders.
+```js
+window.__FIREBASE_CONFIG__ = {
+  apiKey: 'FIREBASE_API_KEY',
+  authDomain: 'FIREBASE_AUTH_DOMAIN',
+  projectId: 'FIREBASE_PROJECT_ID',
+  storageBucket: 'FIREBASE_STORAGE_BUCKET',
+  messagingSenderId: 'FIREBASE_MESSAGING_SENDER_ID',
+  appId: 'FIREBASE_APP_ID',
+  measurementId: 'FIREBASE_MEASUREMENT_ID',
+};
+```
+
+This file is public on static hosting, so do not place server-only secrets here.
+GitHub Actions secrets are only available to the build and cannot be accessed by client-side JavaScript.
+
+1. Create or reuse a Firebase project, register a Web app, and paste the config object into `config/firebase-config.js`.
+   The login script displays a warning if any values are missing.
 2. Enable the Google and GitHub sign-in providers and add your local (`http://localhost:4000`) and hosted (`https://dr-griezel.github.io/`) domains to the authorized list. Make sure the OAuth redirect URIs match the domains where you expect the buttons to run.
 3. If you register a new Google OAuth client, update the `googleClientId` constant in `assets/js/login/login-buttons.js` so the Firebase providers use the correct client ID.
 4. Keep your Firebase security rules and GitHub client secret locked down—these frontend keys are public by design, so proper server-side rules are what prevent abuse.
 
-## 2. Self-hosting tutorial
+## 2. GitHub updates config
+
+The Updates page pulls commits based on `config/github_config.js`. Update `owner` and `repo` if you
+fork the site so the updates page points at the correct GitHub repository.
+
+## 3. Self-hosting tutorial
 
 ### Option A: Jekyll (local build)
 
@@ -149,11 +173,12 @@ npm test
 
 1. Create .html file in `/html/nav/`
 2. Add front matter:
+
 ```yaml
 ---
 layout: base
-title: "My Page"
-nav_label: "My Page"
+title: 'My Page'
+nav_label: 'My Page'
 nav_order: 100
 permalink: /my-page/
 css:
@@ -161,29 +186,31 @@ css:
 module_js: true
 ---
 ```
+
 3. Optional field: `req_login` hides pages when not logged in.
 
->`nav_order` should not be the same number as any other page inside `/html/nav`.
+> `nav_order` should not be the same number as any other page inside `/html/nav`.
 
 ### Add a widget
 
 1. Put js file in `assets/js/widgets`
 2. Create .md file in `/widgets`
 3. Add front matter:
-  ```yaml
-  ---
-  layout: base
-  title: 'My Widget'
-  summary: 'A custom widget.'
-  image: '/assets/imgwidgets/my-widget.svg'
-  css:
-    - /assets/css/main.css
-    - /assets/css/dash.css
-  js:
-    - /assets/js/widgets/my-widget.js
-  module_js: true
-  ---
-  ```
+
+```yaml
+---
+layout: base
+title: 'My Widget'
+summary: 'A custom widget.'
+image: '/assets/imgwidgets/my-widget.svg'
+css:
+  - /assets/css/main.css
+  - /assets/css/dash.css
+js:
+  - /assets/js/widgets/my-widget.js
+module_js: true
+---
+```
 
 ### Add a blog post
 
@@ -216,28 +243,27 @@ module_js: true
 
 - **On-site blog creator with login protection**
 
->Current tags: 🧠 Models, ⚙️ Systems, 🧪 Labs, 🔐 Security, 📈 Markets
+> Current tags: 🧠 Models, ⚙️ Systems, 🧪 Labs, 🔐 Security, 📈 Markets
 
-  - [ ] Scan API for frontpage metadata, pull blog content upon clicking link
-  - [ ] Create post (title, desc frontmatter fields, choose from preset tags (emoji) ( category/folder, body = textbox) -> ~~Send data via API~~ (Store .md files internally for now)
-  - [ ] Drop image self-hosting entirely if API usage increases too much (Try compression first)
+- [ ] Scan API for frontpage metadata, pull blog content upon clicking link
+- [ ] Create post (title, desc frontmatter fields, choose from preset tags (emoji) ( category/folder, body = textbox) -> ~~Send data via API~~ (Store .md files internally for now)
+- [ ] Drop image self-hosting entirely if API usage increases too much (Try compression first)
 
-  - [ ] upon file editor creation, force tag selection to make sure files are always categorised.
-  - [ ] Filter tags based directory: `blog/{tag}/` -> add filter menu displaying all available tags.
-  - [ ] seperate cover images from blog images; `{tag}/images/covers/`
-  - [ ] put website metadata images inside /assets/img/
+- [ ] upon file editor creation, force tag selection to make sure files are always categorised.
+- [ ] Filter tags based directory: `blog/{tag}/` -> add filter menu displaying all available tags.
+- [ ] seperate cover images from blog images; `{tag}/images/covers/`
+- [ ] put website metadata images inside /assets/img/
 
 Not sure, needs more research/refinement:
- 
-  - [ ] integrate like/comment system (without trackers)
-  - [ ] generate svg based on title/tag (enter title -> generate .svg img -> attach .svg link to frontmatter (requires ChatGPT API)
-  - [ ] Edit existing articles in editor
+
+- [ ] integrate like/comment system (without trackers)
+- [ ] generate svg based on title/tag (enter title -> generate .svg img -> attach .svg link to frontmatter (requires ChatGPT API)
+- [ ] Edit existing articles in editor
 
 - **Easy of use for non-coders:**
   - [ ] put ALL code inside a `/src` folder.
-  - [ ] create `/config` folder -> check if _config.yml can read from root + put configurable images inside `config/images/`
+  - [ ] create `/config` folder -> check if \_config.yml can read from root + put configurable images inside `config/images/`
   - [ ] keep only /blog/ and /test/ folder inside root (besides /src)
- 
   - [ ] prefab css stylings (per user themes)
 
 - **General fixes & features:**
