@@ -1,9 +1,11 @@
 # AGENTS.md
 
 ## Purpose
+
 Keep the site stable, modular and scalable without breaking the framework.
 
 ## Safe-edit rules
+
 1. **Edit content, not structure.**
    - ✅ Safe: change text, images, links, colors in `src/assets/css/` and `src/assets/img/`.
    - ✅ Safe: add new pages in `src/html/nav/`, add blog pages to `src/blog/{category}`.
@@ -14,15 +16,19 @@ Keep the site stable, modular and scalable without breaking the framework.
 5. **Public repo:** Do not place **any** sensitive information like API secrets in this workspace.
 
 ## Testing and coverage (required)
+
 - **Keep coverage above 90%, add unit tests whenever it drops below this value. Focus primarily on auth pipeline.**
 - **Every new function or change to a function/stateflow must include unit tests and coverage.**
 - Add or update tests in `src/test/` and ensure coverage includes the new behavior.
 
 ## Quick checks
+
 - Run formatting and linting before committing:
   - `npm run format`
   - `npm run lint`
+- Review build warnings and address them before considering the work complete.
 
 ## What to avoid
+
 - Do not rename `src/_layouts/`, `src/_includes/`, or `src/assets/js/` files without updating all references.
 - Do not change Jekyll front matter keys (`nav_label`, `nav_order`, `layout`) unless you know the impact.
