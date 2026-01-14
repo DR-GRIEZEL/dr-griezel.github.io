@@ -1,10 +1,11 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import {
   formatDate,
   getCommitAuthorName,
   getCommitMetaText,
   getCommitTitle,
   getTopContributor,
+  withTimeout,
 } from '../assets/js/updates.js';
 
 describe('updates helpers', () => {
@@ -64,5 +65,22 @@ describe('updates helpers', () => {
 
   it('returns null when there are no commits', () => {
     expect(getTopContributor([])).toBeNull();
+  });
+
+  it('resolves when a promise settles before timeout', async () => {
+    const result = await withTimeout(Promise.resolve('ok'), 25);
+    expect(result).toBe('ok');
+  });
+
+  it('rejects when a promise exceeds the timeout', async () => {
+    vi.useFakeTimers();
+    const slowPromise = new Promise(() => {});
+    const pending = withTimeout(slowPromise, 10);
+    const expectation = expect(pending).rejects.toThrow('Request timed out');
+
+    await vi.advanceTimersByTimeAsync(20);
+
+    await expectation;
+    vi.useRealTimers();
   });
 });
