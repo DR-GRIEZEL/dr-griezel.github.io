@@ -9,6 +9,7 @@ import {
   getHourlyIndex,
   getLocationName,
   getWeatherSummary,
+  initWidgets,
   initWeatherWidget,
   setRotation,
   updateClockWidget,
@@ -291,5 +292,93 @@ describe('widget helpers', () => {
     widget.isConnected = false;
     vi.runOnlyPendingTimers();
     vi.useRealTimers();
+  });
+
+  it('initializes clock and weather widgets from the document', async () => {
+    vi.useFakeTimers();
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({
+        current: {
+          temperature_2m: 12,
+          apparent_temperature: 11,
+          precipitation: 0,
+          weather_code: 1,
+          wind_speed_10m: 4,
+          wind_direction_10m: 200,
+          relative_humidity_2m: 60,
+        },
+        hourly: {
+          time: ['2024-01-01T03:00'],
+          precipitation_probability: [20],
+        },
+      }),
+    });
+    vi.stubGlobal('fetch', fetchMock);
+    const clockWidget = {
+      dataset: { widgetTz: 'UTC' },
+      querySelectorAll: () => [],
+      querySelector: () => null,
+    };
+    const weatherWidget = {
+      dataset: {
+        widgetLat: '50.85',
+        widgetLon: '4.35',
+        widgetLocation: 'Test City',
+        widgetTz: 'UTC',
+        widgetRefresh: '10',
+      },
+      isConnected: true,
+      querySelector: () => null,
+    };
+    const querySelectorAll = vi.fn((selector) => {
+      if (selector === "[data-widget='clock']") return [clockWidget];
+      if (selector === "[data-widget='weather']") return [weatherWidget];
+      return [];
+    });
+    vi.stubGlobal('document', { querySelectorAll });
+
+    initWidgets();
+
+    await flushPromises(4);
+
+    expect(querySelectorAll).toHaveBeenCalledWith("[data-widget='clock']");
+    expect(querySelectorAll).toHaveBeenCalledWith("[data-widget='weather']");
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+
+    weatherWidget.isConnected = false;
+    vi.runOnlyPendingTimers();
+    vi.useRealTimers();
+    vi.unstubAllGlobals();
+  });
+
+  it('defers widget initialization until DOMContentLoaded when loading', async () => {
+    vi.resetModules();
+    const addEventListener = vi.fn();
+    vi.stubGlobal('document', {
+      readyState: 'loading',
+      addEventListener,
+      querySelectorAll: vi.fn(() => []),
+    });
+
+    await import('../assets/js/widgets/widgets.js');
+
+    expect(addEventListener).toHaveBeenCalledWith('DOMContentLoaded', expect.any(Function));
+    vi.unstubAllGlobals();
+  });
+
+  it('initializes widgets immediately when DOM is ready', async () => {
+    vi.resetModules();
+    const querySelectorAll = vi.fn(() => []);
+    vi.stubGlobal('document', {
+      readyState: 'complete',
+      querySelectorAll,
+    });
+
+    await import('../assets/js/widgets/widgets.js');
+
+    expect(querySelectorAll).toHaveBeenCalledWith("[data-widget='clock']");
+    expect(querySelectorAll).toHaveBeenCalledWith("[data-widget='weather']");
+    vi.unstubAllGlobals();
   });
 });
