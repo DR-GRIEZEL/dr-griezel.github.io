@@ -1,6 +1,4 @@
-import { owner, repo, url } from '../../config/github_config.js';
-
-const commitsUrl = url || `https://api.github.com/repos/${owner}/${repo}/commits?per_page=20`;
+import { commitsUrl } from '../../config/github_config.js';
 
 const statusEl = typeof document === 'undefined' ? null : document.getElementById('updates-status');
 const listEl = typeof document === 'undefined' ? null : document.getElementById('updates-list');
@@ -105,13 +103,25 @@ const renderLeaderboard = (commits, target = leaderboardEl) => {
   target.textContent = `Most contributions: ${topContributor.name}: ${topContributor.count}`;
 };
 
+export const withTimeout = (promise, timeoutMs, timeoutMessage = 'Request timed out') => {
+  let timeoutId;
+  const timeoutPromise = new Promise((_, reject) => {
+    timeoutId = setTimeout(() => reject(new Error(timeoutMessage)), timeoutMs);
+  });
+
+  return Promise.race([promise, timeoutPromise]).finally(() => clearTimeout(timeoutId));
+};
+
 const loadCommits = async () => {
   setStatus('Loading updates…');
   setLeaderboard('');
   try {
-    const res = await fetch(commitsUrl, {
-      headers: { Accept: 'application/vnd.github+json' },
-    });
+    const res = await withTimeout(
+      fetch(commitsUrl, {
+        headers: { Accept: 'application/vnd.github+json' },
+      }),
+      8000,
+    );
 
     if (!res.ok) {
       throw new Error(`GitHub API error: ${res.status}`);
