@@ -27,7 +27,6 @@ pnpm-debug.log*
 # Environment (BETTER SAFE THEN SORRY)
 .env
 .env.*.local
-config/firebase-config.js
 
 # Build output
 dist/
