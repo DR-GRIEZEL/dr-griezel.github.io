@@ -80,12 +80,11 @@
 
 ## 1. Firebase login setup
 
-The Firebase client config is loaded at runtime from `window.__FIREBASE_CONFIG__` or `data-firebase-*`
-attributes on the `<html>` element. To run the flow locally, create
-`config/firebase-config.js` and define the Firebase config object:
+Set your Firebase client config in `config/firebase-config.js` (served as
+`/config/firebase-config.js` in the built site). Keep values in sync with your Firebase Web app:
 
 ```js
-window.__FIREBASE_CONFIG__ = {
+export const firebaseConfig = {
   apiKey: 'FIREBASE_API_KEY',
   authDomain: 'FIREBASE_AUTH_DOMAIN',
   projectId: 'FIREBASE_PROJECT_ID',
@@ -96,23 +95,10 @@ window.__FIREBASE_CONFIG__ = {
 };
 ```
 
-1. Create a Firebase project, register a Web app, and paste the config object into `config/firebase-config.js`. (TODO: make config file)
-   The login script displays a warning if any values are missing.
-2. If you register a new Google OAuth client, update the `googleClientId` constant in `src/assets/js/login/login-buttons.js` so the Firebase providers use the correct client ID. (TODO: make config file)
-
-If you deploy via GitHub Pages and want to keep the keys out of the repo, use the workflow in
-`.github/workflows/pages.yml`. It writes `src/config/firebase-config.js` during the build, using
-GitHub Secrets.
-
-1. In GitHub → Settings → Pages, set **Source** to **GitHub Actions**.
-2. Add these repository secrets:
-   - `FIREBASE_API_KEY`
-   - `FIREBASE_AUTH_DOMAIN`
-   - `FIREBASE_PROJECT_ID`
-   - `FIREBASE_STORAGE_BUCKET`
-   - `FIREBASE_MESSAGING_SENDER_ID`
-   - `FIREBASE_APP_ID`
-   - `FIREBASE_MEASUREMENT_ID`
+1. Create a Firebase project, register a Web app, and paste the config values into
+   `config/firebase-config.js`.
+2. If you register a new Google OAuth client, update `googleClientId` in
+   `src/assets/js/login/login-buttons.js` so Firebase auth uses the correct client ID.
 
 ## 2. GitHub updates config
 

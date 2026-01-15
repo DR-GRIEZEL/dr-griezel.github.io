@@ -1,24 +1,44 @@
-import { describe, expect, it } from 'vitest';
-import { getFirebaseConfigFromRuntime } from '../assets/js/login/firebase-config.js';
+import { describe, expect, it, vi } from 'vitest';
 
-describe('firebase config runtime', () => {
-  it('returns defaults when no data is provided', () => {
-    const config = getFirebaseConfigFromRuntime();
-    expect(config.apiKey).toBe('');
-    expect(config.projectId).toBe('');
+describe('firebase config module', () => {
+  it('exposes config from the config file and reports ready', async () => {
+    vi.resetModules();
+    vi.doMock('/config/firebase-config.js', () => ({
+      firebaseConfig: {
+        apiKey: 'api-key',
+        authDomain: 'auth-domain',
+        projectId: 'project-id',
+        storageBucket: 'storage-bucket',
+        messagingSenderId: 'sender-id',
+        appId: 'app-id',
+        measurementId: 'measurement-id',
+      },
+    }));
+
+    const { firebaseConfig, isFirebaseConfigReady } =
+      await import('../assets/js/login/firebase-config.js');
+
+    expect(firebaseConfig.apiKey).toBe('api-key');
+    expect(firebaseConfig.projectId).toBe('project-id');
+    expect(isFirebaseConfigReady()).toBe(true);
   });
 
-  it('merges dataset and runtime values', () => {
-    const root = {
-      dataset: {
-        firebaseApiKey: 'dataset-key',
-        firebaseProjectId: 'dataset-project',
+  it('reports not ready when required values are missing', async () => {
+    vi.resetModules();
+    vi.doMock('/config/firebase-config.js', () => ({
+      firebaseConfig: {
+        apiKey: '',
+        authDomain: '',
+        projectId: '',
+        storageBucket: '',
+        messagingSenderId: '',
+        appId: '',
+        measurementId: '',
       },
-    };
+    }));
 
-    const config = getFirebaseConfigFromRuntime({ apiKey: 'runtime-key' }, root);
+    const { isFirebaseConfigReady } = await import('../assets/js/login/firebase-config.js');
 
-    expect(config.apiKey).toBe('runtime-key');
-    expect(config.projectId).toBe('dataset-project');
+    expect(isFirebaseConfigReady()).toBe(false);
   });
 });
