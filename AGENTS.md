@@ -1,5 +1,3 @@
-# AGENTS.md
-
 ## Purpose
 
 Keep the site stable, modular and scalable without breaking the framework.
@@ -17,7 +15,7 @@ Keep the site stable, modular and scalable without breaking the framework.
 
 ## Testing and coverage (required)
 
-- **Keep coverage above 90%, add unit tests whenever it drops below this value. Focus primarily on auth pipeline.**
+- **Keep coverage at 100%, add unit tests whenever it drops below this value.**
 - **Every new function or change to a function/stateflow must include unit tests and coverage.**
 - Add or update tests in `src/test/` and ensure coverage includes the new behavior.
 
@@ -28,7 +26,8 @@ Keep the site stable, modular and scalable without breaking the framework.
   - `npm run lint`
 - Review build warnings and address them before considering the work complete.
 
-## What to avoid
+## Negative prompts
 
 - Do not rename `src/_layouts/`, `src/_includes/`, or `src/assets/js/` files without updating all references.
 - Do not change Jekyll front matter keys (`nav_label`, `nav_order`, `layout`) unless you know the impact.
+- Do not touch `/config/*` unless instructed or verified by user.
