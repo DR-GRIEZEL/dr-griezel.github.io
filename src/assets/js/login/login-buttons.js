@@ -27,6 +27,7 @@ if (!isConfigReady) {
   loadFirebaseSdk()
     .then(
       ({
+        getApps,
         initializeApp,
         getAuth,
         GoogleAuthProvider,
@@ -37,7 +38,7 @@ if (!isConfigReady) {
         onAuthStateChanged,
         signOut,
       }) => {
-        const app = initializeApp(firebaseConfig);
+        const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
         const auth = getAuth(app);
         auth.useDeviceLanguage();
 
@@ -47,6 +48,9 @@ if (!isConfigReady) {
         if (logoutBtn) {
           logoutBtn.addEventListener('click', () => signOut(auth));
         }
+
+        authOnly.forEach((el) => (el.hidden = true));
+        loggedOut.forEach((el) => (el.hidden = false));
 
         onAuthStateChanged(auth, (user) => {
           const loggedIn = Boolean(user);

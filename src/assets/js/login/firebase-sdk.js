@@ -8,6 +8,7 @@ const loadFirebaseSdk = async () => {
   ]);
 
   return {
+    getApps: appModule.getApps,
     initializeApp: appModule.initializeApp,
     getAuth: authModule.getAuth,
     GoogleAuthProvider: authModule.GoogleAuthProvider,
