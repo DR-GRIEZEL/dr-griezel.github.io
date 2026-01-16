@@ -95,8 +95,12 @@ describe('login-buttons module', () => {
     });
     const signOut = vi.fn();
 
+    const getApps = vi.fn(() => []);
+    const initializeApp = vi.fn(() => ({ app: true }));
+
     loadFirebaseSdk.mockResolvedValue({
-      initializeApp: vi.fn(() => ({ app: true })),
+      getApps,
+      initializeApp,
       getAuth: vi.fn(() => auth),
       GoogleAuthProvider: vi.fn(),
       GithubAuthProvider: vi.fn(),
@@ -135,6 +139,8 @@ describe('login-buttons module', () => {
     await flushPromises();
 
     expect(loadFirebaseSdk).toHaveBeenCalledTimes(1);
+    expect(getApps).toHaveBeenCalledTimes(1);
+    expect(initializeApp).toHaveBeenCalledWith({ apiKey: 'test' });
     expect(initLoginButtons).toHaveBeenCalledWith(
       expect.objectContaining({
         googleButton,
