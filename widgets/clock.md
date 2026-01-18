@@ -1,13 +1,13 @@
 ---
 layout: base
-title: "Clock Widget"
-summary: "Analoge klok met digitale tijdsweergave."
-image: "/assets/images/widgets/clock.svg"
+title: 'Clock Widget'
+summary: 'Analoge klok met digitale tijdsweergave.'
+image: '/assets/images/widgets/clock.svg'
 css:
   - /assets/css/main.css
   - /assets/css/dash.css
 js:
-  - /assets/js/widgets.js
+  - /assets/js/widgets/widgets.js
 module_js: true
 ---
 

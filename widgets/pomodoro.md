@@ -7,7 +7,7 @@ css:
   - /assets/css/main.css
   - /assets/css/dash.css
 js:
-  - /assets/js/pomodoro.js
+  - /assets/js/widgets/pomodoro.js
 module_js: true
 ---
 
