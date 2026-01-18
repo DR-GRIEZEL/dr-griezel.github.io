@@ -1,0 +1,40 @@
+---
+layout: base
+title: "Settings"
+nav_label: "Settings"
+nav_order: 5
+req_login: true
+permalink: /settings/
+css:
+  - /assets/css/main.css
+---
+
+<section class="card" data-requires-auth hidden>
+  <h2>Account</h2>
+
+  <div class="user-panel">
+    <img data-auth-photo alt="" width="64" height="64" style="border-radius:999px;" hidden />
+
+    <div>
+      <div><strong data-auth-name>—</strong></div>
+      <div data-auth-email>—</div>
+      <div class="muted" data-auth-provider>—</div>
+    </div>
+  </div>
+
+  <hr />
+
+  <ul class="muted">
+    <li><strong>UID:</strong> <span data-auth-uid>—</span></li>
+    <li><strong>Email verified:</strong> <span data-auth-email-verified>—</span></li>
+    <li><strong>Phone:</strong> <span data-auth-phone>—</span></li>
+    <li><strong>Anonymous:</strong> <span data-auth-anon>—</span></li>
+    <li><strong>Created:</strong> <span data-auth-created>—</span></li>
+    <li><strong>Last sign-in:</strong> <span data-auth-last-signin>—</span></li>
+    <li><strong>Providers:</strong> <span data-auth-providers>—</span></li>
+    <li><strong>Token expires:</strong> <span data-auth-token-exp>—</span></li>
+  </ul>
+</section>
+
+<script type="module" src="{{ '/assets/js/login/user-panel.js' | relative_url }}"></script>
+

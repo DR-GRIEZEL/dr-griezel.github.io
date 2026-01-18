@@ -1,0 +1,37 @@
+<svg width="175" height="40" viewBox="0 0 175 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="0.5" y="0.5" width="174" height="39" rx="19.5" fill="white"/>
+
+  <!-- Icon area: 20x20 @ (12,10) (identiek aan referentie) -->
+  <g clip-path="url(#clip0_logout_large)">
+    <!-- Door -->
+    <path
+      d="M15.2 14.6H20.0C20.88 14.6 21.6 15.32 21.6 16.2V23.8C21.6 24.68 20.88 25.4 20.0 25.4H15.2C14.32 25.4 13.6 24.68 13.6 23.8V16.2C13.6 15.32 14.32 14.6 15.2 14.6Z"
+      stroke="#1F1F1F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"
+    />
+    <!-- Arrow -->
+    <path
+      d="M21.2 20H30.0"
+      stroke="#1F1F1F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"
+    />
+    <path
+      d="M27.2 17.6L30.0 20L27.2 22.4"
+      stroke="#1F1F1F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"
+    />
+  </g>
+
+  <!-- Label (tekst). Als je per se outline-paths wil i.p.v. <text>, zeg het. -->
+  <text x="48" y="25" fill="#1F1F1F"
+        font-family="Arial, Helvetica, sans-serif"
+        font-size="13.5"
+        font-weight="500">
+    Logout
+  </text>
+
+  <rect x="0.5" y="0.5" width="174" height="39" rx="19.5" stroke="#747775"/>
+
+  <defs>
+    <clipPath id="clip0_logout_large">
+      <rect width="20" height="20" fill="white" transform="translate(12 10)"/>
+    </clipPath>
+  </defs>
+</svg>

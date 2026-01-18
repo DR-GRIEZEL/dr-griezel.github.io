@@ -1,0 +1,68 @@
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-top">
+    <button class="sidebar-toggle" type="button" aria-label="Toggle sidebar" aria-expanded="true">
+      <span class="sidebar-arrow" aria-hidden="true"></span>
+    </button>
+    <span class="sidebar-title">Navigation</span>
+  </div>
+  <nav class="sidebar-nav" aria-label="Primary">
+    {% include navbar-pages.html nav_root="html/nav/" %}
+
+    <div class="sidebar-auth" aria-label="Login">
+      <div class="auth-buttons__group" role="group" aria-label="Login opties">
+        <!-- Logged out -->
+        <button
+          class="auth-icon-btn"
+          type="button"
+          data-auth-logged-out
+          data-auth-google
+          aria-label="Login met Google"
+        >
+          <img
+            class="google-logo google-logo--small"
+            src="/assets/img/login/google_small.svg"
+            alt=""
+            decoding="async"
+          />
+          <img
+            class="google-logo google-logo--large"
+            src="/assets/img/login/google_large.svg"
+            alt=""
+            decoding="async"
+          />
+        </button>
+
+        <!-- Logged in -->
+        <button
+          class="auth-icon-btn"
+          type="button"
+          data-auth-only
+          data-auth-logout
+          aria-label="Logout"
+          hidden
+        >
+          <img
+            class="logout-logo logout-logo--small"
+            src="/assets/img/login/logout_small.svg"
+            alt=""
+            decoding="async"
+          />
+          <img
+            class="logout-logo logout-logo--large"
+            src="/assets/img/login/logout_large.svg"
+            alt=""
+            decoding="async"
+          />
+        </button>
+      </div>
+      <span class="auth-user" data-auth-user hidden></span>
+      <span
+        class="auth-status"
+        role="status"
+        aria-live="polite"
+        data-auth-logged-out
+        data-auth-status
+      ></span>
+    </div>
+  </nav>
+</aside>

@@ -1,0 +1,52 @@
+<ul>
+  <li class="nav-divider" aria-hidden="true">
+    <hr class="section-divider" />
+  </li>
+
+  {%- assign icon_colors = "#38ff98,#ff8d6b,#7a9bff,#ff7ad9,#6ee7f0,#ffd76b" | split: "," -%} {%-
+  assign nav_pages = site.pages | where_exp: "p", "p.path contains 'html/nav/'" | where_exp: "p",
+  "p.req_login != true" | sort: "nav_order" -%} {%- for p in nav_pages -%} {%- assign color_index =
+  forloop.index0 | modulo: icon_colors.size -%} {%- assign icon_color = icon_colors[color_index] -%}
+  {%- assign nav_label = p.nav_label | default: p.title | default: p.name -%}
+  <li>
+    <a href="{{ p.url | relative_url }}">
+      <span class="nav-icon" style="--icon-color: {{ icon_color }};">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path
+            d="M3 6.5C3 5.12 4.12 4 5.5 4h4.7c.6 0 1.17.25 1.58.68l1.28 1.32H18.5C19.88 6 21 7.12 21 8.5v9c0 1.38-1.12 2.5-2.5 2.5h-13C4.12 20 3 18.88 3 17.5v-11Z"
+          />
+        </svg>
+      </span>
+      <span class="nav-label">{{ nav_label }}</span>
+    </a>
+  </li>
+  {%- endfor -%}
+  <!-- Alleen zichtbaar als ingelogd -->
+  <li class="nav-divider" data-auth-only hidden aria-hidden="true">
+    <hr class="section-divider" />
+  </li>
+
+  <li data-auth-only hidden>
+    <a href="{{ '/dashboard/' | relative_url }}">
+      <span class="nav-icon" style="--icon-color: var(--accent)">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4 13h7V4H4v9Zm9 7h7V11h-7v9ZM4 20h7v-5H4v5Zm9-11h7V4h-7v5Z" />
+        </svg>
+      </span>
+      <span class="nav-label">Dashboard</span>
+    </a>
+  </li>
+
+  <li data-auth-only hidden>
+    <a href="{{ '/settings/' | relative_url }}">
+      <span class="nav-icon" style="--icon-color: var(--accent)">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path
+            d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4Zm0 2c-4.42 0-8 2-8 4v2h16v-2c0-2-3.58-4-8-4Z"
+          />
+        </svg>
+      </span>
+      <span class="nav-label" data-auth-user>Settings</span>
+    </a>
+  </li>
+</ul>

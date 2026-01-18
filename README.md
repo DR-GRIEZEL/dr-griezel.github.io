@@ -1,55 +1,82 @@
-# dr-griezel.github.io
+# [dr-griezel.github.io](https:.//dr-griezel.github.io)
 
-#### Dashboard built with Jekyll layouts and vanilla HTML/CSS/JS.
+## General
 
-## Framework overview
+<!-- Badges -->
+
+![GitHub stars](https://img.shields.io/github/stars/DR-GRIEZEL/dr-griezel.github.io?style=for-the-badge)
+![GitHub forks](https://img.shields.io/github/forks/DR-GRIEZEL/dr-griezel.github.io?style=for-the-badge)
+![Repo size](https://img.shields.io/github/repo-size/DR-GRIEZEL/dr-griezel.github.io?style=for-the-badge)
+![Top language](https://img.shields.io/github/languages/top/DR-GRIEZEL/dr-griezel.github.io?style=for-the-badge)
+
+## Releases
+
+![Release](https://img.shields.io/github/v/release/DR-GRIEZEL/dr-griezel.github.io?style=for-the-badge)
+![License](https://img.shields.io/github/license/DR-GRIEZEL/dr-griezel.github.io?style=for-the-badge)
+
+## Quality Control
+
+![CI](https://img.shields.io/github/actions/workflow/status/DR-GRIEZEL/dr-griezel.github.io/codeql.yml?style=for-the-badge)
+![CI](https://img.shields.io/github/actions/workflow/status/DR-GRIEZEL/dr-griezel.github.io/ci.yml?style=for-the-badge)
+
+## Updates
+
+![Contributors](https://img.shields.io/github/contributors/DR-GRIEZEL/dr-griezel.github.io?style=for-the-badge)
+![Last commit](https://img.shields.io/github/last-commit/DR-GRIEZEL/dr-griezel.github.io?style=for-the-badge)
+
+---
+
+# Overview
+
+## 📌 Framework overview
 
 - **Jekyll (static site generator)**: Markdown/HTML pages are compiled with layouts and includes.
-- **Layouts**: `_layouts/base.html` composes the page chrome (sidebar, header, footer, main content).
-- **Includes**: `_includes/nav.html`, `_includes/header.html`, `_includes/footer.html` are partials injected by layouts.
-- **Static assets**: `assets/css` and `assets/js` hold styling and behavior modules.
+- **Layouts**: `src/_layouts/base.html` composes the page chrome (sidebar, header, footer, main content).
+- **Includes**: `src/_includes/nav.html`, `src/_includes/header.html`, `src/_includes/footer.html` are partials injected by layouts.
+- **Static assets**: `src/assets/css` and `src/assets/js` hold styling and behavior modules.
 
 ### Module interactions (low-level)
 
 - **Navigation pipeline**
-  - Jekyll loads pages from `html/nav/`.
-  - `_includes/nav.html` filters `site.pages` to build sidebar links.
+  - Jekyll loads pages from `src/html/nav/`.
+  - `src/_includes/nav.html` filters `site.pages` to build sidebar links.
   - `nav_label` and `nav_order` in each page control label and order.
 - **Layout pipeline**
-  - `_layouts/base.html` renders the layout, then injects `page.css` and `page.js` lists.
-  - `assets/js/site.js` runs globally for layout behaviors (sidebar toggles, etc.).
+  - `src/_layouts/base.html` renders the layout, then injects `page.css` and `page.js` lists.
+  - `src/assets/js/site.js` runs globally for layout behaviors (sidebar toggles, etc.).
 - **Widget pipeline**
-  - `html/nav/index.html` composes widgets by rendering pages from `/widgets/`.
-  - `assets/js/widgets/widgets.js` provides clock/weather helpers.
-  - `assets/js/widgets/pomodoro-core.js` handles timer state and formatting.
-  - `assets/js/widgets/pomodoro.js` binds UI to the pomodoro core.
+  - `src/html/nav/index.html` composes widgets by rendering pages from `/widgets/`.
+  - `src/assets/js/widgets/widgets.js` provides clock/weather helpers.
+  - `src/assets/js/widgets/pomodoro-core.js` handles timer state and formatting.
+  - `src/assets/js/widgets/pomodoro.js` binds UI to the pomodoro core.
 - **Updates pipeline**
-  - `html/nav/updates.html` loads `assets/js/updates.js` as a module.
+  - `src/html/nav/updates.html` loads `src/assets/js/updates.js` as a module.
   - `updates.js` fetches GitHub commits and renders them into the updates list.
 
-## Directory structure
+## 📁 Directory structure
 
 ```
 .
-├── _includes/            # Jekyll partials (nav/header/footer)
-├── _layouts/             # Base layout
-├── _data/                # Jekyll data (currently unused)
-├── assets/
-│   ├── css/              # Stylesheets
-│   ├── images/           # Icons and illustrations
-│   └── js/               # JS modules (widgets, pomodoro, updates)
-├── blog/                 # Blog post markdown entries
-├── html/
-│   ├── nav/              # Pages that appear in the sidebar
-│   ├── 404.html
-│   └── 500.html
-├── widgets/              # Widget partial pages
-├── test/                 # Vitest unit tests
+├── src/
+│   ├── _includes/        # Jekyll partials (nav/header/footer)
+│   ├── _layouts/         # Base layout
+│   ├── assets/
+│   │   ├── css/          # Stylesheets
+│   │   ├── img/          # Icons and illustrations
+│   │   └── js/           # JS modules (widgets, pomodoro, updates)
+│   ├── blog/             # Blog post markdown entries
+│   ├── html/
+│   │   ├── nav/          # Pages that appear in the sidebar
+│   │   ├── 404.html
+│   │   └── 500.html
+│   ├── widgets/          # Widget partial pages
+│   └── test/             # Vitest unit tests
 ├── _config.yml           # Jekyll config
 ├── package.json
 └── README.md
 ```
 
+<<<<<<< HEAD
 ## Firebase login setup
 
 The footer login buttons use Firebase Authentication to sign in with Google or GitHub. To run the flow locally you need to swap in your own Firebase project values:
@@ -60,6 +87,38 @@ The footer login buttons use Firebase Authentication to sign in with Google or G
 4. Keep your Firebase security rules and GitHub client secret locked down—these frontend keys are public by design, so proper server-side rules are what prevent abuse.
 
 ## Self-hosting tutorial
+=======
+# Tutorial
+
+## 1. Firebase login setup
+
+Set your Firebase client config in `config/firebase-config.js` (served as
+`/config/firebase-config.js` in the built site). Keep values in sync with your Firebase Web app:
+
+```js
+export const firebaseConfig = {
+  apiKey: 'FIREBASE_API_KEY',
+  authDomain: 'FIREBASE_AUTH_DOMAIN',
+  projectId: 'FIREBASE_PROJECT_ID',
+  storageBucket: 'FIREBASE_STORAGE_BUCKET',
+  messagingSenderId: 'FIREBASE_MESSAGING_SENDER_ID',
+  appId: 'FIREBASE_APP_ID',
+  measurementId: 'FIREBASE_MEASUREMENT_ID',
+};
+```
+
+1. Create a Firebase project, register a Web app, and paste the config values into
+   `config/firebase-config.js`.
+2. If you register a new Google OAuth client, update `googleClientId` in
+   `src/assets/js/login/login-buttons.js` so Firebase auth uses the correct client ID.
+
+## 2. GitHub updates config
+
+The Updates page pulls commits based on `config/github_config.js`. Update `owner` and `repo` if you
+fork the site so the updates page points at the correct GitHub repository.
+
+## 3. Self-hosting tutorial
+>>>>>>> 17319976767dd90cb79c84db4666328e56cde6ac
 
 ### Option A: Jekyll (local build)
 
@@ -114,12 +173,55 @@ Run the unit tests (Vitest is configured to emit coverage):
 npm test
 ```
 
-## After setup
+## 3. After setup
+
+### Add new pages
+
+1. Create .html file in `/src/html/nav/`
+2. Add front matter:
+
+```yaml
+---
+layout: base
+title: 'My Page'
+nav_label: 'My Page'
+nav_order: 100
+permalink: /my-page/
+css:
+  - /assets/css/main.css
+module_js: true
+---
+```
+
+3. Optional field: `req_login` hides pages when not logged in.
+
+> `nav_order` should not be the same number as any other page inside `/src/html/nav`.
+
+### Add a widget
+
+1. Put js file in `src/assets/js/widgets`
+2. Create .md file in `/src/widgets`
+3. Add front matter:
+
+```yaml
+---
+layout: base
+title: 'My Widget'
+summary: 'A custom widget.'
+image: '/assets/img/widgets/my-widget.svg'
+css:
+  - /assets/css/main.css
+  - /assets/css/dash.css
+js:
+  - /assets/js/widgets/my-widget.js
+module_js: true
+---
+```
 
 ### Add a blog post
 
-1. Create a new Markdown file in `blog/` (for example: `blog/my-new-post.md`).
-2. Add front matter with the required fields:
+1. Create new .md file in `src/blog/` (for example: `src/blog/my-new-post.md`).
+2. Add front matter:
    ```yaml
    ---
    layout: blog
@@ -127,17 +229,58 @@ npm test
    subtitle: 'Post subtitle'
    css:
      - /assets/css/main.css
-   image: '/assets/images/blog/your-image.svg'
+   image: '/assets/img/blog/your-image.svg'
    date: 2024-01-12
    ---
    ```
-3. Add the post content below the front matter.
-4. Make sure all images are inside `assets/images/blog`.
+3. Add post content below front matter.
+4. Images should be in `src/assets/img/blog`. (Temporarily -- see TODO)
 
-## TODO
+# Roadmap & Todo's
 
+<<<<<<< HEAD
 - Harden Firebase security rules and add login flow tests.
 - On-site blog creator with login protection
 - Add service worker caching for offline widget data.
 - Add RSS/Atom feed for blog posts.
 - Add tags frontend-matter to blog-posts, along with filter menu displaying all available tags (max. 10).
+=======
+## ✅ TODO
+
+- **Widget Ideas:**
+  - unix/dt/iso converter
+
+- **Login:**
+  - [ ] Add verification method after auth to access data: automatically assign gmail/github accounts to discord (user_id, username, profile picture, ...) -> via Discord API: 1. in-app (creating manual registration command which generates a one-time code (copy code or generate encrypted URL?) every session)
+  - [-] User settings page
+
+- **On-site blog creator with login protection**
+
+> Current tags: 🧠 Models, ⚙️ Systems, 🧪 Labs, 🔐 Security, 📈 Markets
+
+- [?] Scan API for frontpage metadata, pull blog content upon clicking link
+- [ ] Create post (title, desc frontmatter fields, choose from preset tags (emoji) ( category/folder, body = textbox) -> ~~Send data via API~~ (Store .md files internally for now)
+- [?] Drop image self-hosting entirely if API usage increases too much (Try compression first)
+
+- [ ] upon file editor creation, force tag selection to make sure files are always categorised.
+- [ ] Filter tags based directory: `src/blog/{tag}/` -> add filter menu displaying all available tags.
+- [ ] seperate cover images from blog images; `{tag}/images/covers/`
+- [ ] put website metadata images inside /assets/img/
+
+Not sure, needs more research/refinement:
+
+- [?] integrate like/comment system
+- [?] generate svg based on title/tag (enter title -> generate .svg img -> attach .svg link to frontmatter (requires ChatGPT API)
+- [ ] Edit existing articles in editor
+
+- **Easy of use for non-coders:**
+- [x] put ALL code inside a `/src` folder.
+  - [ ] create `/config` folder -> check if \_config.yml can read from root + put configurable images inside `config/images/`
+  - [x] keep only /config/ folder inside root (besides /src)
+  - [ ] prefab css stylings (per user themes)
+
+- **General fixes & features:**
+  - [ ] Harden Firebase security rules and add login flow tests.
+  - [ ] Add service worker caching for offline widget data.
+  - [ ] Add RSS/Atom feed for blog posts.
+>>>>>>> 17319976767dd90cb79c84db4666328e56cde6ac

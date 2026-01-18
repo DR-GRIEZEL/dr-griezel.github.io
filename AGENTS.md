@@ -1,26 +1,33 @@
-# AGENTS.md
-
 ## Purpose
-Keep the site stable and easy to change without breaking the framework.
+
+Keep the site stable, modular and scalable without breaking the framework.
 
 ## Safe-edit rules
+
 1. **Edit content, not structure.**
-   - ✅ Safe: change text, images, links, colors in `assets/css/` and `assets/images/`.
-   - ✅ Safe: add new pages in `html/nav/`.
-   - ⚠️ Be careful: files in `_layouts/`, `_includes/`, and `_config.yml`.
+   - ✅ Safe: change text, images, links, colors in `src/assets/css/` and `src/assets/img/`.
+   - ✅ Safe: add new pages in `src/html/nav/`, add blog pages to `src/blog/{category}`.
+   - ⚠️ Be careful: files in `src/_layouts/`, `src/_includes/`, and `_config.yml`.
 2. **One change at a time.** Make a small change, test, then move on.
 3. **Never delete files unless you are sure they are unused.**
-5. **Keep JavaScript modular.** Put new JS in `assets/js/` and import it from a page.
+4. **Keep JS widgets modular.** Put new JS in `src/assets/js/` and import it from a page.
+5. **Public repo:** Do not place **any** sensitive information like API secrets in this workspace.
 
 ## Testing and coverage (required)
+
+- **Keep coverage at 100%, add unit tests whenever it drops below this value.**
 - **Every new function or change to a function/stateflow must include unit tests and coverage.**
-- Add or update tests in `test/` and ensure coverage includes the new behavior.
+- Add or update tests in `src/test/` and ensure coverage includes the new behavior.
 
 ## Quick checks
+
 - Run formatting and linting before committing:
   - `npm run format`
   - `npm run lint`
+- Review build warnings and address them before considering the work complete.
 
-## What to avoid
-- Do not rename `_layouts/`, `_includes/`, or `assets/js/` files without updating all references.
+## Negative prompts
+
+- Do not rename `src/_layouts/`, `src/_includes/`, or `src/assets/js/` files without updating all references.
 - Do not change Jekyll front matter keys (`nav_label`, `nav_order`, `layout`) unless you know the impact.
+- Do not touch `/config/*` unless instructed or verified by user.
