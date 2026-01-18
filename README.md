@@ -76,6 +76,18 @@
 └── README.md
 ```
 
+<<<<<<< HEAD
+## Firebase login setup
+
+The footer login buttons use Firebase Authentication to sign in with Google or GitHub. To run the flow locally you need to swap in your own Firebase project values:
+
+1. Create or reuse a Firebase project, register a Web app, and paste the config object into `assets/js/login/firebase-config.js`. The module exports `firebaseConfig` and a readiness check (`isFirebaseConfigReady`); the login script displays a warning if the config is still missing or contains the `'...'` placeholders.
+2. Enable the Google and GitHub sign-in providers and add your local (`http://localhost:4000`) and hosted (`https://dr-griezel.github.io/`) domains to the authorized list. Make sure the OAuth redirect URIs match the domains where you expect the buttons to run.
+3. If you register a new Google OAuth client, update the `googleClientId` constant in `assets/js/login/login-buttons.js` so the Firebase providers use the correct client ID.
+4. Keep your Firebase security rules and GitHub client secret locked down—these frontend keys are public by design, so proper server-side rules are what prevent abuse.
+
+## Self-hosting tutorial
+=======
 # Tutorial
 
 ## 1. Firebase login setup
@@ -106,6 +118,7 @@ The Updates page pulls commits based on `config/github_config.js`. Update `owner
 fork the site so the updates page points at the correct GitHub repository.
 
 ## 3. Self-hosting tutorial
+>>>>>>> 17319976767dd90cb79c84db4666328e56cde6ac
 
 ### Option A: Jekyll (local build)
 
@@ -225,6 +238,13 @@ module_js: true
 
 # Roadmap & Todo's
 
+<<<<<<< HEAD
+- Harden Firebase security rules and add login flow tests.
+- On-site blog creator with login protection
+- Add service worker caching for offline widget data.
+- Add RSS/Atom feed for blog posts.
+- Add tags frontend-matter to blog-posts, along with filter menu displaying all available tags (max. 10).
+=======
 ## ✅ TODO
 
 - **Widget Ideas:**
@@ -263,3 +283,4 @@ Not sure, needs more research/refinement:
   - [ ] Harden Firebase security rules and add login flow tests.
   - [ ] Add service worker caching for offline widget data.
   - [ ] Add RSS/Atom feed for blog posts.
+>>>>>>> 17319976767dd90cb79c84db4666328e56cde6ac

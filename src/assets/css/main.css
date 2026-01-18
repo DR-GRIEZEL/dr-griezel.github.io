@@ -223,9 +223,12 @@ body::before {
   outline: none;
   box-shadow: 0 0 0 4px var(--ring);
 }
+<<<<<<< HEAD:assets/css/main.css
+=======
 
 /* AUTH BUTTONS */
 
+>>>>>>> 17319976767dd90cb79c84db4666328e56cde6ac:src/assets/css/main.css
 .auth-buttons__group {
   display: inline-flex;
   gap: 8px;
@@ -269,6 +272,20 @@ body::before {
 .auth-icon-btn:hover {
   transform: translateY(-1px);
 }
+<<<<<<< HEAD:assets/css/main.css
+.footer-auth {
+  width: min(100%, 360px);
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+.auth-status {
+  font-size: 0.75rem;
+  color: var(--muted);
+  text-align: center;
+=======
 .auth-icon-btn:hover img,
 .auth-icon-btn:hover svg {
   filter: drop-shadow(0 8px 14px rgba(0, 0, 0, 0.25));
@@ -328,7 +345,12 @@ body.sidebar-collapsed .sidebar-auth .logout-logo--large {
   margin: 0;
 }
 .auth-status {
+>>>>>>> 17319976767dd90cb79c84db4666328e56cde6ac:src/assets/css/main.css
   min-height: 1em;
+  display: block;
+  width: 100%;
+  max-width: 360px;
+  margin: 0;
 }
 
 .auth-status[data-tone='success'] {
@@ -576,6 +598,129 @@ main {
   gap: 12px;
 }
 
+<<<<<<< HEAD:assets/css/main.css
+/* ====== Login page ====== */
+.login-shell {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  align-items: start;
+  --firebase-ui-primary: var(--primary);
+  --firebase-ui-secondary: var(--accent);
+  --firebase-ui-border-radius: 16px;
+}
+.login-card {
+  background: linear-gradient(
+    160deg,
+    color-mix(in oklab, var(--card) 90%, var(--primary)),
+    var(--card)
+  );
+  border: 1px solid var(--border-strong);
+  border-radius: 24px;
+  padding: 32px;
+  box-shadow: var(--shadow);
+  display: grid;
+  gap: 24px;
+}
+.login-card__header h1 {
+  margin: 8px 0 12px;
+  font-size: clamp(1.6rem, 2.2vw, 2.2rem);
+}
+.login-eyebrow {
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  color: var(--muted);
+  margin: 0;
+}
+.login-lede {
+  margin: 0;
+  color: var(--muted);
+}
+.login-actions {
+  display: grid;
+  gap: 12px;
+}
+.login-actions__group {
+  display: grid;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 18px;
+  border: 1px solid color-mix(in oklab, var(--border-strong) 75%, transparent);
+  background: color-mix(in oklab, var(--card) 80%, transparent);
+}
+.login-actions__label {
+  margin: 0;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.75rem;
+}
+.login-action {
+  border: 1px solid var(--border-strong);
+  border-radius: 16px;
+  padding: 14px 18px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    border-color 0.15s ease;
+}
+.login-action--primary {
+  background: linear-gradient(120deg, #3bff9a, #1dff81 60%, #7effc0);
+  color: #04140a;
+  box-shadow: 0 10px 30px rgba(4, 20, 10, 0.3);
+  border-color: transparent;
+}
+.login-action--ghost {
+  background: transparent;
+  color: var(--text);
+}
+.login-action:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+}
+.login-status {
+  min-height: 1.5em;
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+.login-status[data-tone='success'] {
+  color: #5dffb8;
+}
+.login-status[data-tone='error'] {
+  color: #ff7b7b;
+}
+.login-panel {
+  background: color-mix(in oklab, var(--card) 88%, transparent);
+  border: 1px solid var(--border-strong);
+  border-radius: 20px;
+  padding: 24px;
+  display: grid;
+  gap: 12px;
+}
+.login-panel h2 {
+  margin: 0;
+}
+.login-panel ul {
+  margin: 0;
+  padding-left: 18px;
+  color: var(--muted);
+  display: grid;
+  gap: 8px;
+}
+@media (max-width: 960px) {
+  .login-shell {
+    grid-template-columns: 1fr;
+  }
+}
+
+=======
+>>>>>>> 17319976767dd90cb79c84db4666328e56cde6ac:src/assets/css/main.css
 /* ====== Footer ====== */
 footer {
   border-top: 1px solid var(--border-strong);
@@ -595,7 +740,11 @@ footer p {
   margin: 0;
 }
 
+<<<<<<< HEAD:assets/css/main.css
+/* ====== Buttons (optioneel) ====== */
+=======
 /* ====== Buttons ====== */
+>>>>>>> 17319976767dd90cb79c84db4666328e56cde6ac:src/assets/css/main.css
 .button {
   display: inline-flex;
   align-items: center;
