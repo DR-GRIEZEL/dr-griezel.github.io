@@ -154,7 +154,12 @@ describe('pomodoro widget bootstrap', () => {
     bPause.handlers.click();
     expect(subEl.textContent).toBe('break • paused');
     expect(bStart.disabled).toBe(false);
-    expect(bPause.disabled).toBe(true);
+    expect(bPause.disabled).toBe(false);
+
+    bPause.handlers.click();
+    expect(subEl.textContent).toBe('break • active');
+    expect(bStart.disabled).toBe(true);
+    expect(bPause.disabled).toBe(false);
 
     bReset.handlers.click();
     expect(timerEl.textContent).toBe('00:00');

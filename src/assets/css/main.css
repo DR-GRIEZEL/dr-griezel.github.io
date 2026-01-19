@@ -223,12 +223,8 @@ body::before {
   outline: none;
   box-shadow: 0 0 0 4px var(--ring);
 }
-<<<<<<< HEAD:assets/css/main.css
-=======
 
 /* AUTH BUTTONS */
-
->>>>>>> 17319976767dd90cb79c84db4666328e56cde6ac:src/assets/css/main.css
 .auth-buttons__group {
   display: inline-flex;
   gap: 8px;
@@ -272,20 +268,6 @@ body::before {
 .auth-icon-btn:hover {
   transform: translateY(-1px);
 }
-<<<<<<< HEAD:assets/css/main.css
-.footer-auth {
-  width: min(100%, 360px);
-  margin-inline: auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-}
-.auth-status {
-  font-size: 0.75rem;
-  color: var(--muted);
-  text-align: center;
-=======
 .auth-icon-btn:hover img,
 .auth-icon-btn:hover svg {
   filter: drop-shadow(0 8px 14px rgba(0, 0, 0, 0.25));
@@ -337,6 +319,15 @@ body.sidebar-collapsed .sidebar-auth .logout-logo--large {
   padding-top: 10px;
 }
 
+.footer-auth {
+  width: min(100%, 360px);
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
 .auth-status,
 .auth-user {
   font-size: 0.75rem;
@@ -345,7 +336,6 @@ body.sidebar-collapsed .sidebar-auth .logout-logo--large {
   margin: 0;
 }
 .auth-status {
->>>>>>> 17319976767dd90cb79c84db4666328e56cde6ac:src/assets/css/main.css
   min-height: 1em;
   display: block;
   width: 100%;
@@ -483,6 +473,7 @@ main {
 .grid.blog-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-auto-flow: row;
   gap: 20px;
 }
 
@@ -518,10 +509,13 @@ main {
 }
 
 .blog-filters {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  display: flex;
+  flex-wrap: nowrap;
   gap: 10px;
   margin-bottom: 22px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  scrollbar-gutter: stable;
 }
 
 .blog-filter-button {
@@ -598,7 +592,6 @@ main {
   gap: 12px;
 }
 
-<<<<<<< HEAD:assets/css/main.css
 /* ====== Login page ====== */
 .login-shell {
   display: grid;
@@ -718,15 +711,16 @@ main {
     grid-template-columns: 1fr;
   }
 }
-
-=======
->>>>>>> 17319976767dd90cb79c84db4666328e56cde6ac:src/assets/css/main.css
 /* ====== Footer ====== */
 footer {
   border-top: 1px solid var(--border-strong);
   padding: 20px;
   color: var(--muted);
   text-align: center;
+  background-image: url('/assets/img/banner.svg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 footer .container {
@@ -740,11 +734,7 @@ footer p {
   margin: 0;
 }
 
-<<<<<<< HEAD:assets/css/main.css
-/* ====== Buttons (optioneel) ====== */
-=======
 /* ====== Buttons ====== */
->>>>>>> 17319976767dd90cb79c84db4666328e56cde6ac:src/assets/css/main.css
 .button {
   display: inline-flex;
   align-items: center;

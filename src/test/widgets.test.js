@@ -333,7 +333,6 @@ describe('widget helpers', () => {
     vi.useRealTimers();
   });
 
-<<<<<<< HEAD:test/widgets.test.js
   it('initializes a weather widget from geolocation', async () => {
     vi.useFakeTimers();
     vi.setSystemTime(new Date('2024-01-01T03:00:00Z'));
@@ -408,25 +407,10 @@ describe('widget helpers', () => {
           weather_code: 2,
           wind_speed_10m: 4,
           wind_direction_10m: 150,
-=======
-  it('initializes clock and weather widgets from the document', async () => {
-    vi.useFakeTimers();
-    const fetchMock = vi.fn().mockResolvedValue({
-      ok: true,
-      json: async () => ({
-        current: {
-          temperature_2m: 12,
-          apparent_temperature: 11,
-          precipitation: 0,
-          weather_code: 1,
-          wind_speed_10m: 4,
-          wind_direction_10m: 200,
->>>>>>> 17319976767dd90cb79c84db4666328e56cde6ac:src/test/widgets.test.js
           relative_humidity_2m: 60,
         },
         hourly: {
           time: ['2024-01-01T03:00'],
-<<<<<<< HEAD:test/widgets.test.js
           precipitation_probability: [25],
         },
       }),
@@ -451,7 +435,24 @@ describe('widget helpers', () => {
     widget.isConnected = false;
     vi.runOnlyPendingTimers();
     vi.useRealTimers();
-=======
+  });
+
+  it('initializes clock and weather widgets from the document', async () => {
+    vi.useFakeTimers();
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({
+        current: {
+          temperature_2m: 12,
+          apparent_temperature: 11,
+          precipitation: 0,
+          weather_code: 1,
+          wind_speed_10m: 4,
+          wind_direction_10m: 200,
+          relative_humidity_2m: 60,
+        },
+        hourly: {
+          time: ['2024-01-01T03:00'],
           precipitation_probability: [20],
         },
       }),
@@ -522,6 +523,5 @@ describe('widget helpers', () => {
     expect(querySelectorAll).toHaveBeenCalledWith("[data-widget='clock']");
     expect(querySelectorAll).toHaveBeenCalledWith("[data-widget='weather']");
     vi.unstubAllGlobals();
->>>>>>> 17319976767dd90cb79c84db4666328e56cde6ac:src/test/widgets.test.js
   });
 });

@@ -72,7 +72,7 @@ const initPomodoroWidget = (widget, index) => {
     barIn.style.width = cap > 0 ? `${100 * (1 - state.remaining / cap)}%` : '0%';
 
     bStart.disabled = state.running || (state.mode !== 'off' && state.remaining === 0);
-    bPause.disabled = !state.running;
+    bPause.disabled = state.mode === 'off' || state.remaining === 0;
   };
 
   const tick = () => {
@@ -112,10 +112,14 @@ const initPomodoroWidget = (widget, index) => {
     ensureInterval();
   };
 
-  const pause = () => {
-    state.running = false;
+  const togglePause = () => {
+    if (state.mode === 'off' || state.remaining === 0) return;
+    state.running = !state.running;
     render();
     save();
+    if (state.running) {
+      ensureInterval();
+    }
   };
 
   const startBreak = () => {
@@ -136,7 +140,7 @@ const initPomodoroWidget = (widget, index) => {
   };
 
   bStart.addEventListener('click', start);
-  bPause.addEventListener('click', pause);
+  bPause.addEventListener('click', togglePause);
   bBreak.addEventListener('click', startBreak);
   bReset.addEventListener('click', reset);
 
