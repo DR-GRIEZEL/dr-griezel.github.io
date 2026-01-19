@@ -4,7 +4,7 @@ import {
   getCommitAuthorName,
   getCommitMetaText,
   getCommitTitle,
-  getTopContributor,
+  getContributorsByCount,
   withTimeout,
 } from '../assets/js/updates.js';
 
@@ -54,17 +54,22 @@ describe('updates helpers', () => {
     expect(getCommitAuthorName(commit)).toBe('octocat');
   });
 
-  it('returns a top contributor summary', () => {
+  it('returns contributors sorted by count', () => {
     const commits = [
       { commit: { author: { name: 'Avery' } } },
+      { commit: { author: { name: 'Bree' } } },
       { commit: { author: { name: 'Avery' } } },
       { author: { login: 'octo' } },
     ];
-    expect(getTopContributor(commits)).toEqual({ name: 'Avery', count: 2 });
+    expect(getContributorsByCount(commits)).toEqual([
+      { name: 'Avery', count: 2 },
+      { name: 'Bree', count: 1 },
+      { name: 'octo', count: 1 },
+    ]);
   });
 
-  it('returns null when there are no commits', () => {
-    expect(getTopContributor([])).toBeNull();
+  it('returns an empty list when there are no commits', () => {
+    expect(getContributorsByCount([])).toEqual([]);
   });
 
   it('resolves when a promise settles before timeout', async () => {

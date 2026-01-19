@@ -13,7 +13,12 @@ const setStatus = (message, target = statusEl) => {
 
 const setLeaderboard = (message, target = leaderboardEl) => {
   if (target) {
-    target.textContent = message;
+    if (message) {
+      target.textContent = message;
+    } else {
+      target.textContent = '';
+      target.innerHTML = '';
+    }
   }
 };
 
@@ -48,8 +53,8 @@ const getCommitMetaText = (commit) => {
   return segments.join(' · ');
 };
 
-const getTopContributor = (commits) => {
-  if (!Array.isArray(commits) || commits.length === 0) return null;
+const getContributorsByCount = (commits) => {
+  if (!Array.isArray(commits) || commits.length === 0) return [];
   const counts = new Map();
 
   commits.forEach((commit) => {
@@ -57,15 +62,9 @@ const getTopContributor = (commits) => {
     counts.set(author, (counts.get(author) || 0) + 1);
   });
 
-  let topContributor = null;
-
-  counts.forEach((count, name) => {
-    if (!topContributor || count > topContributor.count) {
-      topContributor = { name, count };
-    }
-  });
-
-  return topContributor;
+  return Array.from(counts.entries())
+    .map(([name, count]) => ({ name, count }))
+    .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
 };
 
 const renderCommits = (commits, target = listEl) => {
@@ -93,14 +92,19 @@ const renderCommits = (commits, target = listEl) => {
 
 const renderLeaderboard = (commits, target = leaderboardEl) => {
   if (!target) return;
-  const topContributor = getTopContributor(commits);
+  const contributors = getContributorsByCount(commits);
 
-  if (!topContributor) {
-    target.textContent = '';
+  if (!contributors.length) {
+    target.innerHTML = '';
     return;
   }
 
-  target.textContent = `Most contributions: ${topContributor.name}: ${topContributor.count}`;
+  target.innerHTML = '';
+  contributors.forEach(({ name, count }) => {
+    const item = document.createElement('li');
+    item.textContent = `${name} · ${count}`;
+    target.appendChild(item);
+  });
 };
 
 export const withTimeout = (promise, timeoutMs, timeoutMessage = 'Request timed out') => {
@@ -146,4 +150,10 @@ if (statusEl && listEl) {
   loadCommits();
 }
 
-export { formatDate, getCommitAuthorName, getCommitMetaText, getCommitTitle, getTopContributor };
+export {
+  formatDate,
+  getCommitAuthorName,
+  getCommitMetaText,
+  getCommitTitle,
+  getContributorsByCount,
+};
