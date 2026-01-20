@@ -395,7 +395,7 @@ body.sidebar-collapsed .sidebar-arrow {
   position: relative;
 }
 .hero-banner {
-  background-image: url('/assets/img/banner.svg');
+  background-image: url('/assets/img/website-banner.svg');
   background-size: cover;
   background-position: center;
   border-bottom: 1px solid var(--border-strong);
@@ -717,10 +717,10 @@ footer {
   padding: 20px;
   color: var(--muted);
   text-align: center;
-  background-image: url('/assets/img/banner.svg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  background-image: url('/assets/img/wall_texture.png');
+  background-size: 32px 32px;
+  background-position: top left;
+  background-repeat: repeat;
 }
 
 footer .container {
