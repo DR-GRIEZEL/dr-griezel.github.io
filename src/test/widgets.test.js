@@ -344,7 +344,8 @@ describe('widget helpers', () => {
 
     const fetchMock = vi.fn((request) => {
       const url = String(request);
-      if (url.includes('geocoding-api.open-meteo.com')) {
+      const urlObj = new URL(url, 'https://example.com');
+      if (urlObj.hostname === 'geocoding-api.open-meteo.com') {
         return {
           ok: true,
           json: () => ({ results: [{ name: 'Ghent' }] }),
