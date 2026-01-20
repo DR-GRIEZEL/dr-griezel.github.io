@@ -718,7 +718,7 @@ footer {
   color: var(--muted);
   text-align: center;
   background-image: url('/assets/img/wall_texture.png');
-  background-size: 32px 32px;
+  background-size: 128px 128px;
   background-position: top left;
   background-repeat: repeat;
 }
