@@ -1,0 +1,19 @@
+# Block all crawlers (search engines + AI crawlers)
+User-agent: *
+Disallow: /
+
+# Explicit blocks for some common AI-related agents (redundant with * but kept for clarity)
+User-agent: GPTBot
+Disallow: /
+
+User-agent: OAI-SearchBot
+Disallow: /
+
+User-agent: ChatGPT-User
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
