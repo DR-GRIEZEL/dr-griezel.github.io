@@ -42,6 +42,9 @@ html,
 body {
   padding: 0;
   margin: 0;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
   background:
     radial-gradient(
       900px 520px at 20% -10%,
@@ -510,12 +513,10 @@ main {
 
 .blog-filters {
   display: flex;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   gap: 10px;
   margin-bottom: 22px;
-  overflow-x: auto;
-  padding-bottom: 4px;
-  scrollbar-gutter: stable;
+  overflow-x: visible;
 }
 
 .blog-filter-button {
