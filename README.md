@@ -1,4 +1,4 @@
-# [dr-griezel.github.io](https:.//dr-griezel.github.io)
+# [dr-griezel.github.io](https://dr-griezel.github.io) (Template)
 
 ## General
 
