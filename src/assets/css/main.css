@@ -414,8 +414,10 @@ body.sidebar-collapsed .sidebar-arrow {
 }
 .hero-banner {
   background-image: url('/assets/img/website-banner.svg');
-  background-size: cover;
+  background-size: contain;
   background-position: center;
+  background-repeat: no-repeat;
+  background-color: var(--background-secondary);
   border-bottom: 1px solid var(--border-strong);
   box-shadow: inset 0 -12px 30px rgba(0, 0, 0, 0.6);
 }
