@@ -183,4 +183,64 @@ describe('login-buttons module', () => {
     expect(statusElement.textContent).toBe('Login kan niet geladen worden.');
     expect(statusElement.dataset.tone).toBe('error');
   });
+
+  it('keeps logged-out state when no user is returned', async () => {
+    const { isFirebaseConfigReady } = await import('../assets/js/login/firebase-config.js');
+    const { loadFirebaseSdk } = await import('../assets/js/login/firebase-sdk.js');
+    const { createAuthHandlers } = await import('../assets/js/login/auth.js');
+    const { initLoginButtons } = await import('../assets/js/login/buttons-init.js');
+
+    isFirebaseConfigReady.mockReturnValue(true);
+
+    const statusElement = buildElement();
+    const googleButton = buildElement();
+    const authOnlyEl = buildElement();
+    const loggedOutEl = buildElement();
+
+    const auth = { useDeviceLanguage: vi.fn() };
+    const onAuthStateChanged = vi.fn((_auth, callback) => {
+      callback(null);
+    });
+
+    loadFirebaseSdk.mockResolvedValue({
+      getApps: vi.fn(() => []),
+      initializeApp: vi.fn(() => ({ app: true })),
+      getAuth: vi.fn(() => auth),
+      GoogleAuthProvider: vi.fn(),
+      GithubAuthProvider: vi.fn(),
+      signInWithPopup: vi.fn(),
+      signInWithRedirect: vi.fn(),
+      getRedirectResult: vi.fn(),
+      onAuthStateChanged,
+      signOut: vi.fn(),
+    });
+
+    createAuthHandlers.mockReturnValue({
+      loginGooglePopup: vi.fn(),
+      loginGoogleRedirect: vi.fn(),
+      loginGithubPopup: vi.fn(),
+      loginGithubRedirect: vi.fn(),
+      handleRedirectResult: vi.fn(),
+    });
+
+    vi.stubGlobal('document', {
+      querySelector: (selector) => {
+        if (selector === '[data-auth-status]') return statusElement;
+        if (selector === '[data-auth-google]') return googleButton;
+        return null;
+      },
+      querySelectorAll: (selector) => {
+        if (selector === '[data-auth-only]') return [authOnlyEl];
+        if (selector === '[data-auth-logged-out]') return [loggedOutEl];
+        return [];
+      },
+    });
+
+    await import('../assets/js/login/login-buttons.js');
+    await flushPromises();
+
+    expect(initLoginButtons).toHaveBeenCalled();
+    expect(authOnlyEl.hidden).toBe(true);
+    expect(loggedOutEl.hidden).toBe(false);
+  });
 });

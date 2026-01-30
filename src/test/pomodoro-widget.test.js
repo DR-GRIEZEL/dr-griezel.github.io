@@ -101,6 +101,28 @@ describe('pomodoro widget bootstrap', () => {
     expect(bPause.disabled).toBe(true);
   });
 
+  it('returns early when widget elements are missing', async () => {
+    const widget = {
+      dataset: { pomoId: 'alpha' },
+      isConnected: true,
+      querySelector: () => null,
+    };
+
+    vi.stubGlobal('localStorage', {
+      getItem: vi.fn(() => null),
+      setItem: vi.fn(),
+    });
+    vi.stubGlobal('location', { pathname: '/dashboard' });
+    vi.stubGlobal('document', {
+      readyState: 'complete',
+      querySelectorAll: () => [widget],
+    });
+
+    await import('../assets/js/widgets/pomodoro.js');
+
+    expect(widget.isConnected).toBe(true);
+  });
+
   it('starts a focus cycle when start is clicked', async () => {
     const { widget, timerEl, subEl, bStart, bPause } = buildWidget();
 
@@ -128,6 +150,24 @@ describe('pomodoro widget bootstrap', () => {
       'pomo::/dashboard::alpha',
       expect.any(String),
     );
+  });
+
+  it('resets invalid persisted state', async () => {
+    const { widget, timerEl } = buildWidget();
+
+    vi.stubGlobal('localStorage', {
+      getItem: vi.fn(() => '{not-json'),
+      setItem: vi.fn(),
+    });
+    vi.stubGlobal('location', { pathname: '/dashboard' });
+    vi.stubGlobal('document', {
+      readyState: 'complete',
+      querySelectorAll: () => [widget],
+    });
+
+    await import('../assets/js/widgets/pomodoro.js');
+
+    expect(timerEl.textContent).toBe('00:00');
   });
 
   it('supports break, pause, and reset actions', async () => {
@@ -260,5 +300,68 @@ describe('pomodoro widget bootstrap', () => {
 
     expect(subEl.textContent).toBe('off • paused');
     expect(NotificationMock).toHaveBeenCalled();
+  });
+
+  it('requests notification permission when not granted', async () => {
+    const { widget, bStart } = buildWidget();
+
+    const NotificationMock = vi.fn();
+    NotificationMock.permission = 'default';
+    NotificationMock.requestPermission = vi.fn();
+
+    vi.stubGlobal('Notification', NotificationMock);
+    vi.stubGlobal('window', { AudioContext: buildAudioContext(), Notification: NotificationMock });
+    vi.stubGlobal('localStorage', {
+      getItem: vi.fn(() => null),
+      setItem: vi.fn(),
+    });
+    vi.stubGlobal('location', { pathname: '/dashboard' });
+    vi.stubGlobal('document', {
+      readyState: 'complete',
+      querySelectorAll: () => [widget],
+    });
+
+    await import('../assets/js/widgets/pomodoro.js');
+
+    bStart.handlers.click();
+    vi.advanceTimersByTime(25 * 60 * 1000);
+
+    expect(NotificationMock.requestPermission).toHaveBeenCalled();
+  });
+
+  it('clears the interval when a widget disconnects', async () => {
+    const { widget, bStart } = buildWidget();
+
+    vi.stubGlobal('localStorage', {
+      getItem: vi.fn(() => null),
+      setItem: vi.fn(),
+    });
+    vi.stubGlobal('location', { pathname: '/dashboard' });
+    vi.stubGlobal('document', {
+      readyState: 'complete',
+      querySelectorAll: () => [widget],
+    });
+
+    await import('../assets/js/widgets/pomodoro.js');
+
+    bStart.handlers.click();
+    widget.isConnected = false;
+    vi.advanceTimersByTime(1000);
+
+    expect(widget.isConnected).toBe(false);
+  });
+
+  it('defers pomodoro widget boot when the DOM is loading', async () => {
+    vi.resetModules();
+    const addEventListener = vi.fn();
+    vi.stubGlobal('document', {
+      readyState: 'loading',
+      addEventListener,
+    });
+
+    await import('../assets/js/widgets/pomodoro.js');
+
+    expect(addEventListener).toHaveBeenCalledWith('DOMContentLoaded', expect.any(Function));
+    vi.unstubAllGlobals();
   });
 });

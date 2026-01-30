@@ -221,6 +221,28 @@ describe('widget helpers', () => {
     vi.useRealTimers();
   });
 
+  it('ticks connected clock widgets on an interval', () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date('2024-01-01T03:00:00Z'));
+
+    const timeEl = { textContent: '' };
+    const widget = {
+      isConnected: true,
+      querySelectorAll: () => [timeEl],
+      querySelector: () => null,
+    };
+
+    updateClockWidget(widget, 'UTC');
+
+    vi.advanceTimersByTime(1000);
+
+    expect(timeEl.textContent).toBe('03:00:01');
+
+    widget.isConnected = false;
+    vi.runOnlyPendingTimers();
+    vi.useRealTimers();
+  });
+
   it('returns early when a clock widget has no targets', () => {
     const widget = {
       querySelectorAll: () => [],
@@ -333,6 +355,93 @@ describe('widget helpers', () => {
     vi.useRealTimers();
   });
 
+  it('updates weather widgets on an interval when connected', async () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date('2024-01-01T03:00:00Z'));
+
+    const fetchMock = vi.fn(() => ({
+      ok: true,
+      json: () => ({
+        current: {
+          temperature_2m: 9,
+          apparent_temperature: 7,
+          precipitation: 0,
+          weather_code: 2,
+          wind_speed_10m: 4,
+          wind_direction_10m: 150,
+          relative_humidity_2m: 60,
+        },
+        hourly: {
+          time: ['2024-01-01T03:00'],
+          precipitation_probability: [25],
+        },
+      }),
+    }));
+    vi.stubGlobal('fetch', fetchMock);
+
+    const widget = {
+      dataset: { widgetLat: '50.85', widgetLon: '4.35', widgetRefresh: '10' },
+      isConnected: true,
+      querySelector: () => null,
+    };
+
+    initWeatherWidget(widget);
+    await flushPromises(4);
+
+    vi.advanceTimersByTime(10);
+    await flushPromises(2);
+
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+
+    widget.isConnected = false;
+    vi.runOnlyPendingTimers();
+    vi.useRealTimers();
+  });
+
+  it('clears existing weather timers before restarting updates', async () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date('2024-01-01T03:00:00Z'));
+
+    const fetchMock = vi.fn(() => ({
+      ok: true,
+      json: () => ({
+        current: {
+          temperature_2m: 9,
+          apparent_temperature: 7,
+          precipitation: 0,
+          weather_code: 2,
+          wind_speed_10m: 4,
+          wind_direction_10m: 150,
+          relative_humidity_2m: 60,
+        },
+        hourly: {
+          time: ['2024-01-01T03:00'],
+          precipitation_probability: [25],
+        },
+      }),
+    }));
+    vi.stubGlobal('fetch', fetchMock);
+
+    const clearSpy = vi.spyOn(globalThis, 'clearInterval');
+    const widget = {
+      dataset: { widgetLat: '50.85', widgetLon: '4.35', widgetRefresh: '10' },
+      isConnected: true,
+      querySelector: () => null,
+    };
+
+    initWeatherWidget(widget);
+    await flushPromises(4);
+    initWeatherWidget(widget);
+    await flushPromises(4);
+
+    expect(clearSpy).toHaveBeenCalled();
+
+    widget.isConnected = false;
+    vi.runOnlyPendingTimers();
+    vi.useRealTimers();
+    clearSpy.mockRestore();
+  });
+
   it('initializes a weather widget from geolocation', async () => {
     vi.useFakeTimers();
     vi.setSystemTime(new Date('2024-01-01T03:00:00Z'));
@@ -387,6 +496,59 @@ describe('widget helpers', () => {
     expect(String(fetchMock.mock.calls[0][0])).toContain('geocoding-api.open-meteo.com');
     expect(String(fetchMock.mock.calls[1][0])).toContain('latitude=51.05');
     expect(String(fetchMock.mock.calls[1][0])).toContain('longitude=3.72');
+
+    widget.isConnected = false;
+    vi.runOnlyPendingTimers();
+    vi.useRealTimers();
+  });
+
+  it('keeps the default name when reverse geocoding fails', async () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date('2024-01-01T03:00:00Z'));
+
+    const getCurrentPosition = vi.fn((success) =>
+      success({ coords: { latitude: 51.05, longitude: 3.72 } }),
+    );
+    vi.stubGlobal('navigator', { geolocation: { getCurrentPosition } });
+
+    const fetchMock = vi.fn((request) => {
+      const url = String(request);
+      if (url.includes('geocoding-api.open-meteo.com')) {
+        return { ok: false, status: 500 };
+      }
+      return {
+        ok: true,
+        json: () => ({
+          current: {
+            temperature_2m: 9,
+            apparent_temperature: 7,
+            precipitation: 0,
+            weather_code: 2,
+            wind_speed_10m: 4,
+            wind_direction_10m: 150,
+            relative_humidity_2m: 60,
+          },
+          hourly: {
+            time: ['2024-01-01T03:00'],
+            precipitation_probability: [25],
+          },
+        }),
+      };
+    });
+    vi.stubGlobal('fetch', fetchMock);
+
+    const locationEl = { textContent: '' };
+    const widget = {
+      dataset: { widgetTz: 'UTC', widgetRefresh: '10' },
+      isConnected: true,
+      querySelector: (selector) => (selector === '[data-wx-location]' ? locationEl : null),
+    };
+
+    initWeatherWidget(widget);
+    await flushPromises(6);
+
+    expect(locationEl.textContent).toBe('Huidige locatie');
+    expect(fetchMock).toHaveBeenCalledTimes(2);
 
     widget.isConnected = false;
     vi.runOnlyPendingTimers();
@@ -493,6 +655,25 @@ describe('widget helpers', () => {
     weatherWidget.isConnected = false;
     vi.runOnlyPendingTimers();
     vi.useRealTimers();
+    vi.unstubAllGlobals();
+  });
+
+  it('uses the default timezone when clock widgets omit one', () => {
+    const clockWidget = {
+      dataset: {},
+      querySelectorAll: () => [],
+      querySelector: () => null,
+    };
+    const querySelectorAll = vi.fn((selector) => {
+      if (selector === "[data-widget='clock']") return [clockWidget];
+      return [];
+    });
+
+    vi.stubGlobal('document', { querySelectorAll });
+
+    initWidgets();
+
+    expect(querySelectorAll).toHaveBeenCalledWith("[data-widget='clock']");
     vi.unstubAllGlobals();
   });
 
