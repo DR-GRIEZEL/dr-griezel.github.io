@@ -1,7 +1,7 @@
 url: 'https://dr-griezel.github.io'
 baseurl: ''
-title: "The Vault"
-subtitle: 'Research notes and build logs'
+title: ''
+subtitle: ''
 copyright: 'DR-GRIEZEL, bachjamal-commits44'
 exclude:
   - test
