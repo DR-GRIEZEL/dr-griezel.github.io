@@ -104,6 +104,32 @@ describe('createAuthHandlers', () => {
     expect(signInWithPopup).toHaveBeenCalledWith(auth, expect.any(MockGithubProvider));
   });
 
+  it('returns github redirect handler that calls redirect flow', async () => {
+    class MockProvider {
+      setCustomParameters() {}
+    }
+    class MockGithubProvider {
+      addScope() {}
+    }
+
+    const auth = { id: 'auth' };
+    const signInWithPopup = vi.fn();
+    const signInWithRedirect = vi.fn().mockResolvedValue(undefined);
+    const getRedirectResult = vi.fn().mockResolvedValue(null);
+
+    const { loginGithubRedirect } = createAuthHandlers({
+      auth,
+      GoogleAuthProvider: MockProvider,
+      GithubAuthProvider: MockGithubProvider,
+      signInWithPopup,
+      signInWithRedirect,
+      getRedirectResult,
+    });
+
+    await loginGithubRedirect();
+    expect(signInWithRedirect).toHaveBeenCalledWith(auth, expect.any(MockGithubProvider));
+  });
+
   it('handles redirect result without throwing', async () => {
     class MockProvider {
       setCustomParameters() {}
@@ -126,5 +152,28 @@ describe('createAuthHandlers', () => {
 
     await expect(handleRedirectResult()).resolves.toEqual({ error: expect.any(Error) });
     expect(getRedirectResult).toHaveBeenCalledWith(auth);
+  });
+
+  it('returns undefined when redirect errors are empty', async () => {
+    class MockProvider {
+      setCustomParameters() {}
+    }
+    class MockGithubProvider {}
+
+    const auth = { id: 'auth' };
+    const signInWithPopup = vi.fn();
+    const signInWithRedirect = vi.fn();
+    const getRedirectResult = vi.fn().mockRejectedValue(undefined);
+
+    const { handleRedirectResult } = createAuthHandlers({
+      auth,
+      GoogleAuthProvider: MockProvider,
+      GithubAuthProvider: MockGithubProvider,
+      signInWithPopup,
+      signInWithRedirect,
+      getRedirectResult,
+    });
+
+    await expect(handleRedirectResult()).resolves.toBeUndefined();
   });
 });

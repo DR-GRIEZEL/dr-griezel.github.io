@@ -36,6 +36,21 @@ describe('applyBlogFilter', () => {
     expect(generalCard.hidden).toBe(false);
     expect(otherCard.hidden).toBe(true);
   });
+
+  it('ignores null cards and defaults missing filters', () => {
+    const cards = [undefined, createCard(undefined)];
+
+    expect(() => applyBlogFilter(cards)).not.toThrow();
+    expect(cards[1].hidden).toBe(false);
+  });
+
+  it('falls back to the default filter when the input is blank', () => {
+    const cards = [createCard('labs')];
+
+    applyBlogFilter(cards, '   ');
+
+    expect(cards[0].hidden).toBe(false);
+  });
 });
 
 describe('initBlogFilters', () => {
@@ -84,6 +99,53 @@ describe('initBlogFilters', () => {
     expect(cards[0].hidden).toBe(false);
     expect(cards[1].hidden).toBe(true);
     expect(buttons[1].setAttribute).toHaveBeenCalledWith('aria-pressed', 'true');
+  });
+
+  it('uses the default filter when a button lacks metadata', () => {
+    const buttons = [createButton(null)];
+    const cards = [createCard('general')];
+    const stubDocument = {
+      readyState: 'complete',
+      querySelectorAll: (selector) => {
+        if (selector === '[data-blog-filter]') return buttons;
+        if (selector === '[data-blog-card]') return cards;
+        return [];
+      },
+    };
+
+    vi.stubGlobal('document', stubDocument);
+
+    initBlogFilters();
+
+    buttons[0].fire('click');
+
+    expect(cards[0].hidden).toBe(false);
+  });
+
+  it('normalizes empty filter values for active button states', () => {
+    const buttons = [createButton('   '), createButton('all')];
+    const cards = [createCard('general')];
+    const stubDocument = {
+      readyState: 'complete',
+      querySelectorAll: (selector) => {
+        if (selector === '[data-blog-filter]') return buttons;
+        if (selector === '[data-blog-card]') return cards;
+        return [];
+      },
+    };
+
+    vi.stubGlobal('document', stubDocument);
+
+    initBlogFilters();
+
+    buttons[0].fire('click');
+
+    expect(buttons[1].setAttribute).toHaveBeenCalledWith('aria-pressed', 'true');
+  });
+
+  it('returns early when no document is available', () => {
+    delete globalThis.document;
+    expect(() => initBlogFilters()).not.toThrow();
   });
 });
 

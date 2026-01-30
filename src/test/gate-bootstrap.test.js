@@ -42,4 +42,28 @@ describe('initAuthGate', () => {
     const result = initAuthGate({ document: null });
     expect(result.mounted).toBe(false);
   });
+
+  it('uses the global document when no argument is provided', () => {
+    const doc = {
+      readyState: 'complete',
+      addEventListener: vi.fn(),
+      querySelector: vi.fn(() => null),
+    };
+    const onAuthStateChanged = vi.fn();
+
+    vi.stubGlobal('document', doc);
+
+    const result = initAuthGate({ onAuthStateChanged });
+
+    expect(result.mounted).toBe(true);
+    vi.unstubAllGlobals();
+  });
+
+  it('falls back to a null document when the global document is missing', () => {
+    delete globalThis.document;
+
+    const result = initAuthGate({ onAuthStateChanged: vi.fn() });
+
+    expect(result.mounted).toBe(false);
+  });
 });

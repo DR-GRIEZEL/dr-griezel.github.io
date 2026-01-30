@@ -38,12 +38,8 @@ const setupGateContent = async ({ configReady = true, apps = [] } = {}) => {
 
   await import('../assets/js/login/gate-content.js');
 
-  const firebaseApp = await import(
-    'https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js'
-  );
-  const firebaseAuth = await import(
-    'https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js'
-  );
+  const firebaseApp = await import('https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js');
+  const firebaseAuth = await import('https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js');
   const gateBootstrap = await import('../assets/js/login/gate-bootstrap.js');
   const firebaseConfig = await import('/assets/js/login/firebase-config.js');
 
@@ -85,6 +81,19 @@ describe('gate-content', () => {
 
     expect(firebaseConfig.isFirebaseConfigReady).toHaveBeenCalled();
     expect(windowStub.location.replace).toHaveBeenCalledWith('/500/');
+
+    globalThis.window = originalWindow;
+  });
+
+  it('uses the existing firebase app when available', async () => {
+    const originalWindow = globalThis.window;
+    globalThis.window = createWindow();
+
+    const existingApp = { app: true };
+    const { firebaseApp, firebaseAuth } = await setupGateContent({ apps: [existingApp] });
+
+    expect(firebaseApp.initializeApp).not.toHaveBeenCalled();
+    expect(firebaseAuth.getAuth).toHaveBeenCalledWith(existingApp);
 
     globalThis.window = originalWindow;
   });
