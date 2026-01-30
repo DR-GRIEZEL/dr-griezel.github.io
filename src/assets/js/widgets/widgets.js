@@ -2,7 +2,7 @@ const defaultTimeZone = 'Europe/Brussels';
 const weatherRefreshMs = 5 * 60 * 1000;
 const clockRefreshMs = 1000;
 const defaultCoords = { lat: 50.8503, lon: 4.3517 };
-const defaultLocation = 'Brussels';
+const defaultLocation = 'Brussel';
 
 const weatherCodeMap = {
   0: '☀️ Clear',
@@ -95,7 +95,7 @@ const getWeatherSummary = (data, timeZone, now = new Date()) => {
     windDirection: current.wind_direction_10m,
     humidity: current.relative_humidity_2m,
     precipitationProbability,
-    description: weatherCodeMap[current.weather_code] ?? 'Weather',
+    description: weatherCodeMap[current.weather_code] ?? 'Weer',
   };
 };
 

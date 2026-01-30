@@ -1,6 +1,8 @@
 import { describe, expect, it, vi } from 'vitest';
 import {
   formatDate,
+  getContributorName,
+  getContributorsFromApi,
   getCommitAuthorName,
   getCommitMetaText,
   getCommitTitle,
@@ -70,6 +72,24 @@ describe('updates helpers', () => {
 
   it('returns an empty list when there are no commits', () => {
     expect(getContributorsByCount([])).toEqual([]);
+  });
+
+  it('reads contributor names from the API response', () => {
+    expect(getContributorName({ login: 'octocat' })).toBe('octocat');
+    expect(getContributorName({ name: 'Ada' })).toBe('Ada');
+    expect(getContributorName({})).toBe('Unknown contributor');
+  });
+
+  it('maps contributor API payloads to leaderboard entries', () => {
+    const contributors = [
+      { login: 'Ada', contributions: 5 },
+      { login: 'Bree', contributions: 3 },
+      { login: 'Zero', contributions: 0 },
+    ];
+    expect(getContributorsFromApi(contributors)).toEqual([
+      { name: 'Ada', count: 5 },
+      { name: 'Bree', count: 3 },
+    ]);
   });
 
   it('resolves when a promise settles before timeout', async () => {

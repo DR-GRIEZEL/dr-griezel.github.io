@@ -292,7 +292,7 @@ describe('widget helpers', () => {
     await flushPromises(4);
 
     expect(fetchMock).toHaveBeenCalledTimes(1);
-    expect(descEl.textContent).toBe('Weather');
+    expect(descEl.textContent).toBe('Weer');
     expect(locationEl.textContent).toBe('Test City');
     expect(updatedEl.textContent).toBe('03:00');
     expect(updatedEl.dateTime).not.toBe('');

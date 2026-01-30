@@ -70,7 +70,8 @@ export function initLoginButtons({
     return popupFn()
       .then((user) => {
         if (user) {
-          setStatus(`Ingelogd als ${formatUserLabel(user)}.`, 'success');
+          // setStatus(`Ingelogd als ${formatUserLabel(user)}.`, 'success');
+          setStatus('', 'success');
         }
       })
       .catch((error) => {

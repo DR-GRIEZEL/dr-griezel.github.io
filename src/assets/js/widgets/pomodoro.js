@@ -115,6 +115,10 @@ const initPomodoroWidget = (widget, index) => {
   const togglePause = () => {
     if (state.mode === 'off' || state.remaining === 0) return;
     state.running = !state.running;
+    if (!state.running && intervalId) {
+      clearInterval(intervalId);
+      intervalId = null;
+    }
     render();
     save();
     if (state.running) {
