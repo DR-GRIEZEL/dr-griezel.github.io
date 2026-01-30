@@ -202,6 +202,7 @@ body::before {
   text-decoration: none;
   color: var(--text);
   border: 1px solid transparent;
+  justify-content: flex-start;
   transition:
     transform 0.12s ease,
     background-color 0.12s ease,
@@ -360,6 +361,8 @@ body.sidebar-collapsed .sidebar-auth .logout-logo--large {
 body.sidebar-collapsed .sidebar {
   width: 72px;
   padding-inline: 10px;
+  flex: 0 0 72px;
+  position: relative;
 }
 body.sidebar-collapsed .sidebar-title,
 body.sidebar-collapsed .nav-label {
@@ -368,6 +371,14 @@ body.sidebar-collapsed .nav-label {
   width: 0;
   height: 0;
   overflow: hidden;
+}
+body.sidebar-collapsed .sidebar-nav a {
+  justify-content: center;
+  gap: 0;
+  padding-inline: 0;
+}
+body.sidebar-collapsed .sidebar-auth {
+  justify-items: center;
 }
 body.sidebar-collapsed .sidebar-arrow {
   transform: rotate(135deg);

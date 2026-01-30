@@ -3,8 +3,13 @@ baseurl: ''
 title: "DR-GRIEZEL's Vault"
 subtitle: 'Research notes and build logs'
 copyright: 'DR-GRIEZEL, bachjamal-commits44'
-source: src
+includes_dir: src/_includes
+layouts_dir: src/_layouts
+source: .
 exclude:
-  - test
   - node_modules
   - coverage
+  - src/assets
+  - src/test
+  - src/_config.yml
+  - config/_config.yml
