@@ -166,6 +166,39 @@ describe('pomodoro widget bootstrap', () => {
     expect(subEl.textContent).toBe('off • paused');
   });
 
+  it('pauses and resumes without resetting the timer', async () => {
+    const { widget, timerEl, subEl, bStart, bPause } = buildWidget();
+
+    vi.stubGlobal('localStorage', {
+      getItem: vi.fn(() => null),
+      setItem: vi.fn(),
+    });
+    vi.stubGlobal('location', { pathname: '/dashboard' });
+    vi.stubGlobal('document', {
+      readyState: 'complete',
+      querySelectorAll: () => [widget],
+    });
+
+    await import('../assets/js/widgets/pomodoro.js');
+
+    bStart.handlers.click();
+    vi.advanceTimersByTime(2000);
+
+    expect(timerEl.textContent).toBe('24:58');
+
+    bPause.handlers.click();
+    expect(subEl.textContent).toBe('cycle 1/4 • paused');
+
+    vi.advanceTimersByTime(3000);
+    expect(timerEl.textContent).toBe('24:58');
+
+    bPause.handlers.click();
+    expect(subEl.textContent).toBe('cycle 1/4 • active');
+
+    vi.advanceTimersByTime(2000);
+    expect(timerEl.textContent).toBe('24:56');
+  });
+
   it('resets stale state at midnight', async () => {
     const { widget, timerEl, subEl } = buildWidget();
 

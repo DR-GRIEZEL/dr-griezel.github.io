@@ -1,9 +1,11 @@
-import { commitsUrl } from '../../config/github_config.js';
+import { commitsUrl, owner, repo } from '../../config/github_config.js';
 
 const statusEl = typeof document === 'undefined' ? null : document.getElementById('updates-status');
 const listEl = typeof document === 'undefined' ? null : document.getElementById('updates-list');
 const leaderboardEl =
   typeof document === 'undefined' ? null : document.getElementById('updates-leaderboard');
+
+const contributorsUrl = `https://api.github.com/repos/${owner}/${repo}/contributors?per_page=100`;
 
 const setStatus = (message, target = statusEl) => {
   if (target) {
@@ -67,6 +69,21 @@ const getContributorsByCount = (commits) => {
     .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
 };
 
+const getContributorName = (contributor) => {
+  return contributor?.login || contributor?.name || 'Unknown contributor';
+};
+
+const getContributorsFromApi = (contributors) => {
+  if (!Array.isArray(contributors) || contributors.length === 0) return [];
+  return contributors
+    .map((contributor) => ({
+      name: getContributorName(contributor),
+      count: contributor?.contributions ?? 0,
+    }))
+    .filter(({ name, count }) => name && count > 0)
+    .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
+};
+
 const renderCommits = (commits, target = listEl) => {
   if (!target) return;
   target.innerHTML = '';
@@ -90,17 +107,17 @@ const renderCommits = (commits, target = listEl) => {
   });
 };
 
-const renderLeaderboard = (commits, target = leaderboardEl) => {
+const renderLeaderboard = (contributors, target = leaderboardEl) => {
   if (!target) return;
-  const contributors = getContributorsByCount(commits);
+  const list = Array.isArray(contributors) ? contributors : [];
 
-  if (!contributors.length) {
+  if (!list.length) {
     target.innerHTML = '';
     return;
   }
 
   target.innerHTML = '';
-  contributors.forEach(({ name, count }) => {
+  list.forEach(({ name, count }) => {
     const item = document.createElement('li');
     item.textContent = `${name} · ${count}`;
     target.appendChild(item);
@@ -127,6 +144,13 @@ const loadCommits = async () => {
       8000,
     );
 
+    const contributorsResponse = await withTimeout(
+      fetch(contributorsUrl, {
+        headers: { Accept: 'application/vnd.github+json' },
+      }),
+      8000,
+    ).catch(() => null);
+
     if (!res.ok) {
       throw new Error(`GitHub API error: ${res.status}`);
     }
@@ -138,7 +162,12 @@ const loadCommits = async () => {
     }
 
     renderCommits(commits);
-    renderLeaderboard(commits);
+    if (contributorsResponse && contributorsResponse.ok) {
+      const contributors = await contributorsResponse.json();
+      renderLeaderboard(getContributorsFromApi(contributors));
+    } else {
+      renderLeaderboard(getContributorsByCount(commits));
+    }
     setStatus('');
   } catch {
     setStatus('Unable to load updates right now.');
@@ -152,6 +181,8 @@ if (statusEl && listEl) {
 
 export {
   formatDate,
+  getContributorName,
+  getContributorsFromApi,
   getCommitAuthorName,
   getCommitMetaText,
   getCommitTitle,

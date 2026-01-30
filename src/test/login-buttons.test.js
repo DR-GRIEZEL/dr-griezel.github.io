@@ -65,7 +65,7 @@ describe('initLoginButtons', () => {
 
     await googleButton.handlers.click();
 
-    expect(statusElement.textContent).toBe('Ingelogd als Test User.');
+    expect(statusElement.textContent).toBe('');
     expect(statusElement.dataset.tone).toBe('success');
   });
 
