@@ -57,6 +57,12 @@
 
 ```
 .
+├── assets -> src/assets  # Symlink for Jekyll static output
+├── blog/                 # Blog post markdown entries
+├── config/
+│   ├── _config.yml       # Jekyll config
+│   ├── firebase-config.js
+│   └── github_config.js
 ├── src/
 │   ├── _includes/        # Jekyll partials (nav/header/footer)
 │   ├── _layouts/         # Base layout
@@ -64,14 +70,12 @@
 │   │   ├── css/          # Stylesheets
 │   │   ├── img/          # Icons and illustrations
 │   │   └── js/           # JS modules (widgets, pomodoro, updates)
-│   ├── blog/             # Blog post markdown entries
 │   ├── html/
 │   │   ├── nav/          # Pages that appear in the sidebar
 │   │   ├── 404.html
 │   │   └── 500.html
 │   ├── widgets/          # Widget partial pages
 │   └── test/             # Vitest unit tests
-├── _config.yml           # Jekyll config
 ├── package.json
 └── README.md
 ```
@@ -115,7 +119,7 @@ fork the site so the updates page points at the correct GitHub repository.
    ```
 2. Build and serve the site locally:
    ```sh
-   jekyll serve --livereload
+   jekyll serve --config config/_config.yml --livereload
    ```
 3. Visit `http://localhost:4000`.
 
@@ -123,7 +127,7 @@ fork the site so the updates page points at the correct GitHub repository.
 
 1. Build the site:
    ```sh
-   jekyll build
+   jekyll build --config config/_config.yml
    ```
 2. Upload the `_site/` directory to any static host (Nginx, Apache, S3, etc.).
 
@@ -131,7 +135,7 @@ fork the site so the updates page points at the correct GitHub repository.
 
 1. Build the site:
    ```sh
-   jekyll build
+   jekyll build --config config/_config.yml
    ```
 2. Serve the output locally:
    ```sh
@@ -207,7 +211,7 @@ module_js: true
 
 ### Add a blog post
 
-1. Create new .md file in `src/blog/` (for example: `src/blog/my-new-post.md`).
+1. Create new .md file in `blog/` (for example: `blog/my-new-post.md`).
 2. Add front matter:
    ```yaml
    ---
@@ -243,7 +247,7 @@ module_js: true
 - [?] Drop image self-hosting entirely if API usage increases too much (Try compression first)
 
 - [ ] upon file editor creation, force tag selection to make sure files are always categorised.
-- [ ] Filter tags based directory: `src/blog/{tag}/` -> add filter menu displaying all available tags.
+- [ ] Filter tags based directory: `blog/{tag}/` -> add filter menu displaying all available tags.
 - [ ] seperate cover images from blog images; `{tag}/images/covers/`
 - [ ] put website metadata images inside /assets/img/
 
@@ -254,9 +258,8 @@ Not sure, needs more research/refinement:
 - [ ] Edit existing articles in editor
 
 - **Easy of use for non-coders:**
-- [x] put ALL code inside a `/src` folder.
-  - [ ] create `/config` folder -> check if \_config.yml can read from root + put configurable images inside `config/images/`
-  - [x] keep only /config/ folder inside root (besides /src)
+- [x] move the blog content to `/blog` and keep config in `/config`.
+  - [ ] put configurable images inside `config/images/`
   - [ ] prefab css stylings (per user themes)
 
 - **General fixes & features:**

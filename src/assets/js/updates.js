@@ -1,4 +1,4 @@
-import { commitsUrl, owner, repo } from '../../config/github_config.js';
+import { commitsUrl, owner, repo } from '/config/github_config.js';
 
 const statusEl = typeof document === 'undefined' ? null : document.getElementById('updates-status');
 const listEl = typeof document === 'undefined' ? null : document.getElementById('updates-list');
