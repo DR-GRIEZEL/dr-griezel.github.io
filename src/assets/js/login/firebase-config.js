@@ -1,4 +1,5 @@
-import { firebaseConfig as configFromFile } from '/config/firebase-config.js';
+const configModuleUrl = new URL('../../../../config/firebase-config.js', import.meta.url);
+const { firebaseConfig: configFromFile = {} } = await import(configModuleUrl.href);
 
 const defaultFirebaseConfig = {
   apiKey: '',
