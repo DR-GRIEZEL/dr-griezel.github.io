@@ -4,7 +4,7 @@ describe('firebase config module', () => {
   it('exposes config from the config file and reports ready', async () => {
     vi.resetModules();
     const configModuleUrl = new globalThis.URL(
-      '../../../../config/firebase-config.js',
+      '../../../config/firebase-config.js',
       new globalThis.URL('../assets/js/login/firebase-config.js', import.meta.url),
     ).href;
 
@@ -31,7 +31,7 @@ describe('firebase config module', () => {
   it('reports not ready when required values are missing', async () => {
     vi.resetModules();
     const configModuleUrl = new globalThis.URL(
-      '../../../../config/firebase-config.js',
+      '../../../config/firebase-config.js',
       new globalThis.URL('../assets/js/login/firebase-config.js', import.meta.url),
     ).href;
 
