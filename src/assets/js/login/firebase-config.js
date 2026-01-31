@@ -1,4 +1,4 @@
-const configModuleUrl = new URL('../../../../config/firebase-config.js', import.meta.url);
+const configModuleUrl = new URL('../../../config/firebase-config.js', import.meta.url);
 const { firebaseConfig: configFromFile = {} } = await import(configModuleUrl.href);
 
 const defaultFirebaseConfig = {
