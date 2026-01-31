@@ -30,6 +30,7 @@ const initPomodoroWidget = (widget, index) => {
   if (!state) state = { mode: 'off', remaining: 0, running: false, cycle: 1, lastDay: todayStr };
 
   const midnightResetIfNeeded = () => {
+    if (state.running) return;
     const nowStr = new Date().toISOString().slice(0, 10);
     if (state.lastDay !== nowStr) {
       state.lastDay = nowStr;
@@ -187,3 +188,5 @@ if (document.readyState === 'loading') {
 } else {
   initPomodoroWidgets();
 }
+
+export { chime };

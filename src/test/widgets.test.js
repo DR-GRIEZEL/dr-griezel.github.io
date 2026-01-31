@@ -331,6 +331,65 @@ describe('widget helpers', () => {
     vi.useRealTimers();
   });
 
+  it('uses placeholders when precipitation probability or humidity are missing', async () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date('2024-01-01T03:00:00Z'));
+
+    const fetchMock = vi.fn(() => ({
+      ok: true,
+      json: () => ({
+        current: {
+          temperature_2m: 10,
+          apparent_temperature: 8,
+          precipitation: 1,
+          weather_code: 999,
+          wind_speed_10m: 5,
+          wind_direction_10m: 180,
+        },
+        hourly: {
+          time: ['2024-01-01T03:00'],
+        },
+      }),
+    }));
+    vi.stubGlobal('fetch', fetchMock);
+
+    const precipProbEl = { textContent: '' };
+    const humidityEl = { textContent: '' };
+    const elements = {
+      '[data-wx-desc]': { textContent: '' },
+      '[data-wx-location]': { textContent: '' },
+      '[data-wx-updated]': { textContent: '', dateTime: '' },
+      '[data-wx-temp]': { textContent: '' },
+      '[data-wx-apparent]': { textContent: '' },
+      '[data-wx-wind]': { textContent: '' },
+      '[data-wx-wind-direction]': { textContent: '' },
+      '[data-wx-precip]': { textContent: '' },
+      '[data-wx-precip-prob]': precipProbEl,
+      '[data-wx-humidity]': humidityEl,
+    };
+    const widget = {
+      dataset: {
+        widgetLat: '50.85',
+        widgetLon: '4.35',
+        widgetLocation: 'Test City',
+        widgetTz: 'UTC',
+        widgetRefresh: '10',
+      },
+      isConnected: true,
+      querySelector: (selector) => elements[selector] ?? null,
+    };
+
+    initWeatherWidget(widget);
+    await flushPromises(4);
+
+    expect(precipProbEl.textContent).toBe('—');
+    expect(humidityEl.textContent).toBe('—');
+
+    widget.isConnected = false;
+    vi.runOnlyPendingTimers();
+    vi.useRealTimers();
+  });
+
   it('shows an error message when weather updates fail', async () => {
     vi.useFakeTimers();
     const fetchMock = vi.fn(() => {

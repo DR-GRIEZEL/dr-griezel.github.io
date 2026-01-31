@@ -1,11 +1,35 @@
-import { commitsUrl, owner, repo } from '/config/github_config.js';
+const DEFAULT_OWNER = 'DR-GRIEZEL';
+const DEFAULT_REPO = 'dr-griezel.github.io';
 
 const statusEl = typeof document === 'undefined' ? null : document.getElementById('updates-status');
 const listEl = typeof document === 'undefined' ? null : document.getElementById('updates-list');
 const leaderboardEl =
   typeof document === 'undefined' ? null : document.getElementById('updates-leaderboard');
 
-const contributorsUrl = `https://api.github.com/repos/${owner}/${repo}/contributors?per_page=100`;
+const buildCommitsUrl = (owner, repo) =>
+  `https://api.github.com/repos/${owner}/${repo}/commits?per_page=20`;
+
+const buildContributorsUrl = (owner, repo) =>
+  `https://api.github.com/repos/${owner}/${repo}/contributors?per_page=100`;
+
+const normalizeGithubConfig = (moduleConfig = {}) => {
+  const owner = moduleConfig?.owner ?? moduleConfig?.githubConfig?.owner ?? DEFAULT_OWNER;
+  const repo = moduleConfig?.repo ?? moduleConfig?.githubConfig?.repo ?? DEFAULT_REPO;
+  const commitsUrl =
+    moduleConfig?.commitsUrl ??
+    moduleConfig?.githubConfig?.commitsUrl ??
+    buildCommitsUrl(owner, repo);
+
+  return { owner, repo, commitsUrl };
+};
+
+const defaultConfigLoader = () =>
+  import('/config/github_config.js').then((module) => module).catch(() => ({}));
+
+export const getGithubConfig = async (loader = defaultConfigLoader) => {
+  const moduleConfig = await loader();
+  return normalizeGithubConfig(moduleConfig);
+};
 
 const setStatus = (message, target = statusEl) => {
   if (target) {
@@ -137,6 +161,9 @@ const loadCommits = async () => {
   setStatus('Loading updates…');
   setLeaderboard('');
   try {
+    const { owner, repo, commitsUrl } = await getGithubConfig();
+    const contributorsUrl = buildContributorsUrl(owner, repo);
+
     const res = await withTimeout(
       fetch(commitsUrl, {
         headers: { Accept: 'application/vnd.github+json' },
@@ -180,6 +207,8 @@ if (statusEl && listEl) {
 }
 
 export {
+  buildCommitsUrl,
+  buildContributorsUrl,
   formatDate,
   getContributorName,
   getContributorsFromApi,
@@ -187,4 +216,5 @@ export {
   getCommitMetaText,
   getCommitTitle,
   getContributorsByCount,
+  normalizeGithubConfig,
 };

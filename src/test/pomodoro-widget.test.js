@@ -239,7 +239,88 @@ describe('pomodoro widget bootstrap', () => {
     expect(timerEl.textContent).toBe('24:56');
   });
 
-  it('resets stale state at midnight', async () => {
+  it('ignores pause when the timer is off', async () => {
+    const { widget, timerEl, subEl, bPause } = buildWidget();
+
+    vi.stubGlobal('localStorage', {
+      getItem: vi.fn(() => null),
+      setItem: vi.fn(),
+    });
+    vi.stubGlobal('location', { pathname: '/dashboard' });
+    vi.stubGlobal('document', {
+      readyState: 'complete',
+      querySelectorAll: () => [widget],
+    });
+
+    await import('../assets/js/widgets/pomodoro.js');
+
+    bPause.handlers.click();
+
+    expect(timerEl.textContent).toBe('00:00');
+    expect(subEl.textContent).toBe('off • paused');
+  });
+
+  it('ignores start when remaining time is zero', async () => {
+    const { widget, timerEl, subEl, bStart } = buildWidget();
+
+    vi.setSystemTime(new Date('2024-01-01T12:00:00Z'));
+
+    vi.stubGlobal('localStorage', {
+      getItem: vi.fn(() =>
+        JSON.stringify({
+          mode: 'focus',
+          remaining: 0,
+          running: false,
+          cycle: 1,
+          lastDay: '2024-01-01',
+        }),
+      ),
+      setItem: vi.fn(),
+    });
+    vi.stubGlobal('location', { pathname: '/dashboard' });
+    vi.stubGlobal('document', {
+      readyState: 'complete',
+      querySelectorAll: () => [widget],
+    });
+
+    await import('../assets/js/widgets/pomodoro.js');
+
+    bStart.handlers.click();
+
+    expect(timerEl.textContent).toBe('00:00');
+    expect(subEl.textContent).toBe('cycle 1/4 • paused');
+  });
+
+  it('resets stale state at midnight when not running', async () => {
+    const { widget, timerEl, subEl } = buildWidget();
+
+    vi.setSystemTime(new Date('2024-01-02T00:00:00Z'));
+
+    vi.stubGlobal('localStorage', {
+      getItem: vi.fn(() =>
+        JSON.stringify({
+          mode: 'focus',
+          remaining: 120,
+          running: false,
+          cycle: 2,
+          lastDay: '2024-01-01',
+        }),
+      ),
+      setItem: vi.fn(),
+    });
+    vi.stubGlobal('location', { pathname: '/dashboard' });
+    vi.stubGlobal('document', {
+      readyState: 'complete',
+      querySelectorAll: () => [widget],
+    });
+
+    await import('../assets/js/widgets/pomodoro.js');
+
+    expect(timerEl.textContent).toBe('00:00');
+    expect(subEl.textContent).toBe('off • paused');
+  });
+
+  it('does not reset a running cycle at midnight', async () => {
     const { widget, timerEl, subEl } = buildWidget();
 
     vi.setSystemTime(new Date('2024-01-02T00:00:00Z'));
@@ -264,8 +345,8 @@ describe('pomodoro widget bootstrap', () => {
 
     await import('../assets/js/widgets/pomodoro.js');
 
-    expect(timerEl.textContent).toBe('00:00');
-    expect(subEl.textContent).toBe('off • paused');
+    expect(timerEl.textContent).toBe('02:00');
+    expect(subEl.textContent).toBe('cycle 2/4 • active');
   });
 
   it('runs focus and break cycles through completion', async () => {
@@ -349,6 +430,27 @@ describe('pomodoro widget bootstrap', () => {
     vi.advanceTimersByTime(1000);
 
     expect(widget.isConnected).toBe(false);
+  });
+
+  it('chimes with audio and notifications when granted', async () => {
+    vi.resetModules();
+    const NotificationMock = vi.fn();
+    NotificationMock.permission = 'granted';
+    NotificationMock.requestPermission = vi.fn();
+
+    vi.stubGlobal('Notification', NotificationMock);
+    vi.stubGlobal('window', { AudioContext: buildAudioContext(), Notification: NotificationMock });
+    const addEventListener = vi.fn();
+    vi.stubGlobal('document', {
+      readyState: 'loading',
+      addEventListener,
+    });
+
+    const { chime } = await import('../assets/js/widgets/pomodoro.js');
+
+    chime('Test title', 'Test body');
+
+    expect(NotificationMock).toHaveBeenCalledWith('Test title', { body: 'Test body' });
   });
 
   it('defers pomodoro widget boot when the DOM is loading', async () => {

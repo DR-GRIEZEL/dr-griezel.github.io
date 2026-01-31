@@ -1,18 +1,63 @@
 import { describe, expect, it, vi } from 'vitest';
 import {
+  buildCommitsUrl,
+  buildContributorsUrl,
   formatDate,
+  getGithubConfig,
   getContributorName,
   getContributorsFromApi,
   getCommitAuthorName,
   getCommitMetaText,
   getCommitTitle,
   getContributorsByCount,
+  normalizeGithubConfig,
   withTimeout,
 } from '../assets/js/updates.js';
 
 describe('updates helpers', () => {
   it('formats an iso date into a short label', () => {
     expect(formatDate('2024-01-02T12:00:00Z')).toBe('Jan 02, 2024');
+  });
+
+  it('builds GitHub API endpoints', () => {
+    expect(buildCommitsUrl('octo', 'repo')).toBe(
+      'https://api.github.com/repos/octo/repo/commits?per_page=20',
+    );
+    expect(buildContributorsUrl('octo', 'repo')).toBe(
+      'https://api.github.com/repos/octo/repo/contributors?per_page=100',
+    );
+  });
+
+  it('normalizes GitHub config with defaults', () => {
+    const normalized = normalizeGithubConfig({});
+    expect(normalized.owner).toBe('DR-GRIEZEL');
+    expect(normalized.repo).toBe('dr-griezel.github.io');
+    expect(normalized.commitsUrl).toBe(
+      'https://api.github.com/repos/DR-GRIEZEL/dr-griezel.github.io/commits?per_page=20',
+    );
+  });
+
+  it('normalizes GitHub config with explicit values', () => {
+    const normalized = normalizeGithubConfig({
+      owner: 'octo',
+      repo: 'repo',
+      commitsUrl: 'https://example.test/commits',
+    });
+    expect(normalized).toEqual({
+      owner: 'octo',
+      repo: 'repo',
+      commitsUrl: 'https://example.test/commits',
+    });
+  });
+
+  it('loads GitHub config from a loader', async () => {
+    const loader = () =>
+      Promise.resolve({ githubConfig: { owner: 'octo', repo: 'repo', commitsUrl: 'custom' } });
+    await expect(getGithubConfig(loader)).resolves.toEqual({
+      owner: 'octo',
+      repo: 'repo',
+      commitsUrl: 'custom',
+    });
   });
 
   it('returns empty string for invalid date input', () => {

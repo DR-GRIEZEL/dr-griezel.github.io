@@ -124,6 +124,9 @@ body::before {
   flex-direction: column;
   min-width: 0;
 }
+.page > main {
+  flex: 1;
+}
 .container {
   max-width: var(--maxw);
   margin-inline: auto;
